@@ -1,1 +1,3 @@
-作成中
+# テーブル定義書/ER図
+
+[Figma](https://www.figma.com/board/XJSt49AIGBnNwhWf84M3CT/%E8%BB%8A%E4%B8%A1%E7%AE%A1%E7%90%86%E3%82%A2%E3%83%97%E3%83%AA%E3%80%80%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E5%AE%9A%E7%BE%A9%E6%9B%B8%2FER%E5%9B%B3?t=ePAML8t0T9fLDlte-6)
