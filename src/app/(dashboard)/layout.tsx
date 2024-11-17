@@ -11,7 +11,7 @@ export default function RootLayout({
         <div className="basis-1/6">
           <Sidebar />
         </div>
-        <div className="basis-5/6">{children}</div>
+        <div className="basis-5/6 h-full overflow-y-scroll">{children}</div>
       </div>
     </>
   );
