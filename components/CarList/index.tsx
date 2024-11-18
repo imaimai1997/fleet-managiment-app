@@ -57,7 +57,7 @@ const CarList = ({ data }: Props) => {
                 <td className="px-6 py-2">
                   {new Date(car.insuarance_expires_date).toLocaleDateString()}
                 </td>
-                <td className="hover:text-primary-700">
+                <td className="px-4 hover:text-primary-700">
                   <MdOutlineEdit />
                 </td>
               </tr>
