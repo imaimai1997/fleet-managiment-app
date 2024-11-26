@@ -4,7 +4,8 @@
     "car_type": "AD",
     "employee": {
       "id": "1",
-      "name": "田中"
+      "name": "田中",
+      "email":"test@test"
     },
     "place": {
       "id": "1",
@@ -20,8 +21,10 @@
     "harf_year_inspection": "6月12月",
     "inspection_expires_date": "2025-11-07",
     "inspection_data": ".pdf",
+    "inspection_data_name": ".pdf",
     "insuarance_expires_date": "2025-11-07",
     "insuarance_data": ".pdf",
+    "insuarance_data_name": ".pdf",
     "refueling_card": {
       "id": "1111-1111-1111",
       "period": "2025/12/1"

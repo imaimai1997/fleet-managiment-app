@@ -1,6 +1,6 @@
 import React from "react";
 import { MdOutlineEdit } from "react-icons/md";
-import { CarData } from "../../type/carData";
+import { CarData } from "../../type/CarData";
 
 type Props = {
   data: CarData[];
