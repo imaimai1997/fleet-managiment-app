@@ -4,6 +4,7 @@ export type CarData ={
       employee: {
         id: number;
         name: string;
+        email:string;
       };
       place: {
         id: 1;
@@ -19,8 +20,10 @@ export type CarData ={
       harf_year_inspection: string;
       inspection_expires_date: Date;
       inspection_data?: Blob;
+      inspection_data_name?: string;
       insuarance_expires_date: Date;
       insuarance_data?: Blob;
+      insuarance_data_name?: string;
       refueling_card: {
         id: string;
         period: Date;
