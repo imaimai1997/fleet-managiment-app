@@ -1,6 +1,7 @@
 import React from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { UserData } from "../../type/UserData";
+import Link from "next/link";
 
 type Props = {
   data: UserData[];
@@ -41,7 +42,9 @@ const UserList = ({ data }: Props) => {
                 </td>
 
                 <td className="px-4 hover:text-primary-700">
-                  <MdOutlineEdit />
+                  <Link href={`userlist/edit/${user.id}`}>
+                    <MdOutlineEdit />
+                  </Link>
                 </td>
               </tr>
             ))}
