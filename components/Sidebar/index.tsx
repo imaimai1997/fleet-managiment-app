@@ -9,9 +9,11 @@ const Sidebar = () => {
           <li className="mb-4 hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
             車両一覧
           </li>
-          <li className="mb-4 hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
-            月額料金一覧
-          </li>
+          <Link href="/feelist">
+            <li className="mb-4 hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
+              月額料金一覧
+            </li>
+          </Link>
           <Link href="/userlist">
             <li className="hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
               ユーザー
