@@ -1,0 +1,117 @@
+[
+  {"id": "1",
+    "fee_date": "2022-11-01",
+    "car": {
+      "label": "あ4444"
+    },
+    "leasefee":{
+      "lease_fee": 13000
+    },
+    "refuelingfee":{
+      "refueling_fee": 13000
+    },
+    "etcfee":{
+      "etc_fee": 13000
+    }
+  },
+  {"id": "2",
+  "fee_date": "2022-11-01",
+  "car": {
+    "label": "い4444"
+  },
+  "leasefee":{
+    "lease_fee": 13000
+  },
+  "refuelingfee":{
+    "refueling_fee": 13000
+  },
+  "etcfee":{
+    "etc_fee": 13000
+  }
+},  {"id": "3",
+"fee_date": "2022-11-01",
+"car": {
+  "label": "う4444"
+},
+"leasefee":{
+  "lease_fee": 13000
+},
+"refuelingfee":{
+  "refueling_fee": 13000
+},
+"etcfee":{
+  "etc_fee": 13000
+}
+},  {"id": "4",
+"fee_date": "2022-11-01",
+"car": {
+  "label": "え4444"
+},
+"leasefee":{
+  "lease_fee": 13000
+},
+"refuelingfee":{
+  "refueling_fee": 13000
+},
+"etcfee":{
+  "etc_fee": 13000
+}
+},  {"id": "5",
+"fee_date": "2022-11-01",
+"car": {
+  "label": "お4444"
+},
+"leasefee":{
+  "lease_fee": 13000
+},
+"refuelingfee":{
+  "refueling_fee": 13000
+},
+"etcfee":{
+  "etc_fee": 13000
+}
+},  {"id": "6",
+"fee_date": "2022-11-01",
+"car": {
+  "label": "か4444"
+},
+"leasefee":{
+  "lease_fee": 13000
+},
+"refuelingfee":{
+  "refueling_fee": 13000
+},
+"etcfee":{
+  "etc_fee": 13000
+}
+},  {"id": "7",
+"fee_date": "2022-11-01",
+"car": {
+  "label": "き4444"
+},
+"leasefee":{
+  "lease_fee": 13000
+},
+"refuelingfee":{
+  "refueling_fee": 13000
+},
+"etcfee":{
+  "etc_fee": 13000
+}
+},  {"id": "8",
+"fee_date": "2022-11-01",
+"car": {
+  "label": "く4444"
+},
+"leasefee":{
+  "lease_fee": 13000
+},
+"refuelingfee":{
+  "refueling_fee": 13000
+},
+"etcfee":{
+  "etc_fee": 13000
+}
+}
+    
+  ]
