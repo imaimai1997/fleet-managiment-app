@@ -3,7 +3,7 @@ import UserList from "../../../../components/UserList";
 import Link from "next/link";
 import PrimaryButton from "../../../../components/PrimaryButton";
 
-const Page = async () => {
+const UserListPage = async () => {
   const res = await fetch("http://localhost:3000/testdata/userdata.json");
   const data = await res.json();
   return (
@@ -21,4 +21,4 @@ const Page = async () => {
   );
 };
 
-export default Page;
+export default UserListPage;

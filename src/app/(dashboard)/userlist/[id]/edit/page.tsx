@@ -1,7 +1,11 @@
 import React from "react";
 import UserDetail from "../../../../../../components/UserDetail";
 
-const page = async ({ params }: { params: Promise<{ id: string }> }) => {
+const UserDetailPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
   const id = (await params).id;
   console.log(id);
   const res = await fetch("http://localhost:3000/testdata/userdata.json");
@@ -16,4 +20,4 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   );
 };
 
-export default page;
+export default UserDetailPage;
