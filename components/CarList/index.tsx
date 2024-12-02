@@ -1,6 +1,7 @@
 import React from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { CarData } from "../../type/CarData";
+import Link from "next/link";
 
 type Props = {
   data: CarData[];
@@ -58,7 +59,9 @@ const CarList = ({ data }: Props) => {
                   {new Date(car.insuarance_expires_date).toLocaleDateString()}
                 </td>
                 <td className="px-4 hover:text-primary-700">
-                  <MdOutlineEdit />
+                  <Link href={`carlist/${car.id}`}>
+                    <MdOutlineEdit />
+                  </Link>
                 </td>
               </tr>
             ))}
