@@ -10,8 +10,8 @@ type Props = {
 
 const UserSetting = ({ data }: Props) => {
   return (
-    <div>
-      <form className="w-3/6 mx-auto p-6 flex flex-col border-2 border-black rounded *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&>div]:flex [&>div]:justify-between [&>div]:items-center ">
+    <div className="w-3/6 mx-auto text-right">
+      <form className="p-6 flex flex-col border-2 border-black rounded *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&>div]:flex [&>div]:justify-between [&>div]:items-center ">
         <div className="mx-4 my-2">
           <label>ユーザー名</label>
           <input
@@ -30,7 +30,7 @@ const UserSetting = ({ data }: Props) => {
             onChange={() => {}}
           />
         </div>
-        <div className="mx-4 my-2">
+        <div className="mx-4 my-2 text-left">
           <p>通知設定</p>
           <div className="w-80">
             <label className="inline-flex items-center cursor-pointer">
@@ -45,12 +45,12 @@ const UserSetting = ({ data }: Props) => {
             変更メールを送る
           </button>
         </div>
-        <div className="mx-4 ml-auto my-2">
-          <Link href="/userlist">
-            <PrimaryButton name={"保存"} />
-          </Link>
-        </div>
       </form>
+      <div className="m-6">
+        <Link href="/userlist">
+          <PrimaryButton name={"保存"} />
+        </Link>
+      </div>
     </div>
   );
 };
