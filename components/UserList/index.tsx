@@ -42,7 +42,7 @@ const UserList = ({ data }: Props) => {
                 </td>
 
                 <td className="px-4 hover:text-primary-700">
-                  <Link href={`userlist/edit/${user.id}`}>
+                  <Link href={`userlist/${user.id}/edit`}>
                     <MdOutlineEdit />
                   </Link>
                 </td>
