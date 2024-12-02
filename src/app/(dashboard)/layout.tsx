@@ -1,10 +1,10 @@
 import Sidebar from "../../../components/Sidebar";
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <>
       <div className="flex h-[calc(100vh-56px)]">
@@ -15,4 +15,5 @@ export default function RootLayout({
       </div>
     </>
   );
-}
+};
+export default RootLayout;

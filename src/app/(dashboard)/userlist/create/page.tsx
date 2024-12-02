@@ -1,7 +1,7 @@
 import React from "react";
 import UserDetail from "../../../../../components/UserDetail";
 
-const page = () => {
+const UserCreatePage = () => {
   return (
     <>
       <h2 className="m-16 text-xl">ユーザー追加</h2>
@@ -10,4 +10,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default UserCreatePage;

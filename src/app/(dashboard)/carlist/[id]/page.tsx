@@ -4,11 +4,11 @@ import Link from "next/link";
 import PrimaryButton from "../../../../../components/PrimaryButton";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-export default async function Page({
+const CarDetailPage = async ({
   params,
 }: {
   params: Promise<{ id: string }>;
-}) {
+}) => {
   const id = (await params).id;
   console.log(id);
   const res = await fetch("http://localhost:3000/testdata/cardata.json");
@@ -23,17 +23,19 @@ export default async function Page({
       </div>
       <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
         <div className="flex justify-between max-w-5xl mx-auto">
-          <Link href="/">
+          <Link href="/carlist">
             <button className="flex items-center py-2 text-slate-500">
               削除
               <FaRegTrashAlt />
             </button>
           </Link>
-          <Link href="/">
+          <Link href="/carlist">
             <PrimaryButton name="保存" />
           </Link>
         </div>
       </div>
     </>
   );
-}
+};
+
+export default CarDetailPage;
