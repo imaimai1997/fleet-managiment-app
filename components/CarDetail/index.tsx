@@ -1,16 +1,140 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { CarData } from "../../type/CarData";
 
 type Props = {
-  data: CarData;
+  data?: CarData;
 };
 
 const CarDetail = ({ data }: Props) => {
+  const formatDate = (cardate: Date | undefined) => {
+    if (!cardate) return ""; // 初期値がない場合
+    const date = new Date(cardate);
+    return isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10); // 有効なら変換
+  };
+
+  const [carNumber, setCarNumber] = useState(data?.label || "");
+  const [carType, setCarType] = useState(data?.car_type || "");
+  const [carEmployee, setCarEmployee] = useState(data?.employee.name || "");
+  const [carEmployeeEmail, setCarEmployeeEmail] = useState(
+    data?.employee.email || ""
+  );
+  const [carPlace, setCarPlace] = useState(data?.place.name || "");
+  const [carLeasing, setCarLeasing] = useState(data?.leasing.name || "");
+  const [dateFirstRegistration, setDateFirstRegistration] = useState(
+    formatDate(data?.first_registration_date)
+  );
+  const [dateLeasingStart, setDateLeasingStart] = useState(
+    formatDate(data?.leasing_start_date)
+  );
+  const [dateLeasingFinish, setDateLeasingFinish] = useState(
+    formatDate(data?.leasing_finish_date)
+  );
+  const [dateHarfYearInspection, setDateHarfYearInspection] = useState(
+    data?.harf_year_inspection || ""
+  );
+  const [dateInspectionExpires, setDateInspectionExpires] = useState(
+    formatDate(data?.inspection_expires_date)
+  );
+  const [dateInsuaranceExpires, setDateInsuaranceExpires] = useState(
+    formatDate(data?.insuarance_expires_date)
+  );
+  const [refuelingCardName, setRefuelingCardName] = useState(
+    data?.refueling_card.id || ""
+  );
+  const [refuelingCardPeriod, setRefuelingCardPeriod] = useState(
+    formatDate(data?.refueling_card.period)
+  );
+  const [etcCardNumber, setEtcCardNumber] = useState(data?.etc_card.id || "");
+  const [etcCardName, setEtcCardName] = useState(data?.etc_card.name || "");
+  const [etcCardPeriod, setEtcCardPeriod] = useState(
+    formatDate(data?.etc_card.period)
+  );
+  const [isTireChange, setIsTireChange] = useState(
+    data?.tire_change !== undefined ? data.tire_change.toString() : ""
+  );
+  const [carNote, setCarNote] = useState(data?.notes || "");
+
+  const ChangeCarNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCarNumber(e.target.value);
+  };
+  const ChangeCarType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCarType(e.target.value);
+  };
+  const ChangeCarEmployee = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCarEmployee(e.target.value);
+  };
+  const ChangeCarEmployeeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCarEmployeeEmail(e.target.value);
+  };
+  const ChangeCarPlace = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCarPlace(e.target.value);
+  };
+  const ChangeCarLeasing = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCarLeasing(e.target.value);
+  };
+  const ChangeDateFirstRegistration = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDateFirstRegistration(e.target.value);
+  };
+  const ChangeDateLeasingStart = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDateLeasingStart(e.target.value);
+  };
+  const ChangeDateLeasingFinish = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDateLeasingFinish(e.target.value);
+  };
+  const ChangeDateHarfYearInspection = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDateHarfYearInspection(e.target.value);
+  };
+  const ChangeDateInspectionExpires = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDateInspectionExpires(e.target.value);
+  };
+  const ChangeDateInsuaranceExpires = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDateInsuaranceExpires(e.target.value);
+  };
+  const ChangeRefuelingCardName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRefuelingCardName(e.target.value);
+  };
+  const ChangeRefuelingCardPeriod = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRefuelingCardPeriod(e.target.value);
+  };
+  const ChangeEtcCardNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEtcCardNumber(e.target.value);
+  };
+  const ChangeEtcCardName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEtcCardName(e.target.value);
+  };
+  const ChangeEtcCardPeriod = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEtcCardPeriod(e.target.value);
+  };
+  const ChangeIsTireChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setIsTireChange(e.target.value);
+  };
+  const ChangeCarNote = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCarNote(e.target.value);
+  };
   const filePickerRef = useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = useState(
+    data?.insuarance_data_name || "選択してください"
+  );
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFileName(file.name);
+    }
+  };
   const showFolder = () => {
     if (filePickerRef.current) {
-      filePickerRef.current.click();
+      filePickerRef.current?.click();
     }
   };
   return (
@@ -22,94 +146,76 @@ const CarDetail = ({ data }: Props) => {
             <input
               className="focus:bg-gray-200"
               type="text"
-              value={data.id}
-              readOnly
+              value={carNumber}
+              onChange={ChangeCarNumber}
             />
           </div>
           <div>
             <label>車種</label>
-            <input type="text" value={data.car_type} onChange={() => {}} />
+            <input type="text" value={carType} onChange={ChangeCarType} />
           </div>
           <div>
             <label>管理者</label>
-            <input type="text" value={data.employee.name} onChange={() => {}} />
+            <input
+              type="text"
+              value={carEmployee}
+              onChange={ChangeCarEmployee}
+            />
           </div>
           <div>
             <label>管理者アドレス</label>
             <input
               type="text"
-              value={data.employee.email}
-              onChange={() => {}}
+              value={carEmployeeEmail}
+              onChange={ChangeCarEmployeeEmail}
             />
           </div>
           <div>
             <label>使用場所</label>
-            <input type="text" value={data.place.name} onChange={() => {}} />
+            <input type="text" value={carPlace} onChange={ChangeCarPlace} />
           </div>
           <div>
             <label>リース会社</label>
-            <input type="text" value={data.leasing.name} onChange={() => {}} />
+            <input type="text" value={carLeasing} onChange={ChangeCarLeasing} />
           </div>
           <div>
             <label>初度登録</label>
             <input
               type="date"
-              value={
-                data.leasing_start_date
-                  ? new Date(data.first_registration_date)
-                      .toISOString()
-                      .slice(0, 10) // YYYY-MM-DD形式
-                  : ""
-              }
-              onChange={() => {}}
+              value={dateFirstRegistration}
+              onChange={ChangeDateFirstRegistration}
             />
           </div>
           <div>
             <label>リース開始日</label>
             <input
               type="date"
-              value={
-                data.leasing_start_date
-                  ? new Date(data.leasing_start_date).toISOString().slice(0, 10) // YYYY-MM-DD形式
-                  : ""
-              }
-              onChange={() => {}}
+              value={dateLeasingStart}
+              onChange={ChangeDateLeasingStart}
             />
           </div>
           <div>
             <label>リース終了日</label>
             <input
-              type="text"
-              value={
-                data.leasing_start_date
-                  ? new Date(data.leasing_finish_date)
-                      .toISOString()
-                      .slice(0, 10) // YYYY-MM-DD形式
-                  : ""
-              }
-              onChange={() => {}}
+              type="date"
+              value={dateLeasingFinish}
+              onChange={ChangeDateLeasingFinish}
             />
           </div>
           <div>
             <label>6カ月点検日</label>
             <input
               type="text"
-              value={data.harf_year_inspection}
-              onChange={() => {}}
+              value={dateHarfYearInspection}
+              onChange={ChangeDateHarfYearInspection}
             />
           </div>
           <div>
             <label>車検日</label>
             <input
               type="date"
-              value={
-                data.leasing_start_date
-                  ? new Date(data.inspection_expires_date)
-                      .toISOString()
-                      .slice(0, 10) // YYYY-MM-DD形式
-                  : ""
-              }
-              onChange={() => {}}
+              value={dateInspectionExpires}
+              onChange={ChangeDateInspectionExpires}
             />
           </div>
           <div>
@@ -122,8 +228,10 @@ const CarDetail = ({ data }: Props) => {
                 onChange={() => {}}
                 className="hidden"
               />
-              {data.inspection_data && (
-                <p>{data.inspection_data_name || "inspection.pdf"}</p>
+              {data?.inspection_data ? (
+                <p>{data.inspection_data_name || "選択してください"}</p>
+              ) : (
+                "選択してください"
               )}
               <button onClick={showFolder} className="bg-gray-200">
                 選択
@@ -131,17 +239,11 @@ const CarDetail = ({ data }: Props) => {
             </div>
           </div>
           <div>
-            <label>保険加入日</label>
+            <label>保険満了日</label>
             <input
               type="date"
-              value={
-                data.leasing_start_date
-                  ? new Date(data.insuarance_expires_date)
-                      .toISOString()
-                      .slice(0, 10) // YYYY-MM-DD形式
-                  : ""
-              }
-              onChange={() => {}}
+              value={dateInsuaranceExpires}
+              onChange={ChangeDateInsuaranceExpires}
             />
           </div>
           <div>
@@ -151,12 +253,11 @@ const CarDetail = ({ data }: Props) => {
                 type="file"
                 ref={filePickerRef}
                 accept="application/pdf"
-                onChange={() => {}}
+                onChange={handleFileChange}
                 className="hidden"
               />
-              {data.insuarance_data && (
-                <p>{data.insuarance_data_name || "insuarance.pdf"}</p>
-              )}
+
+              <p>{fileName}</p>
               <button onClick={showFolder} className="bg-gray-200">
                 選択
               </button>
@@ -166,51 +267,54 @@ const CarDetail = ({ data }: Props) => {
             <label>給油カード番号</label>
             <input
               type="text"
-              value={data.refueling_card.id}
-              onChange={() => {}}
+              value={refuelingCardName}
+              onChange={ChangeRefuelingCardName}
             />
           </div>
           <div>
             <label>給油カード期限</label>
             <input
               type="date"
-              value={
-                data.leasing_start_date
-                  ? new Date(data.refueling_card.period)
-                      .toISOString()
-                      .slice(0, 10) // YYYY-MM-DD形式
-                  : ""
-              }
-              onChange={() => {}}
+              value={refuelingCardPeriod}
+              onChange={ChangeRefuelingCardPeriod}
             />
           </div>
           <div>
             <label>ETCカード番号</label>
-            <input type="text" value={data.etc_card.id} onChange={() => {}} />
+            <input
+              type="text"
+              value={etcCardNumber}
+              onChange={ChangeEtcCardNumber}
+            />
           </div>
           <div>
             <label>ETCカード名</label>
-            <input type="text" value={data.etc_card.name} onChange={() => {}} />
+            <input
+              type="text"
+              value={etcCardName}
+              onChange={ChangeEtcCardName}
+            />
           </div>
           <div>
             <label>ETCカード期限</label>
             <input
               type="date"
-              value={
-                data.leasing_start_date
-                  ? new Date(data.etc_card.period).toISOString().slice(0, 10) // YYYY-MM-DD形式
-                  : ""
-              }
-              onChange={() => {}}
+              value={etcCardPeriod}
+              onChange={ChangeEtcCardPeriod}
             />
           </div>
           <div>
             <label>タイヤ交換有無</label>
             <select
-              value={data.tire_change ? "有り" : "無し"}
-              onChange={() => {}}
+              value={isTireChange}
+              onChange={ChangeIsTireChange}
               className="w-60 border-2 border-primary-700 p-2"
             >
+              {data === undefined && (
+                <option value="" disabled>
+                  選択してください
+                </option>
+              )}
               <option value="true">有り</option>
               <option value="false">無し</option>
             </select>
@@ -221,8 +325,8 @@ const CarDetail = ({ data }: Props) => {
           <div>
             <textarea
               className="h-24 w-full border-2 border-primary-700 p-2"
-              value={data.notes}
-              onChange={() => {}}
+              value={carNote}
+              onChange={ChangeCarNote}
             />
           </div>
         </div>
