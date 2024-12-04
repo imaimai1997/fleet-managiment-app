@@ -6,7 +6,7 @@ const Sidebar = () => {
     <div className="bg-gray-300 min-w-40 h-full">
       <nav>
         <ul className="ml-8 pt-32">
-          <Link href="/carlist">
+          <Link href="/">
             <li className="mb-4 hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
               車両一覧
             </li>

@@ -1,7 +1,7 @@
 import React from "react";
-import SearchBar from "../../../../components/SearchBar";
-import CarList from "../../../../components/CarList";
-import PrimaryButton from "../../../../components/PrimaryButton";
+import SearchBar from "../../../components/SearchBar";
+import CarList from "../../../components/CarList";
+import PrimaryButton from "../../../components/PrimaryButton";
 import Link from "next/link";
 
 const CarListPage = async () => {
