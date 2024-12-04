@@ -11,7 +11,7 @@ const CreateCar = () => {
         <CarDetail />
       </div>
       <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
-        <div className="flex justify-between max-w-5xl mx-auto">
+        <div className="flex justify-end max-w-5xl mx-auto">
           <Link href="/carlist">
             <PrimaryButton name="追加" />
           </Link>
