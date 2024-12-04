@@ -44,7 +44,7 @@ const CarList = ({ data }: Props) => {
             {data.map((car) => (
               <tr key={car.id} className="border-b-2 hover:bg-primary-100">
                 <th scope="row" className="px-6 py-2">
-                  {car.id}
+                  {car.label}
                 </th>
                 <td className="px-6 py-2">{car.employee.name}</td>
                 <td className="px-6 py-2">{car.leasing.name}</td>
