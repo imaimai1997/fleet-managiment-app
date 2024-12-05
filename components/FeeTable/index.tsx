@@ -21,7 +21,7 @@ const FeeTable = ({ feeData }: Props) => {
   );
 
   return (
-    <div className="w-11/12 mx-auto m-4 mb-16">
+    <div className="w-11/12 mx-auto m-4 mb-24">
       <table className="w-full text-left mt-8">
         <thead>
           <tr>
@@ -78,7 +78,7 @@ const FeeTable = ({ feeData }: Props) => {
         </tbody>
       </table>
 
-      <div className="w-5/6 mx-auto fixed bottom-0 bg-white shadow-inner">
+      <div className="w-5/6 h-12 mx-auto fixed bottom-12 bg-white shadow-inner">
         <div className="w-11/12">
           <table className="w-full text-left">
             <tbody>
