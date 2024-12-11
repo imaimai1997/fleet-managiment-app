@@ -122,20 +122,50 @@ const CarDetail = ({ data }: Props) => {
   const ChangeCarNote = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCarNote(e.target.value);
   };
-  const filePickerRef = useRef<HTMLInputElement>(null);
-  const [fileName, setFileName] = useState(
+  const inspectionFileRef = useRef<HTMLInputElement>(null);
+  const insuaranceFileRef = useRef<HTMLInputElement>(null);
+  const [inspectionFileName, setInspectionFileName] = useState(
+    data?.inspection_data_name || "選択してください"
+  );
+  const [inspectionFileURL, setinspectionFileURL] = useState<
+    string | undefined
+  >(undefined);
+
+  const [insuaranceFileURL, setInsuaranceFileURL] = useState<
+    string | undefined
+  >(undefined);
+
+  const [insuaranceFileName, setInsuaranceFileName] = useState(
     data?.insuarance_data_name || "選択してください"
   );
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInspectionFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    console.log(e.target.files);
     const file = e.target.files?.[0];
     if (file) {
-      setFileName(file.name);
+      setInspectionFileName(file.name);
+      const fileURL = URL.createObjectURL(file);
+      setinspectionFileURL(fileURL);
     }
   };
-  const showFolder = () => {
-    if (filePickerRef.current) {
-      filePickerRef.current?.click();
+  const handleInsuaranceFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    console.log(e.target.files);
+    const file = e.target.files?.[0];
+    if (file) {
+      setInsuaranceFileName(file.name);
+      const fileURL = URL.createObjectURL(file);
+      setInsuaranceFileURL(fileURL);
     }
+  };
+  const showFolder = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    ref: React.RefObject<HTMLInputElement>
+  ) => {
+    e.preventDefault();
+    ref.current?.click();
   };
   return (
     <div className="max-w-5xl  mx-auto my-20">
@@ -221,19 +251,27 @@ const CarDetail = ({ data }: Props) => {
           <div>
             <label>車検PDF</label>
             <div className="w-60 border-2 border-primary-700 p-2 flex justify-between items-center">
-              <input
-                type="file"
-                ref={filePickerRef}
-                accept="application/pdf"
-                onChange={() => {}}
-                className="hidden"
-              />
-              {data?.inspection_data ? (
-                <p>{data.inspection_data_name || "選択してください"}</p>
-              ) : (
-                "選択してください"
-              )}
-              <button onClick={showFolder} className="bg-gray-200">
+              <div className="w-4/5">
+                <input
+                  type="file"
+                  ref={inspectionFileRef}
+                  accept="application/pdf"
+                  onChange={handleInspectionFileChange}
+                  className="hidden"
+                />
+                <a
+                  href={inspectionFileURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <p className="truncate">{inspectionFileName}</p>
+                </a>
+              </div>
+              <button
+                type="button"
+                onClick={(e) => showFolder(e, inspectionFileRef)}
+                className="bg-gray-200"
+              >
                 選択
               </button>
             </div>
@@ -248,17 +286,30 @@ const CarDetail = ({ data }: Props) => {
           </div>
           <div>
             <label>保険PDF</label>
-            <div className="w-60 border-2 border-primary-700 p-2 flex justify-between items-center">
-              <input
-                type="file"
-                ref={filePickerRef}
-                accept="application/pdf"
-                onChange={handleFileChange}
-                className="hidden"
-              />
+            <div className="w-60 border-2 relative border-primary-700 p-2 flex justify-between items-center ">
+              <div className="w-4/5">
+                <input
+                  type="file"
+                  ref={insuaranceFileRef}
+                  accept="application/pdf"
+                  onChange={handleInsuaranceFileChange}
+                  className="hidden"
+                />
 
-              <p>{fileName}</p>
-              <button onClick={showFolder} className="bg-gray-200">
+                <a
+                  href={insuaranceFileURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <p className="truncate">{insuaranceFileName}</p>
+                </a>
+              </div>
+
+              <button
+                type="button"
+                onClick={(e) => showFolder(e, insuaranceFileRef)}
+                className="bg-gray-200"
+              >
                 選択
               </button>
             </div>
