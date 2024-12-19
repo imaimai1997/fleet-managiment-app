@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+model Car {
+  id        Int      @id @default(autoincrement())
+  label     String
+  employee   Employee @relation("CarToEmployees",fields: [employeeId], references: [id])
+  employeeId Int 
+  place   Place @relation("CarToPlace",fields: [placeId], references: [id])
+  placeId Int 
+  leasing   LeasingCompany @relation("CarToLeasingCompany",fields: [leasingId], references: [id])
+  leasingId Int 
+  first_registration_date  DateTime
+  leasing_start_date  DateTime
+  leasing_finish_date  DateTime
+  harf_year_inspection  String
+  inspection_expires_date  DateTime
+  inspection_data  Bytes
+  inspection_data_name  String
+  insuarance_expires_date  DateTime
+  insuarance_data  Bytes
+  insuarance_data_name  String
+  refueling_card   Refueling_card @relation("CarToRefueling_card",fields: [refueling_cardId], references: [id])
+  refueling_cardId Int 
+  etc_card   Etc_card @relation("CarToEtc_card",fields: [etc_cardId], references: [id])
+  etc_cardId Int 
+  tire_change   Boolean  @default(false)
+  notes String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now())
+}
+
+model Employee {
+  id    Int  @id @default(autoincrement())
+  name  String
+  email String
+  car  Car[]  @relation("CarToEmployees")
+}
+
+model Place {
+  id    Int  @id @default(autoincrement())
+  name  String
+  car  Car[]  @relation("CarToPlace")
+}
+
+model LeasingCompany {
+  id    Int  @id @default(autoincrement())
+  name  String
+  car  Car[]  @relation("CarToLeasingCompany")
+}
+
+model Refueling_card {
+  id    Int  @id @default(autoincrement())
+  period  DateTime
+  car  Car[]  @relation("CarToRefueling_card")
+}
+
+model Etc_card {
+  id    Int  @id @default(autoincrement())
+  period  DateTime
+  car  Car[]  @relation("CarToEtc_card")
+}
+
+
+  
