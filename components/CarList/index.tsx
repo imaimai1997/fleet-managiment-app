@@ -46,8 +46,11 @@ const CarList = ({ data }: Props) => {
                 <th scope="row" className="px-6 py-2">
                   {car.label}
                 </th>
-                <td className="px-6 py-2">{car.employee.name}</td>
-                <td className="px-6 py-2">{car.leasing.name}</td>
+                <td className="px-6 py-2">
+                  田中
+                  {/* {car.employee.name} */}
+                </td>
+                <td className="px-6 py-2">{/* {car.leasing.name} */}</td>
                 <td className="px-6 py-2">
                   {new Date(car.leasing_finish_date).toLocaleDateString()}
                 </td>
