@@ -4,17 +4,23 @@ import Link from "next/link";
 import PrimaryButton from "../../../../../components/PrimaryButton";
 import { FaRegTrashAlt } from "react-icons/fa";
 
+const fetchCarById = async (id: string) => {
+  const res = await fetch(`http://localhost:3000/api/car/${id}`, {
+    cache: "no-store",
+  });
+
+  const data = await res.json();
+  return data.car;
+};
+
 const CarDetailPage = async ({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) => {
   const id = (await params).id;
-  console.log(id);
-  const res = await fetch("http://localhost:3000/testdata/cardata.json");
-  const data = await res.json();
+  const carData = await fetchCarById(id);
 
-  const carData = data[0];
   return (
     <>
       <h2 className="m-16 text-xl">車両詳細/編集画面</h2>
