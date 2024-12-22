@@ -37,3 +37,29 @@ export const GET = async (req: Request) => {
     await prisma.$disconnect();
   }
 };
+
+export const DELETE = async (req: Request) => {
+  const id = parseInt(req.url.split("/car/")[1]);
+  try {
+    await main();
+    const car = await prisma.car.delete({
+      where: { id: id },
+    });
+    return NextResponse.json(
+      { message: "Success", car },
+      {
+        status: 200,
+      },
+    );
+  } catch (err) {
+    console.log(err);
+    return (
+      NextResponse.json({ message: "Error", err }),
+      {
+        status: 500,
+      }
+    );
+  } finally {
+    await prisma.$disconnect();
+  }
+};
