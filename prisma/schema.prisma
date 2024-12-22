@@ -16,48 +16,56 @@ datasource db {
 model Car {
   id        Int      @id @default(autoincrement())
   label     String
-  employee   Employee @relation("CarToEmployees",fields: [employeeId], references: [id])
-  employeeId Int 
-  place   Place @relation("CarToPlace",fields: [placeId], references: [id])
-  placeId Int 
-  leasing   LeasingCompany @relation("CarToLeasingCompany",fields: [leasingId], references: [id])
-  leasingId Int 
+  carType   CarType @relation("CarToCarType",fields: [car_typeName], references: [name])
+  carTypeName String 
+  employee   Employee @relation("CarToEmployees",fields: [employeeName], references: [name])
+  employeeName String 
+  place   Place? @relation("CarToPlace",fields: [placeName], references: [name])
+  placeName String 
+  leasing   LeasingCompany @relation("CarToLeasingCompany",fields: [leasingName], references: [name])
+  leasingName String 
   first_registration_date  DateTime
   leasing_start_date  DateTime
   leasing_finish_date  DateTime
   harf_year_inspection  String
   inspection_expires_date  DateTime
-  inspection_data  Bytes
+  inspection_data  String
   inspection_data_name  String
   insuarance_expires_date  DateTime
-  insuarance_data  Bytes
+  insuarance_data  String
   insuarance_data_name  String
   refueling_card   Refueling_card @relation("CarToRefueling_card",fields: [refueling_cardId], references: [id])
   refueling_cardId Int 
-  etc_card   Etc_card @relation("CarToEtc_card",fields: [etc_cardId], references: [id])
-  etc_cardId Int 
+  etc_card   Etc_card @relation("CarToEtc_card",fields: [etc_cardName], references: [name])
+  etc_cardName String 
   tire_change   Boolean  @default(false)
   notes String
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now())
 }
 
+model CarType {
+  id    Int  @id @default(autoincrement())
+  name  String @unique
+  car  Car[]  @relation("CarToCarType")
+}
+
 model Employee {
   id    Int  @id @default(autoincrement())
-  name  String
-  email String
+  name  String @unique
+  email String @unique
   car  Car[]  @relation("CarToEmployees")
 }
 
 model Place {
   id    Int  @id @default(autoincrement())
-  name  String
+  name  String @unique
   car  Car[]  @relation("CarToPlace")
 }
 
 model LeasingCompany {
   id    Int  @id @default(autoincrement())
-  name  String
+  name  String @unique
   car  Car[]  @relation("CarToLeasingCompany")
 }
 
@@ -69,6 +77,7 @@ model Refueling_card {
 
 model Etc_card {
   id    Int  @id @default(autoincrement())
+  name  String @unique
   period  DateTime
   car  Car[]  @relation("CarToEtc_card")
 }

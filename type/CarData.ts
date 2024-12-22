@@ -1,7 +1,10 @@
 export type CarData ={
  id: string;
  label:string;
-      car_type: string;
+      carType: {
+      id: number;
+      name: string;
+    };
       employee: {
         id: number;
         name: string;
