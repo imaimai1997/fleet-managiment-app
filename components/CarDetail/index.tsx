@@ -1,6 +1,8 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { CarData } from "../../type/CarData";
+import Link from "next/link";
+import PrimaryButton from "../PrimaryButton";
 
 type Props = {
   data?: CarData;
@@ -12,9 +14,8 @@ const CarDetail = ({ data }: Props) => {
     const date = new Date(cardate);
     return isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10); // 有効なら変換
   };
-
   const [carNumber, setCarNumber] = useState(data?.label || "");
-  const [carType, setCarType] = useState(data?.car_type || "");
+  const [carType, setCarType] = useState(data?.carType.name || "");
   const [carEmployee, setCarEmployee] = useState(data?.employee.name || "");
   const [carEmployeeEmail, setCarEmployeeEmail] = useState(
     data?.employee.email || ""
@@ -127,7 +128,7 @@ const CarDetail = ({ data }: Props) => {
   const [inspectionFileName, setInspectionFileName] = useState(
     data?.inspection_data_name || "選択してください"
   );
-  const [inspectionFileURL, setinspectionFileURL] = useState<
+  const [inspectionFileURL, setInspectionFileURL] = useState<
     string | undefined
   >(undefined);
 
@@ -138,7 +139,17 @@ const CarDetail = ({ data }: Props) => {
   const [insuaranceFileName, setInsuaranceFileName] = useState(
     data?.insuarance_data_name || "選択してください"
   );
-  const handleInspectionFileChange = (
+
+  // async function bytesToBase64DataUrl(file: File): Promise<string> {
+  //   return await new Promise((resolve, reject) => {
+  //     const reader = Object.assign(new FileReader(), {
+  //       onload: () => resolve(reader.result as string),
+  //       onerror: () => reject(reader.error),
+  //     });
+  //     reader.readAsDataURL(file);
+  //   });
+  // }
+  const handleInspectionFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     console.log(e.target.files);
@@ -146,10 +157,10 @@ const CarDetail = ({ data }: Props) => {
     if (file) {
       setInspectionFileName(file.name);
       const fileURL = URL.createObjectURL(file);
-      setinspectionFileURL(fileURL);
+      setInspectionFileURL(fileURL);
     }
   };
-  const handleInsuaranceFileChange = (
+  const handleInsuaranceFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     console.log(e.target.files);
@@ -167,222 +178,300 @@ const CarDetail = ({ data }: Props) => {
     e.preventDefault();
     ref.current?.click();
   };
+
+  const handleCreateCar = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:3000/api/car", {
+        method: "POST",
+        headers: {
+          "content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          label: carNumber,
+          carTypeName: carType,
+          employeeName: carEmployee,
+          placeName: carPlace,
+          leasingName: carLeasing,
+          first_registration_date: dateFirstRegistration,
+          leasing_start_date: dateLeasingStart,
+          leasing_finish_date: dateLeasingFinish,
+          harf_year_inspection: dateHarfYearInspection,
+          inspection_expires_date: dateInspectionExpires,
+          inspection_data: "a",
+          inspection_data_name: inspectionFileName,
+          insuarance_expires_date: dateInsuaranceExpires,
+          insuarance_data: "a",
+          insuarance_data_name: insuaranceFileName,
+          refueling_cardId: refuelingCardName,
+          etc_cardName: etcCardName,
+          tire_change: isTireChange,
+          notes: carNote,
+        }),
+      });
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+
+      // レスポンスをログに表示
+      const data = await res.json();
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.error("Error:", err);
+      console.log(
+        carNumber,
+        carType,
+        carEmployee,
+        carPlace,
+        carLeasing,
+        dateFirstRegistration,
+        dateLeasingStart,
+        dateLeasingFinish,
+        dateHarfYearInspection,
+        dateInspectionExpires,
+        inspectionFileURL,
+        inspectionFileName,
+        dateInsuaranceExpires,
+        insuaranceFileURL,
+        insuaranceFileName,
+        refuelingCardName,
+        etcCardName,
+        isTireChange,
+        carNote
+      );
+    }
+  };
+
   return (
-    <div className="max-w-5xl  mx-auto my-20">
-      <form>
-        <div className="w-full grid grid-cols-2 gap-y-4 gap-x-12 *:text-xl [&_input]:w-60 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2  [&>div]:max-w-lg [&>div]:flex [&>div]:justify-between [&>div]:items-center">
-          <div>
-            <label>車両番号</label>
-            <input
-              className="focus:bg-gray-200"
-              type="text"
-              value={carNumber}
-              onChange={ChangeCarNumber}
-            />
-          </div>
-          <div>
-            <label>車種</label>
-            <input type="text" value={carType} onChange={ChangeCarType} />
-          </div>
-          <div>
-            <label>管理者</label>
-            <input
-              type="text"
-              value={carEmployee}
-              onChange={ChangeCarEmployee}
-            />
-          </div>
-          <div>
-            <label>管理者アドレス</label>
-            <input
-              type="text"
-              value={carEmployeeEmail}
-              onChange={ChangeCarEmployeeEmail}
-            />
-          </div>
-          <div>
-            <label>使用場所</label>
-            <input type="text" value={carPlace} onChange={ChangeCarPlace} />
-          </div>
-          <div>
-            <label>リース会社</label>
-            <input type="text" value={carLeasing} onChange={ChangeCarLeasing} />
-          </div>
-          <div>
-            <label>初度登録</label>
-            <input
-              type="date"
-              value={dateFirstRegistration}
-              onChange={ChangeDateFirstRegistration}
-            />
-          </div>
-          <div>
-            <label>リース開始日</label>
-            <input
-              type="date"
-              value={dateLeasingStart}
-              onChange={ChangeDateLeasingStart}
-            />
-          </div>
-          <div>
-            <label>リース終了日</label>
-            <input
-              type="date"
-              value={dateLeasingFinish}
-              onChange={ChangeDateLeasingFinish}
-            />
-          </div>
-          <div>
-            <label>6カ月点検日</label>
-            <input
-              type="text"
-              value={dateHarfYearInspection}
-              onChange={ChangeDateHarfYearInspection}
-            />
-          </div>
-          <div>
-            <label>車検日</label>
-            <input
-              type="date"
-              value={dateInspectionExpires}
-              onChange={ChangeDateInspectionExpires}
-            />
-          </div>
-          <div>
-            <label>車検PDF</label>
-            <div className="w-60 border-2 border-primary-700 p-2 flex justify-between items-center">
-              <div className="w-4/5">
-                <input
-                  type="file"
-                  ref={inspectionFileRef}
-                  accept="application/pdf"
-                  onChange={handleInspectionFileChange}
-                  className="hidden"
-                />
-                <a
-                  href={inspectionFileURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+    <>
+      <div className="max-w-5xl  mx-auto my-20">
+        <form>
+          <div className="w-full grid grid-cols-2 gap-y-4 gap-x-12 *:text-xl [&_input]:w-60 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2  [&>div]:max-w-lg [&>div]:flex [&>div]:justify-between [&>div]:items-center">
+            <div>
+              <label>車両番号</label>
+              <input
+                className="focus:bg-gray-200"
+                type="text"
+                value={carNumber}
+                onChange={ChangeCarNumber}
+              />
+            </div>
+            <div>
+              <label>車種</label>
+              <input type="text" value={carType} onChange={ChangeCarType} />
+            </div>
+            <div>
+              <label>管理者</label>
+              <input
+                type="text"
+                value={carEmployee}
+                onChange={ChangeCarEmployee}
+              />
+            </div>
+            <div>
+              <label>管理者アドレス</label>
+              <input
+                type="text"
+                value={carEmployeeEmail}
+                onChange={ChangeCarEmployeeEmail}
+              />
+            </div>
+            <div>
+              <label>使用場所</label>
+              <input type="text" value={carPlace} onChange={ChangeCarPlace} />
+            </div>
+            <div>
+              <label>リース会社</label>
+              <input
+                type="text"
+                value={carLeasing}
+                onChange={ChangeCarLeasing}
+              />
+            </div>
+            <div>
+              <label>初度登録</label>
+              <input
+                type="date"
+                value={dateFirstRegistration}
+                onChange={ChangeDateFirstRegistration}
+              />
+            </div>
+            <div>
+              <label>リース開始日</label>
+              <input
+                type="date"
+                value={dateLeasingStart}
+                onChange={ChangeDateLeasingStart}
+              />
+            </div>
+            <div>
+              <label>リース終了日</label>
+              <input
+                type="date"
+                value={dateLeasingFinish}
+                onChange={ChangeDateLeasingFinish}
+              />
+            </div>
+            <div>
+              <label>6カ月点検日</label>
+              <input
+                type="text"
+                value={dateHarfYearInspection}
+                onChange={ChangeDateHarfYearInspection}
+              />
+            </div>
+            <div>
+              <label>車検日</label>
+              <input
+                type="date"
+                value={dateInspectionExpires}
+                onChange={ChangeDateInspectionExpires}
+              />
+            </div>
+            <div>
+              <label>車検PDF</label>
+              <div className="w-60 border-2 border-primary-700 p-2 flex justify-between items-center">
+                <div className="w-4/5">
+                  <input
+                    type="file"
+                    ref={inspectionFileRef}
+                    accept="application/pdf"
+                    onChange={handleInspectionFileChange}
+                    className="hidden"
+                  />
+                  <a
+                    href={inspectionFileURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <p className="truncate">{inspectionFileName}</p>
+                  </a>
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => showFolder(e, inspectionFileRef)}
+                  className="bg-gray-200"
                 >
-                  <p className="truncate">{inspectionFileName}</p>
-                </a>
+                  選択
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={(e) => showFolder(e, inspectionFileRef)}
-                className="bg-gray-200"
+            </div>
+            <div>
+              <label>保険満了日</label>
+              <input
+                type="date"
+                value={dateInsuaranceExpires}
+                onChange={ChangeDateInsuaranceExpires}
+              />
+            </div>
+            <div>
+              <label>保険PDF</label>
+              <div className="w-60 border-2 relative border-primary-700 p-2 flex justify-between items-center ">
+                <div className="w-4/5">
+                  <input
+                    type="file"
+                    ref={insuaranceFileRef}
+                    accept="application/pdf"
+                    onChange={handleInsuaranceFileChange}
+                    className="hidden"
+                  />
+
+                  <a
+                    href={insuaranceFileURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <p className="truncate">{insuaranceFileName}</p>
+                  </a>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={(e) => showFolder(e, insuaranceFileRef)}
+                  className="bg-gray-200"
+                >
+                  選択
+                </button>
+              </div>
+            </div>
+            <div>
+              <label>給油カード番号</label>
+              <input
+                type="text"
+                value={refuelingCardName}
+                onChange={ChangeRefuelingCardName}
+              />
+            </div>
+            <div>
+              <label>給油カード期限</label>
+              <input
+                type="date"
+                value={refuelingCardPeriod}
+                onChange={ChangeRefuelingCardPeriod}
+              />
+            </div>
+            <div>
+              <label>ETCカード番号</label>
+              <input
+                type="text"
+                value={etcCardNumber}
+                onChange={ChangeEtcCardNumber}
+              />
+            </div>
+            <div>
+              <label>ETCカード名</label>
+              <input
+                type="text"
+                value={etcCardName}
+                onChange={ChangeEtcCardName}
+              />
+            </div>
+            <div>
+              <label>ETCカード期限</label>
+              <input
+                type="date"
+                value={etcCardPeriod}
+                onChange={ChangeEtcCardPeriod}
+              />
+            </div>
+            <div>
+              <label>タイヤ交換有無</label>
+              <select
+                value={isTireChange}
+                onChange={ChangeIsTireChange}
+                className="w-60 border-2 border-primary-700 p-2"
               >
-                選択
-              </button>
+                {data === undefined && (
+                  <option value="" disabled>
+                    選択してください
+                  </option>
+                )}
+                <option value="true">有り</option>
+                <option value="false">無し</option>
+              </select>
             </div>
           </div>
-          <div>
-            <label>保険満了日</label>
-            <input
-              type="date"
-              value={dateInsuaranceExpires}
-              onChange={ChangeDateInsuaranceExpires}
-            />
-          </div>
-          <div>
-            <label>保険PDF</label>
-            <div className="w-60 border-2 relative border-primary-700 p-2 flex justify-between items-center ">
-              <div className="w-4/5">
-                <input
-                  type="file"
-                  ref={insuaranceFileRef}
-                  accept="application/pdf"
-                  onChange={handleInsuaranceFileChange}
-                  className="hidden"
-                />
-
-                <a
-                  href={insuaranceFileURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <p className="truncate">{insuaranceFileName}</p>
-                </a>
-              </div>
-
-              <button
-                type="button"
-                onClick={(e) => showFolder(e, insuaranceFileRef)}
-                className="bg-gray-200"
-              >
-                選択
-              </button>
+          <div className=" text-xl mt-6 w-full">
+            <label>備考欄</label>
+            <div>
+              <textarea
+                className="h-24 w-full border-2 border-primary-700 p-2"
+                value={carNote}
+                onChange={ChangeCarNote}
+              />
             </div>
           </div>
-          <div>
-            <label>給油カード番号</label>
-            <input
-              type="text"
-              value={refuelingCardName}
-              onChange={ChangeRefuelingCardName}
-            />
-          </div>
-          <div>
-            <label>給油カード期限</label>
-            <input
-              type="date"
-              value={refuelingCardPeriod}
-              onChange={ChangeRefuelingCardPeriod}
-            />
-          </div>
-          <div>
-            <label>ETCカード番号</label>
-            <input
-              type="text"
-              value={etcCardNumber}
-              onChange={ChangeEtcCardNumber}
-            />
-          </div>
-          <div>
-            <label>ETCカード名</label>
-            <input
-              type="text"
-              value={etcCardName}
-              onChange={ChangeEtcCardName}
-            />
-          </div>
-          <div>
-            <label>ETCカード期限</label>
-            <input
-              type="date"
-              value={etcCardPeriod}
-              onChange={ChangeEtcCardPeriod}
-            />
-          </div>
-          <div>
-            <label>タイヤ交換有無</label>
-            <select
-              value={isTireChange}
-              onChange={ChangeIsTireChange}
-              className="w-60 border-2 border-primary-700 p-2"
-            >
-              {data === undefined && (
-                <option value="" disabled>
-                  選択してください
-                </option>
-              )}
-              <option value="true">有り</option>
-              <option value="false">無し</option>
-            </select>
-          </div>
+        </form>
+      </div>
+      <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
+        <div className="flex justify-end max-w-5xl mx-auto">
+          <Link href="/carlist">
+            <PrimaryButton name="追加" onClick={handleCreateCar} />
+          </Link>
         </div>
-        <div className=" text-xl mt-6 w-full">
-          <label>備考欄</label>
-          <div>
-            <textarea
-              className="h-24 w-full border-2 border-primary-700 p-2"
-              value={carNote}
-              onChange={ChangeCarNote}
-            />
-          </div>
-        </div>
-      </form>
-    </div>
+      </div>
+    </>
   );
 };
 

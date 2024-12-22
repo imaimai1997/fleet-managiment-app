@@ -2,7 +2,8 @@ import React from "react";
 
 type Props = {
   name: string;
-  onClick?: () => void;
+  // onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const PrimaryButton = ({ name, onClick }: Props) => {
