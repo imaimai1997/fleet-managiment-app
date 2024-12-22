@@ -11,6 +11,7 @@ export const GET = async (req: Request) => {
     const car = await prisma.car.findFirst({
       where: { id: id },
       include: {
+        carType: true,
         employee: true,
         leasing: true,
         place: true,
