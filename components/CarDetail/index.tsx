@@ -3,17 +3,21 @@ import React, { useRef, useState } from "react";
 import { CarData } from "../../type/CarData";
 import Link from "next/link";
 import PrimaryButton from "../PrimaryButton";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 type Props = {
   data?: CarData;
+  id?: string;
 };
 
-const CarDetail = ({ data }: Props) => {
+const CarDetail = ({ data, id }: Props) => {
   const formatDate = (cardate: Date | undefined) => {
     if (!cardate) return ""; // 初期値がない場合
     const date = new Date(cardate);
     return isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10); // 有効なら変換
   };
+  const router = useRouter();
   const [carNumber, setCarNumber] = useState(data?.label || "");
   const [carType, setCarType] = useState(data?.carType.name || "");
   const [carEmployee, setCarEmployee] = useState(data?.employee.name || "");
@@ -243,6 +247,17 @@ const CarDetail = ({ data }: Props) => {
     }
   };
 
+  const handleDeleteCar = async () => {
+    const res = await fetch(`http://localhost:3000/api/car/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    router.push("http://localhost:3000/");
+    return res.json();
+  };
+
   return (
     <>
       <div className="max-w-5xl  mx-auto my-20">
@@ -464,13 +479,26 @@ const CarDetail = ({ data }: Props) => {
           </div>
         </form>
       </div>
-      <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
-        <div className="flex justify-end max-w-5xl mx-auto">
-          <Link href="/carlist">
-            <PrimaryButton name="追加" onClick={handleCreateCar} />
-          </Link>
+      {data ? (
+        <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
+          <div className="flex justify-between max-w-5xl mx-auto">
+            <button
+              onClick={handleDeleteCar}
+              className="flex items-center py-2 text-slate-500"
+            >
+              削除
+              <FaRegTrashAlt />
+            </button>
+            <PrimaryButton name="保存" />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
+          <div className="flex justify-end max-w-5xl mx-auto">
+            <PrimaryButton name="追加" onClick={handleCreateCar} />
+          </div>
+        </div>
+      )}
     </>
   );
 };
