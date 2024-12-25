@@ -3,14 +3,22 @@ import UserList from "../../../../components/UserList";
 import Link from "next/link";
 import PrimaryButton from "../../../../components/PrimaryButton";
 
-const UserListPage = async () => {
-  const res = await fetch("http://localhost:3000/testdata/userdata.json");
+const fetchUserList = async () => {
+  const res = await fetch("http://localhost:3000/api/user", {
+    cache: "no-store",
+  });
+
   const data = await res.json();
+  return data.users;
+};
+
+const UserListPage = async () => {
+  const users = await fetchUserList();
   return (
     <>
       <h2 className="m-16 text-xl">ユーザー一覧</h2>
       <div className="mx-8 mt-8 mb-16">
-        <UserList data={data} />
+        <UserList data={users} />
       </div>
       <div className="w-5/6 fixed bottom-0 text-end px-16 py-2 bg-white shadow-inner">
         <Link href="userlist/create">

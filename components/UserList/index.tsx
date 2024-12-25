@@ -34,7 +34,7 @@ const UserList = ({ data }: Props) => {
             {data.map((user) => (
               <tr key={user.id} className="border-b-2 hover:bg-primary-100">
                 <th scope="row" className="px-6 py-2">
-                  {user.user_name}
+                  {user.name}
                 </th>
                 <td className="px-6 py-2">{user.role.name}</td>
                 <td className="px-6 py-2">
