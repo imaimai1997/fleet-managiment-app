@@ -12,6 +12,7 @@ import { FirebaseError } from "firebase/app";
 
 type Props = {
   data?: UserData;
+  id?: string;
 };
 
 type UserCreateForm = {
@@ -21,7 +22,7 @@ type UserCreateForm = {
   password: string;
 };
 
-const UserDetail = ({ data }: Props) => {
+const UserDetail = ({ data, id }: Props) => {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userRole, setUserRole] = useState("");
@@ -133,6 +134,24 @@ const UserDetail = ({ data }: Props) => {
     }
   };
 
+  const handleDeleteUser = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/user/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      toast.success("ユーザーを削除しました", { id: "1" });
+      router.push("/userlist");
+      router.refresh();
+      return res.json();
+    } catch (error) {
+      console.error(error);
+      toast.error("ユーザーを削除できませんでした", { id: "1" });
+    }
+  };
+
   return (
     <>
       <Toaster />
@@ -204,20 +223,23 @@ const UserDetail = ({ data }: Props) => {
               <option value="false">一般</option>
             </select>
           </div>
-          {data ? (
-            <div className="flex justify-between m-6">
-              <button className="flex items-center py-2 text-slate-500">
-                削除
-                <FaRegTrashAlt />
-              </button>
-              <PrimaryButton name={"保存"} />
-            </div>
-          ) : (
-            <div className="m-6 ">
-              <PrimaryButton name={"追加"} type="submit" />
-            </div>
-          )}
         </form>
+        {data ? (
+          <div className="flex justify-between m-6">
+            <button
+              onClick={handleDeleteUser}
+              className="flex items-center py-2 text-slate-500"
+            >
+              削除
+              <FaRegTrashAlt />
+            </button>
+            <PrimaryButton name={"保存"} />
+          </div>
+        ) : (
+          <div className="m-6 ">
+            <PrimaryButton name={"追加"} type="submit" />
+          </div>
+        )}
       </div>
     </>
   );
