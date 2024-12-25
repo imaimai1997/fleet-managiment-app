@@ -148,7 +148,7 @@ const UserDetail = ({ data }: Props) => {
                 required: "ユーザー名を入力してください。",
               })}
               type="text"
-              value={data?.user_name || userName}
+              value={data?.name || userName}
               required
               onChange={changeUserName}
             />
