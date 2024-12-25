@@ -16,7 +16,7 @@ datasource db {
 model Car {
   id        Int      @id @default(autoincrement())
   label     String
-  carType   CarType @relation("CarToCarType",fields: [car_typeName], references: [name])
+  carType   CarType @relation("CarToCarType",fields: [carTypeName], references: [name])
   carTypeName String 
   employee   Employee @relation("CarToEmployees",fields: [employeeName], references: [name])
   employeeName String 
@@ -82,5 +82,21 @@ model Etc_card {
   car  Car[]  @relation("CarToEtc_card")
 }
 
+model User{
+  id           Int      @id 
+  role         Role @relation("UserToRole",fields: [roleName], references: [name])
+  roleName     String 
+  name         String
+  password     String
+  email        String @unique
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now())
+}
+
+model Role {
+  id    Int  @id @default(autoincrement())
+  name  String @unique
+  user  User[]  @relation("UserToRole")
+}
 
   
