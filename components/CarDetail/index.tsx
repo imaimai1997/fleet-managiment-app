@@ -1,7 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { CarData } from "../../type/CarData";
-import Link from "next/link";
 import PrimaryButton from "../PrimaryButton";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
