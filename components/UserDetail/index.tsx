@@ -52,7 +52,7 @@ const UserDetail = ({ data, id }: Props) => {
       const res = await fetch("http://localhost:3000/api/user", {
         method: "POST",
         headers: {
-          "content-Type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           id: userId,
@@ -219,8 +219,8 @@ const UserDetail = ({ data, id }: Props) => {
               <option value="" disabled>
                 選択してください
               </option>
-              <option value="true">管理者</option>
-              <option value="false">一般</option>
+              <option value="管理者">管理者</option>
+              <option value="一般">一般</option>
             </select>
           </div>
           {!data && (
