@@ -36,4 +36,20 @@ const deleteUser = async (uid: string) => {
   }
 };
 
-export { adminAuth, deleteUser };
+const updateUser = async (uid: string, updateEmail: string) => {
+  try {
+    await adminAuth.updateUser(uid, {
+      email: updateEmail,
+    });
+
+    console.log(`Successfully updated user with UID: ${uid}`);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error message:", error.message);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+  }
+};
+
+export { adminAuth, deleteUser, updateUser };
