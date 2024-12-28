@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import PrimaryButton from "../PrimaryButton";
 import { UserData } from "../../type/UserData";
 import { FaRegTrashAlt } from "react-icons/fa";
@@ -23,29 +23,16 @@ type UserCreateForm = {
 };
 
 const UserDetail = ({ data, id }: Props) => {
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userRole, setUserRole] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const changeUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserName(e.target.value);
-  };
-  const changeUserEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserEmail(e.target.value);
-  };
-  const changeUserRole = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setUserRole(e.target.value);
-  };
-  const changeUserPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserPassword(e.target.value);
-  };
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<UserCreateForm>();
+  const { register, handleSubmit, watch } = useForm<UserCreateForm>({
+    defaultValues: {
+      userName: data?.name || "",
+      userRole: data?.role.name || "",
+      email: data?.email || "",
+      password: "",
+    },
+  });
 
   const handleCreateUser = async (userId: string) => {
     try {
@@ -56,45 +43,27 @@ const UserDetail = ({ data, id }: Props) => {
         },
         body: JSON.stringify({
           id: userId,
-          roleName: userRole,
-          name: userName,
-          password: userPassword,
-          email: userEmail,
+          roleName: watch("userRole"),
+          name: watch("userName"),
+          password: watch("password"),
+          email: watch("email"),
         }),
       });
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
-
-      // レスポンスをログに表示
-      const data = await res.json();
-      console.log(data);
-      return data;
     } catch (err) {
       console.error("Error:", err);
     }
   };
 
   const handleSignUp = async () => {
-    if (errors.userName) {
-      toast.error(errors.userName.message || "ユーザー名エラーがあります。");
-      return;
-    }
-    if (errors.email) {
-      toast.error(errors.email.message || "メールアドレスエラーがあります。");
-      return;
-    }
-    if (errors.password) {
-      toast.error(errors.password.message || "パスワードエラーがあります。");
-      return;
-    }
-
     toast.loading("作成中です", { id: "1" });
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        userEmail,
-        userPassword
+        watch("email"),
+        watch("password")
       );
       const user = userCredential.user;
       await handleCreateUser(user.uid);
@@ -134,7 +103,7 @@ const UserDetail = ({ data, id }: Props) => {
     }
   };
 
-  const handleDeleteUser = async (id: string) => {
+  const handleDeleteUser = async () => {
     try {
       const res = await fetch(`http://localhost:3000/api/user/${id}`, {
         method: "DELETE",
@@ -149,6 +118,30 @@ const UserDetail = ({ data, id }: Props) => {
     } catch (error) {
       console.error(error);
       toast.error("ユーザーを削除できませんでした", { id: "1" });
+    }
+  };
+
+  const handleUpdateUser = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/user/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          roleName: watch("userRole"),
+          name: watch("userName"),
+          email: watch("email"),
+        }),
+      });
+      toast.success("ユーザー情報を編集しました", { id: "1" });
+      router.push("/userlist");
+      router.refresh();
+      return res.json();
+    } catch (error) {
+      console.error(error);
+      toast.error("ユーザー情報を編集できませんでした", { id: "1" });
     }
   };
 
@@ -167,9 +160,7 @@ const UserDetail = ({ data, id }: Props) => {
                 required: "ユーザー名を入力してください。",
               })}
               type="text"
-              value={data?.name || userName}
               required
-              onChange={changeUserName}
             />
           </div>
           <div className="mx-4 my-2">
@@ -183,9 +174,7 @@ const UserDetail = ({ data, id }: Props) => {
                 },
               })}
               type="email"
-              value={data?.email || userEmail}
               required
-              onChange={changeUserEmail}
             />
           </div>
           {!data && (
@@ -200,8 +189,6 @@ const UserDetail = ({ data, id }: Props) => {
                   },
                 })}
                 type="password"
-                value={userPassword}
-                onChange={changeUserPassword}
               />
             </div>
           )}
@@ -212,8 +199,6 @@ const UserDetail = ({ data, id }: Props) => {
               {...register("userRole", {
                 required: "権限を選択してください。",
               })}
-              defaultValue={data?.role.name || userRole}
-              onChange={changeUserRole}
               className="w-80 border-2 border-primary-700 p-2"
             >
               <option value="" disabled>
@@ -232,19 +217,13 @@ const UserDetail = ({ data, id }: Props) => {
         {data && (
           <div className="flex justify-between m-6">
             <button
-              onClick={() => {
-                if (id) {
-                  handleDeleteUser(id);
-                } else {
-                  toast.error("削除対象のユーザーが指定されていません。");
-                }
-              }}
+              onClick={handleDeleteUser}
               className="flex items-center py-2 text-slate-500"
             >
               削除
               <FaRegTrashAlt />
             </button>
-            <PrimaryButton name={"保存"} />
+            <PrimaryButton name={"保存"} onClick={handleUpdateUser} />
           </div>
         )}
       </div>
