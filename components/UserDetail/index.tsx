@@ -134,7 +134,7 @@ const UserDetail = ({ data, id }: Props) => {
     }
   };
 
-  const handleDeleteUser = async () => {
+  const handleDeleteUser = async (id: string) => {
     try {
       const res = await fetch(`http://localhost:3000/api/user/${id}`, {
         method: "DELETE",
@@ -223,21 +223,28 @@ const UserDetail = ({ data, id }: Props) => {
               <option value="false">一般</option>
             </select>
           </div>
+          {!data && (
+            <div className="m-6 ">
+              <PrimaryButton name={"追加"} type="submit" />
+            </div>
+          )}
         </form>
-        {data ? (
+        {data && (
           <div className="flex justify-between m-6">
             <button
-              onClick={handleDeleteUser}
+              onClick={() => {
+                if (id) {
+                  handleDeleteUser(id);
+                } else {
+                  toast.error("削除対象のユーザーが指定されていません。");
+                }
+              }}
               className="flex items-center py-2 text-slate-500"
             >
               削除
               <FaRegTrashAlt />
             </button>
             <PrimaryButton name={"保存"} />
-          </div>
-        ) : (
-          <div className="m-6 ">
-            <PrimaryButton name={"追加"} type="submit" />
           </div>
         )}
       </div>

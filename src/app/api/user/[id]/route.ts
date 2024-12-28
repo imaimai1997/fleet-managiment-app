@@ -1,11 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { main } from "../route";
 import { NextResponse } from "next/server";
+import { adminAuth } from "@/utils/adminFirebase";
 
 const prisma = new PrismaClient();
 
 export const GET = async (req: Request) => {
-  const id = parseInt(req.url.split("/user/")[1]);
+  const id = req.url.split("/user/")[1];
   try {
     await main();
     const user = await prisma.user.findFirst({
@@ -36,12 +37,13 @@ export const GET = async (req: Request) => {
 //ユーザー情報削除
 
 export const DELETE = async (req: Request) => {
-  const id = parseInt(req.url.split("/user/")[1]);
+  const id = req.url.split("/user/")[1];
   try {
     await main();
     const user = await prisma.user.delete({
       where: { id: id },
     });
+    await adminAuth.deleteUser(id.toString());
     return NextResponse.json(
       { message: "Success", user },
       {

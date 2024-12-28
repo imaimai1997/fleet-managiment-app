@@ -83,7 +83,7 @@ model Etc_card {
 }
 
 model User{
-  id           Int      @id 
+  id           String @id @default(uuid())
   role         Role @relation("UserToRole",fields: [roleName], references: [name])
   roleName     String 
   name         String
