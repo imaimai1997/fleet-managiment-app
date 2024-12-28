@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { main } from "../route";
 import { NextResponse } from "next/server";
-import { adminAuth } from "@/utils/adminFirebase";
+import { deleteUser, updateUser } from "@/utils/adminFirebase";
 
 const prisma = new PrismaClient();
 
@@ -43,7 +43,42 @@ export const DELETE = async (req: Request) => {
     const user = await prisma.user.delete({
       where: { id: id },
     });
-    await adminAuth.deleteUser(id.toString());
+    await deleteUser(id);
+    return NextResponse.json(
+      { message: "Success", user },
+      {
+        status: 200,
+      },
+    );
+  } catch (err) {
+    console.log(err);
+    return (
+      NextResponse.json({ message: "Error", err }),
+      {
+        status: 500,
+      }
+    );
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+//ユーザー情報編集
+export const PUT = async (req: Request) => {
+  const id = req.url.split("/user/")[1];
+  const { roleName, name, email } = await req.json();
+
+  try {
+    await main();
+    const user = await prisma.user.update({
+      data: {
+        roleName,
+        name,
+        email,
+      },
+      where: { id: id },
+    });
+    await updateUser(id, email);
     return NextResponse.json(
       { message: "Success", user },
       {
