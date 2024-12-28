@@ -4,6 +4,7 @@ import { CarData } from "../../type/CarData";
 import PrimaryButton from "../PrimaryButton";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 
 type Props = {
   data?: CarData;
@@ -43,8 +44,8 @@ const CarDetail = ({ data, id }: Props) => {
   const [dateInsuaranceExpires, setDateInsuaranceExpires] = useState(
     formatDate(data?.insuarance_expires_date)
   );
-  const [refuelingCardName, setRefuelingCardName] = useState(
-    data?.refueling_card.id || ""
+  const [refuelingCardName, setRefuelingCardName] = useState<number | string>(
+    data?.refueling_card.id ? Number(data.refueling_card.id) : ""
   );
   const [refuelingCardPeriod, setRefuelingCardPeriod] = useState(
     formatDate(data?.refueling_card.period)
@@ -54,9 +55,11 @@ const CarDetail = ({ data, id }: Props) => {
   const [etcCardPeriod, setEtcCardPeriod] = useState(
     formatDate(data?.etc_card.period)
   );
-  const [isTireChange, setIsTireChange] = useState(
-    data?.tire_change !== undefined ? data.tire_change.toString() : ""
+
+  const [isTireChange, setIsTireChange] = useState<boolean | null>(
+    data?.tire_change || null
   );
+
   const [carNote, setCarNote] = useState(data?.notes || "");
 
   const ChangeCarNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +107,12 @@ const CarDetail = ({ data, id }: Props) => {
     setDateInsuaranceExpires(e.target.value);
   };
   const ChangeRefuelingCardName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRefuelingCardName(e.target.value);
+    const value = e.target.value;
+    if (!isNaN(Number(value))) {
+      setRefuelingCardName(Number(value));
+    } else {
+      console.error("Invalid input: expected a number.");
+    }
   };
   const ChangeRefuelingCardPeriod = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -121,7 +129,7 @@ const CarDetail = ({ data, id }: Props) => {
     setEtcCardPeriod(e.target.value);
   };
   const ChangeIsTireChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setIsTireChange(e.target.value);
+    setIsTireChange(e.target.value === "true");
   };
   const ChangeCarNote = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCarNote(e.target.value);
@@ -143,15 +151,6 @@ const CarDetail = ({ data, id }: Props) => {
     data?.insuarance_data_name || "選択してください"
   );
 
-  // async function bytesToBase64DataUrl(file: File): Promise<string> {
-  //   return await new Promise((resolve, reject) => {
-  //     const reader = Object.assign(new FileReader(), {
-  //       onload: () => resolve(reader.result as string),
-  //       onerror: () => reject(reader.error),
-  //     });
-  //     reader.readAsDataURL(file);
-  //   });
-  // }
   const handleInspectionFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -188,7 +187,7 @@ const CarDetail = ({ data, id }: Props) => {
       const res = await fetch("http://localhost:3000/api/car", {
         method: "POST",
         headers: {
-          "content-Type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           label: carNumber,
@@ -201,10 +200,10 @@ const CarDetail = ({ data, id }: Props) => {
           leasing_finish_date: dateLeasingFinish,
           harf_year_inspection: dateHarfYearInspection,
           inspection_expires_date: dateInspectionExpires,
-          inspection_data: "a",
+          inspection_data: inspectionFileURL,
           inspection_data_name: inspectionFileName,
           insuarance_expires_date: dateInsuaranceExpires,
-          insuarance_data: "a",
+          insuarance_data: insuaranceFileURL,
           insuarance_data_name: insuaranceFileName,
           refueling_cardId: refuelingCardName,
           etc_cardName: etcCardName,
@@ -215,50 +214,39 @@ const CarDetail = ({ data, id }: Props) => {
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
+      toast.success("車両情報が登録されました", { id: "1" });
 
-      // レスポンスをログに表示
-      const data = await res.json();
-      console.log(data);
+      router.push("/");
+      router.refresh();
+
       return data;
     } catch (err) {
       console.error("Error:", err);
-      console.log(
-        carNumber,
-        carType,
-        carEmployee,
-        carPlace,
-        carLeasing,
-        dateFirstRegistration,
-        dateLeasingStart,
-        dateLeasingFinish,
-        dateHarfYearInspection,
-        dateInspectionExpires,
-        inspectionFileURL,
-        inspectionFileName,
-        dateInsuaranceExpires,
-        insuaranceFileURL,
-        insuaranceFileName,
-        refuelingCardName,
-        etcCardName,
-        isTireChange,
-        carNote
-      );
+      toast.error("車両情報が登録がうまくいきませんでした。", { id: "1" });
     }
   };
 
   const handleDeleteCar = async () => {
-    const res = await fetch(`http://localhost:3000/api/car/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    router.push("http://localhost:3000/");
-    return res.json();
+    try {
+      const res = await fetch(`http://localhost:3000/api/car/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      toast.success("車両情報が削除されました", { id: "1" });
+      router.push("/");
+      router.refresh();
+      return res.json();
+    } catch (error) {
+      console.error(error);
+      toast.error("車両情報が削除できませんでした", { id: "1" });
+    }
   };
 
   return (
     <>
+      <Toaster />
       <div className="max-w-5xl  mx-auto my-20">
         <form>
           <div className="w-full grid grid-cols-2 gap-y-4 gap-x-12 *:text-xl [&_input]:w-60 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2  [&>div]:max-w-lg [&>div]:flex [&>div]:justify-between [&>div]:items-center">
@@ -412,7 +400,7 @@ const CarDetail = ({ data, id }: Props) => {
             <div>
               <label>給油カード番号</label>
               <input
-                type="text"
+                type="number"
                 value={refuelingCardName}
                 onChange={ChangeRefuelingCardName}
               />
@@ -452,7 +440,7 @@ const CarDetail = ({ data, id }: Props) => {
             <div>
               <label>タイヤ交換有無</label>
               <select
-                value={isTireChange}
+                value={isTireChange === null ? "" : isTireChange.toString()}
                 onChange={ChangeIsTireChange}
                 className="w-60 border-2 border-primary-700 p-2"
               >
