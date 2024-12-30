@@ -23,10 +23,10 @@ export type CarData ={
       leasing_finish_date: Date;
       harf_year_inspection: string;
       inspection_expires_date: Date;
-      inspection_data?: Blob;
+      inspection_data?: string;
       inspection_data_name?: string;
       insuarance_expires_date: Date;
-      insuarance_data?: Blob;
+      insuarance_data?: string;
       insuarance_data_name?: string;
       refueling_card: {
         id: string;
@@ -39,8 +39,8 @@ export type CarData ={
       };
       tire_change: boolean;
       notes?: string;
-      created_at: Date;
-      updated_at: Date;
+      // created_at: Date;
+      // updated_at: Date;
     
 
 
