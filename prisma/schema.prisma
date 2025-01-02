@@ -15,7 +15,7 @@ datasource db {
 }
 model Car {
   id        Int      @id @default(autoincrement())
-  label     String
+  label     String @unique
   carType   CarType @relation("CarToCarType",fields: [carTypeName], references: [name])
   carTypeName String 
   employee   Employee @relation("CarToEmployees",fields: [employeeName], references: [name])
@@ -42,6 +42,7 @@ model Car {
   notes String
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now())
+  leaseFee  LeaseFee[]  @relation("FeeToLease")
 }
 
 model CarType {
@@ -71,15 +72,21 @@ model LeasingCompany {
 
 model Refueling_card {
   id    Int  @id @default(autoincrement())
+  number BigInt @unique
   period  DateTime
   car  Car[]  @relation("CarToRefueling_card")
+  fee  RefuelingFee[]  @relation("FeeToRefueling_card")
+
 }
 
 model Etc_card {
   id    Int  @id @default(autoincrement())
+  number BigInt @unique
   name  String @unique
   period  DateTime
   car  Car[]  @relation("CarToEtc_card")
+  fee  EtcFee[]  @relation("FeeToEtc_card")
+
 }
 
 model User{
@@ -99,4 +106,27 @@ model Role {
   user  User[]  @relation("UserToRole")
 }
 
+model RefuelingFee{
+  id    Int  @id @default(autoincrement())
+  refueling_card   Refueling_card @relation("FeeToRefueling_card",fields: [refueling_card_number], references: [number])
+  refueling_card_number BigInt
+  fee_date DateTime
+  refueling_fee Int 
+}
+
+model EtcFee{
+  id    Int  @id @default(autoincrement())
+  etc_card   Etc_card @relation("FeeToEtc_card",fields: [etc_card_number], references: [number])
+  etc_card_number BigInt 
+  fee_date DateTime
+  etc_fee Int 
+}
+
+model LeaseFee{
+  id    Int  @id @default(autoincrement())
+  car   Car @relation("FeeToLease",fields: [car_label], references: [label])
+  car_label String 
+  fee_date DateTime
+  lease_fee Int 
+}
   
