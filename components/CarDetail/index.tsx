@@ -36,8 +36,8 @@ const CarDetail = ({ data, id }: Props) => {
       inspection_data_name: data?.inspection_data_name || "",
       insuarance_expires_date: formatDate(data?.insuarance_expires_date) || "",
       insuarance_data_name: data?.insuarance_data_name || "",
-      refueling_cardId: data?.refueling_card.id || "",
-      etc_cardName: data?.etc_card.id || "",
+      refueling_cardNumber: data?.refueling_card.number || "",
+      etc_cardName: data?.etc_card.name || "",
       tire_change: data?.tire_change.toString() || null,
       notes: data?.notes || "",
     },
@@ -113,7 +113,7 @@ const CarDetail = ({ data, id }: Props) => {
           insuarance_expires_date: watch("insuarance_expires_date"),
           insuarance_data: insuaranceFileURL,
           insuarance_data_name: insuaranceFileName,
-          refueling_cardId: watch("refueling_cardId"),
+          refueling_cardNumber: watch("refueling_cardNumber"),
           etc_cardName: watch("etc_cardName"),
           tire_change: watch("tire_change"),
           notes: watch("notes"),
@@ -130,6 +130,8 @@ const CarDetail = ({ data, id }: Props) => {
       return data;
     } catch (err) {
       console.error("Error:", err);
+      console.log(watch("etc_cardName"));
+      console.log(watch("refueling_cardNumber"));
       toast.error("車両情報が登録がうまくいきませんでした。", { id: "1" });
     }
   };
@@ -191,8 +193,8 @@ const CarDetail = ({ data, id }: Props) => {
           insuarance_expires_date: watch("insuarance_expires_date"),
           insuarance_data: insuaranceFileURL,
           insuarance_data_name: insuaranceFileName,
-          refueling_cardId: watch("refueling_cardId"),
-          etc_cardName: watch("etc_cardName")?.toString,
+          refueling_cardNumber: watch("refueling_cardNumber"),
+          etc_cardName: watch("etc_cardName"),
           tire_change: watch("tire_change"),
           notes: watch("notes"),
         }),
@@ -204,6 +206,8 @@ const CarDetail = ({ data, id }: Props) => {
       return res.json();
     } catch (error) {
       console.error(error);
+      console.log(watch("etc_cardName"));
+      console.log(watch("refueling_cardNumber"));
       toast.error("車両情報が編集できませんでした", { id: "1" });
     }
   };
@@ -385,11 +389,10 @@ const CarDetail = ({ data, id }: Props) => {
             <div>
               <label>給油カード番号</label>
               <input
-                {...register("refueling_cardId", {
+                {...register("refueling_cardNumber", {
                   required: "給油カード番号を入力してください。",
-                  valueAsNumber: true,
                 })}
-                type="number"
+                type="text"
               />
             </div>
             <div>
@@ -401,18 +404,18 @@ const CarDetail = ({ data, id }: Props) => {
               />
             </div>
             <div>
-              <label>ETCカード番号</label>
+              <label>ETCカード名</label>
               <input
                 {...register("etc_cardName", {
-                  required: "ETCカード番号を入力してください。",
-                  valueAsNumber: false,
+                  required: "ETCカード名を入力してください。",
+                  // valueAsNumber: false,
                 })}
                 type="text"
               />
             </div>
             <div>
-              <label>ETCカード名</label>
-              <input type="text" value={data?.etc_card.name} readOnly />
+              <label>ETCカード番号</label>
+              <input type="text" value={data?.etc_card.number} readOnly />
             </div>
             <div>
               <label>ETCカード期限</label>
