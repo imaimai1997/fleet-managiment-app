@@ -34,8 +34,8 @@ model Car {
   insuarance_expires_date  DateTime
   insuarance_data  String
   insuarance_data_name  String
-  refueling_card   Refueling_card @relation("CarToRefueling_card",fields: [refueling_cardId], references: [id])
-  refueling_cardId Int 
+  refueling_card   Refueling_card @relation("CarToRefueling_card",fields: [refueling_cardNumber], references: [number])
+  refueling_cardNumber BigInt 
   etc_card   Etc_card @relation("CarToEtc_card",fields: [etc_cardName], references: [name])
   etc_cardName String 
   tire_change   Boolean  @default(false)
