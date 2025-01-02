@@ -14,7 +14,7 @@ export type CarForm ={
   insuarance_expires_date: string| undefined;
   insuarance_data: string| undefined;
   insuarance_data_name: string| undefined;
-  refueling_cardId: string| undefined;
+  refueling_cardNumber: string| undefined;
   etc_cardName: string|number| undefined;
   tire_change:string| null;
   notes: string| undefined;

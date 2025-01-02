@@ -30,10 +30,12 @@ export type CarData ={
       insuarance_data_name?: string;
       refueling_card: {
         id: string;
+        number:string;
         period: Date;
       };
       etc_card: {
         id: number;
+        number:string;
         name: string;
         period: Date;
       };
