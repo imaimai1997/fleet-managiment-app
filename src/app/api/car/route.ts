@@ -11,14 +11,6 @@ export async function main() {
   }
 }
 
-// Bigintの文字列化
-const serializeBigInt = (
-  key: string,
-  value: bigint | number | string | boolean | Date,
-): number | string | boolean | Date => {
-  return typeof value === "bigint" ? value.toString() : value;
-};
-
 //車両一覧取得
 export const GET = async () => {
   try {
@@ -33,27 +25,10 @@ export const GET = async () => {
         refueling_card: true,
       },
     });
-    const serializedCars = JSON.stringify(
-      { message: "Success", cars },
-      serializeBigInt,
-    );
-
-    return new Response(serializedCars, {
-      headers: { "Content-Type": "application/json" },
-      status: 200,
-    });
+    return Response.json({ message: "Success", cars }, { status: 200 });
   } catch (err) {
-    console.error("エラー:", err);
-
-    const errorMessage =
-      err instanceof Error ? err.message : "予期しないエラーが発生しました";
-    return new Response(
-      JSON.stringify({ message: "Error", error: errorMessage }),
-      {
-        headers: { "Content-Type": "application/json" },
-        status: 500,
-      },
-    );
+    console.log(err);
+    return Response.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
@@ -112,36 +87,11 @@ export const POST = async (req: Request) => {
         // updated_at: new Date(updated_at),
       },
     });
-    const serializedCars = JSON.stringify(
-      { message: "Success", car },
-      serializeBigInt,
-    );
-    return new Response(serializedCars, {
-      headers: { "Content-Type": "application/json" },
-      status: 201,
-    });
+    return Response.json({ message: "Success", car }, { status: 201 });
   } catch (err) {
-    console.error("エラー:", err);
-
-    const errorMessage =
-      err instanceof Error ? err.message : "予期しないエラーが発生しました";
-    return new Response(
-      JSON.stringify({ message: "Error", error: errorMessage }),
-      {
-        headers: { "Content-Type": "application/json" },
-        status: 500,
-      },
-    );
+    console.log(err);
+    return Response.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
 };
-
-//     return Response.json({ message: "Success", car }, { status: 201 });
-//   } catch (err) {
-//     console.log(err);
-//     return Response.json({ message: "Error", err }, { status: 500 });
-//   } finally {
-//     await prisma.$disconnect();
-//   }
-// };

@@ -1,23 +1,29 @@
 "use client";
 import React from "react";
-import { FeeData } from "../../type/FeeData";
+import { FeeData } from "../../../../type/FeeData";
 
 type Props = {
   feeData: FeeData[];
 };
-const formatDateToYearMonth = (fee_date: Date) => {
+const formatDateToYearMonth = (fee_date: string) => {
+  if (!fee_date) {
+    return "-";
+  }
   const date = new Date(fee_date); // "Dateを年月で表示"
   return date.toLocaleDateString("ja-JP", { year: "numeric", month: "long" });
+};
+
+const formatNumber = (num: string): string => {
+  return new Intl.NumberFormat("ja-JP").format(Number(num));
 };
 
 const FeeTable = ({ feeData }: Props) => {
   const totalFee = feeData.reduce(
     (sum, data) => ({
-      leaseFee: sum.leaseFee + (data.leasefee?.lease_fee || 0),
-      refuelingFee: sum.refuelingFee + (data.refuelingfee?.refueling_fee || 0),
-      etcFee: sum.etcFee + (data.etcfee?.etc_fee || 0),
+      refuelingFee: sum.refuelingFee + (Number(data.refueling_total_fee) || 0),
+      etcFee: sum.etcFee + (Number(data.etc_total_fee) || 0),
     }),
-    { leaseFee: 0, refuelingFee: 0, etcFee: 0 }
+    { refuelingFee: 0, etcFee: 0 }
   );
 
   return (
@@ -41,12 +47,6 @@ const FeeTable = ({ feeData }: Props) => {
               scope="col"
               className="sticky top-0 bg-gray-400 px-6 py-3 w-1/5"
             >
-              リース料金
-            </th>
-            <th
-              scope="col"
-              className="sticky top-0 bg-gray-400 px-6 py-3 w-1/5"
-            >
               ETC料金
             </th>
             <th
@@ -59,19 +59,20 @@ const FeeTable = ({ feeData }: Props) => {
         </thead>
         <tbody>
           {feeData.map((data) => (
-            <tr key={data.id} className="border-b-2 hover:bg-primary-100">
+            <tr
+              key={data.car_number}
+              className="border-b-2 hover:bg-primary-100"
+            >
               <th scope="row" className="px-6 py-2">
-                {formatDateToYearMonth(data.fee_date)}
+                {formatDateToYearMonth(data.year_month)}
               </th>
-              <td className="px-6 py-2">{data.car.label}</td>
+              <td className="px-6 py-2">{data.car_number}</td>
+
               <td className="px-6 py-2">
-                {data.leasefee.lease_fee.toLocaleString()}円
+                {formatNumber(data.refueling_total_fee)}円
               </td>
               <td className="px-6 py-2">
-                {data.refuelingfee.refueling_fee.toLocaleString()}円
-              </td>
-              <td className="px-6 py-2">
-                {data.etcfee.etc_fee.toLocaleString()}円
+                {formatNumber(data.etc_total_fee)}円
               </td>
             </tr>
           ))}
@@ -86,9 +87,7 @@ const FeeTable = ({ feeData }: Props) => {
                 <td className="px-6 py-2 w-2/5 text-right text-primary-700 font-bold">
                   合計
                 </td>
-                <td className="px-6 py-2 w-1/5 font-bold">
-                  {totalFee ? `${totalFee.leaseFee.toLocaleString()}円` : "0円"}
-                </td>
+
                 <td className="px-6 py-2 w-1/5 font-bold">
                   {totalFee
                     ? `${totalFee.refuelingFee.toLocaleString()}円`

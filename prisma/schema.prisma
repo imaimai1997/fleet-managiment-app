@@ -35,7 +35,7 @@ model Car {
   insuarance_data  String
   insuarance_data_name  String
   refueling_card   Refueling_card @relation("CarToRefueling_card",fields: [refueling_cardNumber], references: [number])
-  refueling_cardNumber BigInt 
+  refueling_cardNumber String 
   etc_card   Etc_card @relation("CarToEtc_card",fields: [etc_cardName], references: [name])
   etc_cardName String 
   tire_change   Boolean  @default(false)
@@ -72,7 +72,7 @@ model LeasingCompany {
 
 model Refueling_card {
   id    Int  @id @default(autoincrement())
-  number BigInt @unique
+  number String @unique
   period  DateTime
   car  Car[]  @relation("CarToRefueling_card")
   fee  RefuelingFee[]  @relation("FeeToRefueling_card")
@@ -81,7 +81,7 @@ model Refueling_card {
 
 model Etc_card {
   id    Int  @id @default(autoincrement())
-  number BigInt @unique
+  number String @unique
   name  String @unique
   period  DateTime
   car  Car[]  @relation("CarToEtc_card")
@@ -109,7 +109,7 @@ model Role {
 model RefuelingFee{
   id    Int  @id @default(autoincrement())
   refueling_card   Refueling_card @relation("FeeToRefueling_card",fields: [refueling_card_number], references: [number])
-  refueling_card_number BigInt
+  refueling_card_number String
   fee_date DateTime
   refueling_fee Int 
 }
@@ -117,7 +117,7 @@ model RefuelingFee{
 model EtcFee{
   id    Int  @id @default(autoincrement())
   etc_card   Etc_card @relation("FeeToEtc_card",fields: [etc_card_number], references: [number])
-  etc_card_number BigInt 
+  etc_card_number String
   fee_date DateTime
   etc_fee Int 
 }
