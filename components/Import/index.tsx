@@ -3,14 +3,8 @@ import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import RefuelImport from "./_components/RefuelImport";
 import EtcImport from "./_components/EtcImport";
-import LeaseImport from "./_components/LeaseImport";
-import { CarSelect } from "../../type/CarSelect";
 
-type Props = {
-  carData: CarSelect[];
-};
-
-const Import = ({ carData }: Props) => {
+const Import = () => {
   const [checkedValue, setCheckedValue] = useState<string>("");
 
   return (
@@ -52,7 +46,6 @@ const Import = ({ carData }: Props) => {
             </label>
           </div>
         </form>
-        {checkedValue === "lease" && <LeaseImport carData={carData} />}
         {checkedValue === "etc" && <EtcImport />}
         {checkedValue === "refuel" && <RefuelImport />}
       </div>

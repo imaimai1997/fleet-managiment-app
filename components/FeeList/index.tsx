@@ -1,11 +1,37 @@
 "use client";
+
 import React from "react";
 import { useState } from "react";
 import Select, { SingleValue } from "react-select";
 import { CarSelect } from "../../type/CarSelect";
 
+import FeeTable from "./_components/FeeTable";
+import { FeeData } from "../../type/FeeData";
+// import { FeeData } from "../../type/FeeData";
+
 type Props = {
   carData: CarSelect[];
+};
+
+const fetchFeeList = async (yearMonth: string, carNumber?: string) => {
+  const query = new URLSearchParams();
+  query.set("yearMonth", yearMonth);
+  if (carNumber) query.set("carNumber", encodeURIComponent(carNumber)); // 日本語をエンコード
+
+  const res = await fetch(
+    `http://localhost:3000/api/fee/list?${query.toString()}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Error fetching data: ${res.status}`);
+  }
+
+  const data = await res.json();
+  console.log(data.res);
+  return data.res;
 };
 
 const FeeSearch = ({ carData }: Props) => {
@@ -25,6 +51,8 @@ const FeeSearch = ({ carData }: Props) => {
   const [selectedValue, setSelectedValue] = useState<CarSelect | null>(
     options[0]
   );
+
+  const [feeData, setFeeData] = useState<FeeData[]>([]);
 
   const handlePreviousMonth = () => {
     const [year, month] = currentMonth.split("-").map(Number);
@@ -57,6 +85,21 @@ const FeeSearch = ({ carData }: Props) => {
     const month = String(now.getMonth() + 1).padStart(2, "0");
     setCurrentMonth(`${year}-${month}`);
     setSelectedValue(options[0]);
+  };
+
+  const handleSerchFee = async () => {
+    try {
+      if (selectedValue) {
+        const data = await fetchFeeList(currentMonth, selectedValue.label);
+        setFeeData(data);
+        console.log(feeData);
+        // console.log(options);
+        // console.log(currentMonth, selectedValue.label);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      // toast.error("検索がうまくいきませんでした。", { id: "1" });
+    }
   };
 
   return (
@@ -95,10 +138,11 @@ const FeeSearch = ({ carData }: Props) => {
         <div className="flex justify-end p-4 [&>button]:border [&>button]:border-2 [&>button]:border-black [&>button]:px-2 [&>button]:mx-4 [&>button]:rounded">
           <button onClick={handlePreviousMonth}>前月</button>
           <button onClick={handleNextMonth}>翌月</button>
-          <button>検索</button>
+          <button onClick={handleSerchFee}>検索</button>
           <button onClick={handleClearSearch}>クリア</button>
         </div>
       </div>
+      {feeData && <FeeTable feeData={feeData} />}
     </>
   );
 };
