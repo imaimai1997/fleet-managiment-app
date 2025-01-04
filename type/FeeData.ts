@@ -1,17 +1,9 @@
 export type FeeData ={
-  id: number;
-    fee_date: Date;
-    car: {
-      label: string;
-    };
-    leasefee:{
-      lease_fee: number;
-    };
-    refuelingfee:{
-      refueling_fee: number;
-    };
-    etcfee:{
-      etc_fee: number;
-    }
+  
+    year_month: string,
+    car_number: string,
+    etc_total_fee: string,
+    refueling_total_fee: string
+
   
  }
