@@ -20,7 +20,7 @@ model Car {
   carTypeName String 
   employee   Employee @relation("CarToEmployees",fields: [employeeName], references: [name])
   employeeName String 
-  place   Place? @relation("CarToPlace",fields: [placeName], references: [name])
+  place   Place @relation("CarToPlace",fields: [placeName], references: [name])
   placeName String 
   leasing   LeasingCompany @relation("CarToLeasingCompany",fields: [leasingName], references: [name])
   leasingName String 
@@ -29,17 +29,17 @@ model Car {
   leasing_finish_date  DateTime
   harf_year_inspection  String
   inspection_expires_date  DateTime
-  inspection_data  String
-  inspection_data_name  String
+  inspection_data  String?
+  inspection_data_name  String?
   insuarance_expires_date  DateTime
-  insuarance_data  String
-  insuarance_data_name  String
-  refueling_card   Refueling_card @relation("CarToRefueling_card",fields: [refueling_cardNumber], references: [number])
-  refueling_cardNumber String 
-  etc_card   Etc_card @relation("CarToEtc_card",fields: [etc_cardName], references: [name])
-  etc_cardName String 
-  tire_change   Boolean  @default(false)
-  notes String
+  insuarance_data  String?
+  insuarance_data_name  String?
+  refueling_card   Refueling_card? @relation("CarToRefueling_card",fields: [refueling_cardNumber], references: [number])
+  refueling_cardNumber String? 
+  etc_card   Etc_card? @relation("CarToEtc_card",fields: [etc_cardName], references: [name])
+  etc_cardName String? 
+  tire_change   Boolean?  @default(false)
+  notes String?
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now())
   leaseFee  LeaseFee[]  @relation("FeeToLease")

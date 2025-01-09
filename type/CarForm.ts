@@ -2,6 +2,7 @@ export type CarForm ={
   label: string | undefined;
   carTypeName: string| undefined;
   employeeName: string| undefined;
+  employeeEmail: string| undefined;
   placeName: string| undefined;
   leasingName: string| undefined;
   first_registration_date: string| undefined;
@@ -15,7 +16,10 @@ export type CarForm ={
   insuarance_data: string| undefined;
   insuarance_data_name: string| undefined;
   refueling_cardNumber: string| undefined;
+  refueling_cardPeriod: string|Date| undefined;
   etc_cardName: string|number| undefined;
+  etc_cardNumber: string|number| undefined;
+  etc_cardPeriod: string|Date| undefined;
   tire_change:string| null;
   notes: string| undefined;
 }
