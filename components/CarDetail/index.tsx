@@ -17,43 +17,58 @@ type Props = {
 
 //Selectタグ選択肢
 const fetchCarType = async () => {
-  const res = await fetch("http://localhost:3000/api/select/cartype", {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype`,
+    {
+      cache: "no-store",
+    }
+  );
   const data = await res.json();
   return data.cartype;
 };
 const fetchEmployee = async () => {
-  const res = await fetch("http://localhost:3000/api/select/employee", {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/select/employee`,
+    {
+      cache: "no-store",
+    }
+  );
   const data = await res.json();
   return data.employees;
 };
 
 const fetchPlace = async () => {
-  const res = await fetch("http://localhost:3000/api/select/place", {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/select/place`,
+    {
+      cache: "no-store",
+    }
+  );
   const data = await res.json();
   return data.places;
 };
 const fetchCompany = async () => {
-  const res = await fetch("http://localhost:3000/api/select/company", {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/select/company`,
+    {
+      cache: "no-store",
+    }
+  );
   const data = await res.json();
   return data.leasingCompanyes;
 };
 const fetchRefueling = async () => {
-  const res = await fetch("http://localhost:3000/api/select/refueling", {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/select/refueling`,
+    {
+      cache: "no-store",
+    }
+  );
   const data = await res.json();
   return data.refueling_cards;
 };
 const fetchEtc = async () => {
-  const res = await fetch("http://localhost:3000/api/select/etc", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/select/etc`, {
     cache: "no-store",
   });
   const data = await res.json();
@@ -155,6 +170,7 @@ const CarDetail = ({ data, id }: Props) => {
 
   const handleCreateCar = async () => {
     console.log("作成中");
+
     toast.loading("waiting...", { id: "1" });
     try {
       const inspectionFilePath =
@@ -162,7 +178,7 @@ const CarDetail = ({ data, id }: Props) => {
       const insuaranceFilePath =
         insuaranceUploadFile && (await uploadPDF(insuaranceUploadFile));
 
-      const res = await fetch("http://localhost:3000/api/car", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/car`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -244,12 +260,15 @@ const CarDetail = ({ data, id }: Props) => {
       if (inspectionFileURL) {
         await deletePDF(inspectionFileURL);
       }
-      const res = await fetch(`http://localhost:3000/api/car/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/car/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       toast.success("車両情報が削除されました", { id: "1" });
       router.push("/");
       router.refresh();
@@ -274,34 +293,37 @@ const CarDetail = ({ data, id }: Props) => {
         insuaranceUploadFile &&
         replacePDF(insuaranceFileURL, insuaranceUploadFile);
 
-      const res = await fetch(`http://localhost:3000/api/car/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-          label: watch("label"),
-          carTypeName: watch("carTypeName"),
-          employeeName: watch("employeeName"),
-          placeName: watch("placeName"),
-          leasingName: watch("leasingName"),
-          first_registration_date: watch("first_registration_date"),
-          leasing_start_date: watch("leasing_start_date"),
-          leasing_finish_date: watch("leasing_finish_date"),
-          harf_year_inspection: watch("harf_year_inspection"),
-          inspection_expires_date: watch("inspection_expires_date"),
-          inspection_data: inspectionFilePath,
-          inspection_data_name: inspectionFileName,
-          insuarance_expires_date: watch("insuarance_expires_date"),
-          insuarance_data: insuaranceFilePath,
-          insuarance_data_name: insuaranceFileName,
-          refueling_cardNumber: watch("refueling_cardNumber"),
-          etc_cardName: watch("etc_cardName"),
-          tire_change: watch("tire_change"),
-          notes: watch("notes"),
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/car/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            label: watch("label"),
+            carTypeName: watch("carTypeName"),
+            employeeName: watch("employeeName"),
+            placeName: watch("placeName"),
+            leasingName: watch("leasingName"),
+            first_registration_date: watch("first_registration_date"),
+            leasing_start_date: watch("leasing_start_date"),
+            leasing_finish_date: watch("leasing_finish_date"),
+            harf_year_inspection: watch("harf_year_inspection"),
+            inspection_expires_date: watch("inspection_expires_date"),
+            inspection_data: inspectionFilePath,
+            inspection_data_name: inspectionFileName,
+            insuarance_expires_date: watch("insuarance_expires_date"),
+            insuarance_data: insuaranceFilePath,
+            insuarance_data_name: insuaranceFileName,
+            refueling_cardNumber: watch("refueling_cardNumber"),
+            etc_cardName: watch("etc_cardName"),
+            tire_change: watch("tire_change"),
+            notes: watch("notes"),
+          }),
+        }
+      );
       if (!res.ok) throw new Error("Failed to update car data");
       toast.success("車両情報が編集されました", { id: "1" });
       router.push("/");
@@ -374,8 +396,9 @@ const CarDetail = ({ data, id }: Props) => {
   return (
     <>
       <Toaster />
-      <div className="max-w-5xl  mx-auto my-20">
-        <form onSubmit={handleSubmit(handleCreateCar, onError)}>
+      {/* <div className="max-w-5xl  mx-auto my-20"> */}
+      <form onSubmit={handleSubmit(handleCreateCar, onError)}>
+        <div className="max-w-5xl  mx-auto my-20">
           <div className="w-full grid grid-cols-2 gap-y-4 gap-x-12 *:text-xl [&_input]:w-60 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2  [&>div]:max-w-lg [&>div]:flex [&>div]:justify-between [&>div]:items-center">
             <div>
               <label>車両番号 *</label>
@@ -670,36 +693,37 @@ const CarDetail = ({ data, id }: Props) => {
             <div>
               <textarea
                 {...register("notes", {
-                  required: "備考欄を入力してください。",
+                  // required: "備考欄を入力してください。",
                 })}
                 className="h-24 w-full border-2 border-primary-700 p-2"
               />
             </div>
           </div>
+        </div>
 
-          {!data && (
-            <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
-              <div className="flex justify-end max-w-5xl mx-auto">
-                <PrimaryButton name="追加" />
-              </div>
-            </div>
-          )}
-        </form>
-        {data && (
+        {!data && (
           <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
-            <div className="flex justify-between max-w-5xl mx-auto">
-              <button
-                onClick={handleDeleteCar}
-                className="flex items-center py-2 text-slate-500"
-              >
-                削除
-                <FaRegTrashAlt />
-              </button>
-              <PrimaryButton name="保存" onClick={handleUpdateCar} />
+            <div className="flex justify-end max-w-5xl mx-auto">
+              <PrimaryButton name="追加" />
             </div>
           </div>
         )}
-      </div>
+      </form>
+      {data && (
+        <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
+          <div className="flex justify-between max-w-5xl mx-auto">
+            <button
+              onClick={handleDeleteCar}
+              className="flex items-center py-2 text-slate-500"
+            >
+              削除
+              <FaRegTrashAlt />
+            </button>
+            <PrimaryButton name="保存" onClick={handleUpdateCar} />
+          </div>
+        </div>
+      )}
+      {/* </div> */}
     </>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 import UserDetail from "../../../../../../components/UserDetail";
 
 const fetchUserById = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/user/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`, {
     cache: "no-store",
   });
 

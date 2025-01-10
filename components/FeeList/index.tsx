@@ -19,7 +19,7 @@ const fetchFeeList = async (yearMonth: string, carNumber?: string) => {
   if (carNumber) query.set("carNumber", encodeURIComponent(carNumber)); // 日本語をエンコード
 
   const res = await fetch(
-    `http://localhost:3000/api/fee/list?${query.toString()}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/fee/list?${query.toString()}`,
     {
       cache: "no-store",
     }
