@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { main } from "../route";
 import { NextResponse } from "next/server";
+import { main } from "../route";
 
 const prisma = new PrismaClient();
 
@@ -43,12 +43,8 @@ export const DELETE = async (req: Request) => {
     );
   } catch (err) {
     console.log(err);
-    return (
-      NextResponse.json({ message: "Error", err }),
-      {
-        status: 500,
-      }
-    );
+    return  NextResponse.json({ message: "Error", err }, { status: 500 });
+    
   } finally {
     await prisma.$disconnect();
   }
