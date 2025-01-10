@@ -18,16 +18,6 @@ const Import = () => {
               <input
                 type="radio"
                 name="format"
-                value="lease"
-                checked={checkedValue === "lease"}
-                onChange={(e) => setCheckedValue(e.target.value)}
-              />
-              リース料金
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="format"
                 value="etc"
                 checked={checkedValue === "etc"}
                 onChange={(e) => setCheckedValue(e.target.value)}
