@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import { NextResponse } from "next/server";
+
 
 const prisma = new PrismaClient();
 
@@ -29,10 +31,10 @@ export const POST = async (req: Request) => {
         etc_fee: item.etcFee,
       })),
     });
-    return Response.json({ message: "Success", etcFees }, { status: 201 });
+    return NextResponse.json({ message: "Success", etcFees }, { status: 201 });
   } catch (err) {
     console.log(err);
-    return Response.json({ message: "Error", err }, { status: 500 });
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }

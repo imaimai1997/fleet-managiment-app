@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import { NextResponse } from "next/server";
+
 
 const prisma = new PrismaClient();
 
@@ -19,10 +21,10 @@ export const GET = async () => {
         role: true,
       },
     });
-    return Response.json({ message: "Success", users }, { status: 200 });
+    return NextResponse.json({ message: "Success", users }, { status: 200 });
   } catch (err) {
     console.log(err);
-    return Response.json({ message: "Error", err }, { status: 500 });
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
@@ -42,10 +44,10 @@ export const POST = async (req: Request) => {
         email,
       },
     });
-    return Response.json({ message: "Success", user }, { status: 201 });
+    return NextResponse.json({ message: "Success", user }, { status: 201 });
   } catch (err) {
     console.log(err);
-    return Response.json({ message: "Error", err }, { status: 500 });
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
