@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import { RxUpload } from "react-icons/rx";
-import { CiImport } from "react-icons/ci";
+// import { RxUpload } from "react-icons/rx";
+// import { CiImport } from "react-icons/ci";
 import PrimaryButton from "../../../PrimaryButton";
 import Papa from "papaparse";
 import toast from "react-hot-toast";
@@ -74,13 +74,16 @@ const EtcImport = () => {
       return;
     }
     try {
-      const res = await fetch("http://localhost:3000/api/fee/etc", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(parsedData),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/fee/etc`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(parsedData),
+        }
+      );
 
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);
@@ -93,13 +96,13 @@ const EtcImport = () => {
   };
 
   const fileRef = useRef<HTMLInputElement>(null);
-  const showFolder = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    ref: React.RefObject<HTMLInputElement>
-  ) => {
-    e.preventDefault();
-    ref.current?.click();
-  };
+  // const showFolder = (
+  //   e: React.MouseEvent<HTMLButtonElement>,
+  //   ref: React.RefObject<HTMLInputElement>
+  // ) => {
+  //   e.preventDefault();
+  //   ref.current?.click();
+  // };
 
   const handleFileParser = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -118,12 +121,13 @@ const EtcImport = () => {
   };
   return (
     <>
-      <div className="flex items-center mt-6 text-primary-700 ">
-        <p>テンプレートをダウンロード</p>
-        <RxUpload />
-      </div>
-
-      <div className="w-full h-40 flex flex-col justify-center items-center bg-gray-200 border-2 border-dotted border-primary-700">
+      <input
+        className="mt-6"
+        type="file"
+        ref={fileRef}
+        onChange={handleFileParser}
+      />
+      {/* <div className="w-full h-40 flex flex-col justify-center items-center bg-gray-200 border-2 border-dotted border-primary-700">
         <input
           type="file"
           ref={fileRef}
@@ -134,10 +138,60 @@ const EtcImport = () => {
           ここにファイルをドラッグ＆ドロップ　またはクリックしてファイルを選択
         </button>
         <CiImport size={36} />
-      </div>
+      </div> */}
       <div className="my-8">
         <PrimaryButton name="ETC料金取込" onClick={handleImport} />
       </div>
+      <div className="flex items-center">
+        <p>csv入力ルール</p>
+        {/* <p className="text-primary-700 pl-2">テンプレートをダウンロード</p>
+        <RxUpload /> 
+        */}
+      </div>
+      <table className="text-left border-2">
+        <thead className="[&_th]:border-2 border-white">
+          <tr>
+            <th scope="col" className=" bg-gray-400 px-6 py-3">
+              項目名
+            </th>
+            <th scope="col" className=" bg-gray-400 px-6 py-3">
+              説明
+            </th>
+            <th scope="col" className=" bg-gray-400 px-6 py-3">
+              必須有無
+            </th>
+            <th scope="col" className=" bg-gray-400 px-6 py-3">
+              入力ルール
+            </th>
+          </tr>
+        </thead>
+        <tbody className="[&_th]:border-2 [&_td]:border-2 [&_td]:px-6 [&_td]:py-2">
+          <tr>
+            <th scope="row" className="px-6 py-2 border-2">
+              ご利用日
+            </th>
+            <td>ETCカードを利用した日付</td>
+            <td>必須</td>
+            <td>日付形式。20XX/XX/XX</td>
+          </tr>
+          <tr>
+            <th scope="row" className="px-6 py-2">
+              カード番号
+            </th>
+            <td>使用したETCカード番号</td>
+            <td>必須</td>
+            <td>半角数字。登録されている番号しか取り込めません</td>
+          </tr>
+          <tr>
+            <th scope="row" className="px-6 py-2">
+              ご利用金額(円)
+            </th>
+            <td>利用金額</td>
+            <td>必須</td>
+            <td>半角数字</td>
+          </tr>
+        </tbody>
+      </table>
     </>
   );
 };
