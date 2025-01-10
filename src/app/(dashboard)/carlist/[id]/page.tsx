@@ -2,7 +2,7 @@ import React from "react";
 import CarDetail from "../../../../../components/CarDetail";
 
 const fetchCarById = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/car/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/car/${id}`, {
     cache: "no-store",
   });
 

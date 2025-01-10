@@ -36,7 +36,7 @@ const UserDetail = ({ data, id }: Props) => {
 
   const handleCreateUser = async (userId: string) => {
     try {
-      const res = await fetch("http://localhost:3000/api/user", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,12 +105,15 @@ const UserDetail = ({ data, id }: Props) => {
 
   const handleDeleteUser = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/user/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       toast.success("ユーザーを削除しました", { id: "1" });
       router.push("/userlist");
       router.refresh();
@@ -123,18 +126,21 @@ const UserDetail = ({ data, id }: Props) => {
 
   const handleUpdateUser = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/user/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-          roleName: watch("userRole"),
-          name: watch("userName"),
-          email: watch("email"),
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            roleName: watch("userRole"),
+            name: watch("userName"),
+            email: watch("email"),
+          }),
+        }
+      );
       toast.success("ユーザー情報を編集しました", { id: "1" });
       router.push("/userlist");
       router.refresh();
@@ -148,68 +154,67 @@ const UserDetail = ({ data, id }: Props) => {
   return (
     <>
       <Toaster />
-      <div className="w-3/6 mx-auto text-right">
-        <form
-          onSubmit={handleSubmit(handleSignUp, onError)}
-          className="p-6 flex flex-col border-2 border-black rounded *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&_div]:flex [&_div]:justify-between [&_div]:items-center "
-        >
-          <div className="mx-4 my-2">
-            <label>ユーザー名</label>
-            <input
-              {...register("userName", {
-                required: "ユーザー名を入力してください。",
-              })}
-              type="text"
-              required
-            />
-          </div>
-          <div className="mx-4 my-2">
-            <label>メールアドレス</label>
-            <input
-              {...register("email", {
-                required: "メールアドレスを入力してください。",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "無効なメールアドレス形式です。",
-                },
-              })}
-              type="email"
-              required
-            />
-          </div>
-          {!data && (
+      <div className="w-3/6 mx-auto text-right ">
+        <form onSubmit={handleSubmit(handleSignUp, onError)}>
+          <div className="p-6 flex flex-col rounded *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&_div]:flex [&_div]:justify-between [&_div]:items-center border-2 border-black">
             <div className="mx-4 my-2">
-              <label>パスワード</label>
+              <label>ユーザー名</label>
               <input
-                {...register("password", {
-                  required: "passwordを入力してください",
-                  minLength: {
-                    value: 6,
-                    message: "パスワードは6文字以上入力してください",
-                  },
+                {...register("userName", {
+                  required: "ユーザー名を入力してください。",
                 })}
-                type="password"
+                type="text"
+                required
               />
             </div>
-          )}
+            <div className="mx-4 my-2">
+              <label>メールアドレス</label>
+              <input
+                {...register("email", {
+                  required: "メールアドレスを入力してください。",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "無効なメールアドレス形式です。",
+                  },
+                })}
+                type="email"
+                required
+              />
+            </div>
+            {!data && (
+              <div className="mx-4 my-2">
+                <label>パスワード</label>
+                <input
+                  {...register("password", {
+                    required: "passwordを入力してください",
+                    minLength: {
+                      value: 6,
+                      message: "パスワードは6文字以上入力してください",
+                    },
+                  })}
+                  type="password"
+                />
+              </div>
+            )}
 
-          <div className="mx-4 my-2">
-            <label>権限</label>
-            <select
-              {...register("userRole", {
-                required: "権限を選択してください。",
-              })}
-              className="w-80 border-2 border-primary-700 p-2"
-            >
-              <option value="" disabled>
-                選択してください
-              </option>
-              <option value="管理者">管理者</option>
-              <option value="一般">一般</option>
-            </select>
+            <div className="mx-4 my-2">
+              <label>権限</label>
+              <select
+                {...register("userRole", {
+                  required: "権限を選択してください。",
+                })}
+                className="w-80 border-2 border-primary-700 p-2"
+              >
+                <option value="" disabled>
+                  選択してください
+                </option>
+                <option value="管理者">管理者</option>
+                <option value="一般">一般</option>
+              </select>
+            </div>
           </div>
           {!data && (
-            <div className="m-6 ">
+            <div className="m-6 bg-orange">
               <PrimaryButton name={"追加"} type="submit" />
             </div>
           )}
