@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import { main } from "../route";
-import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
@@ -19,10 +18,10 @@ export const GET = async (req: Request) => {
         refueling_card: true,
       },
     });
-    return NextResponse.json({ message: "Success", car }, { status: 200 });
+    return Response.json({ message: "Success", car }, { status: 200 });
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ message: "Error", err }, { status: 500 });
+    return Response.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
@@ -35,7 +34,7 @@ export const DELETE = async (req: Request) => {
     const car = await prisma.car.delete({
       where: { id: id },
     });
-    return NextResponse.json(
+    return Response.json(
       { message: "Success", car },
       {
         status: 200,
@@ -44,7 +43,7 @@ export const DELETE = async (req: Request) => {
   } catch (err) {
     console.log(err);
     return (
-      NextResponse.json({ message: "Error", err }),
+      Response.json({ message: "Error", err }),
       {
         status: 500,
       }
@@ -105,10 +104,10 @@ export const PUT = async (req: Request) => {
       where: { id: id },
     });
 
-    return NextResponse.json({ message: "Success", car }, { status: 201 });
+    return Response.json({ message: "Success", car }, { status: 201 });
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ message: "Error", err }, { status: 500 });
+    return Response.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
