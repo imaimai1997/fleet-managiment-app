@@ -17,10 +17,14 @@ export const GET = async () => {
   try {
     await main();
     const employees = await prisma.employee.findMany({});
+<<<<<<< HEAD
     return NextResponse.json(
       { message: "Success", employees },
       { status: 200 },
     );
+=======
+    return NextResponse.json({ message: "Success", employees }, { status: 200 });
+>>>>>>> 3cc0e96a95b5a4c36667d44b2ec093a3f7882958
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
