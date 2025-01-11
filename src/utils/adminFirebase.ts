@@ -1,5 +1,5 @@
 const serviceAccount = {
-  project_id: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  project_id: "fleet-managiment",
   private_key_id: process.env.NEXT_PUBLIC_FIREBASE_PRIVATE_KEY_ID,
   privateKey: process.env.NEXT_PUBLIC_FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
   client_email: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_EMAIL,
@@ -9,8 +9,10 @@ const serviceAccount = {
   auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
   client_x509_cert_url: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_X509_CERT_URL,
   universe_domain: "googleapis.com",
+  
 };
 import admin from "firebase-admin";
+
 
 if (!admin.apps.length) {
   admin.initializeApp({
