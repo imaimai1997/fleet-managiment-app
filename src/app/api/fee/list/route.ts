@@ -92,12 +92,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ success: true, res }, { status: 200 });
   } catch (err) {
     console.error("Error fetching aggregated data:", err);
-    return (
-      NextResponse.json({ message: "Error", err }),
-      {
-        status: 500,
-      }
-    );
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }

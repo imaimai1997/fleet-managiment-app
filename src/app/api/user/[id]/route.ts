@@ -1,9 +1,16 @@
 import { PrismaClient } from "@prisma/client";
-import { main } from "../route";
 import { NextResponse } from "next/server";
 import { deleteUser, updateUser } from "@/utils/adminFirebase";
 
 const prisma = new PrismaClient();
+async function main() {
+  try {
+    await prisma.$connect();
+  } catch (err) {
+    console.error("DB接続エラー:", err);
+    return new Error("DB接続に失敗しました");
+  }
+}
 
 export const GET = async (req: Request) => {
   const id = req.url.split("/user/")[1];
