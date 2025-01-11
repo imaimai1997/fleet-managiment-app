@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import PrimaryButton from "../../../PrimaryButton";
 import Papa from "papaparse";
 import toast from "react-hot-toast";
+import dayjs from "dayjs";
 
 type CsvRow = {
   usageDate: string;
@@ -33,7 +34,7 @@ const fileParser = (file: File): Promise<CsvRow[]> => {
             const cardNumber = row["カード番号"];
             const etcFee = row["ご利用金額(円)"];
 
-            const yearMonth = new Date(usageDate).toISOString().slice(0, 7);
+            const yearMonth = dayjs(usageDate).format("YYYY-MM");
             const key = `${yearMonth}-${cardNumber}`;
 
             if (sumData[key]) {
@@ -46,12 +47,7 @@ const fileParser = (file: File): Promise<CsvRow[]> => {
               };
             }
           });
-
           resolve(Object.values(sumData));
-          // resolve(results?.data);
-          console.log(results?.data);
-          console.log(Object.values(sumData));
-          // return data;
         } catch (error) {
           reject(error); // エラーを reject
         }
@@ -67,6 +63,7 @@ const EtcImport = () => {
   const [parsedData, setParsedData] = useState<CsvRow[]>([]);
   const handleImport = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    toast.loading("waiting...", { id: "1" });
     if (parsedData.length === 0) {
       toast.error("データがありません。ファイルを選択してください", {
         id: "1",
