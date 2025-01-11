@@ -16,7 +16,7 @@ const UserSetting = ({ data }: Props) => {
           <label>ユーザー名</label>
           <input
             type="text"
-            value={data?.user_name || ""}
+            value={data?.name || ""}
             required
             onChange={() => {}}
           />

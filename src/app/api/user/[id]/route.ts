@@ -1,9 +1,16 @@
 import { PrismaClient } from "@prisma/client";
-import { main } from "../route";
 import { NextResponse } from "next/server";
 import { deleteUser, updateUser } from "@/utils/adminFirebase";
 
 const prisma = new PrismaClient();
+async function main() {
+  try {
+    await prisma.$connect();
+  } catch (err) {
+    console.error("DB接続エラー:", err);
+    return new Error("DB接続に失敗しました");
+  }
+}
 
 export const GET = async (req: Request) => {
   const id = req.url.split("/user/")[1];
@@ -15,20 +22,10 @@ export const GET = async (req: Request) => {
         role: true,
       },
     });
-    return NextResponse.json(
-      { message: "Success", user },
-      {
-        status: 200,
-      },
-    );
+    return NextResponse.json({ message: "Success", user },{status: 200});
   } catch (err) {
     console.log(err);
-    return (
-      NextResponse.json({ message: "Error", err }),
-      {
-        status: 500,
-      }
-    );
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
@@ -44,20 +41,10 @@ export const DELETE = async (req: Request) => {
       where: { id: id },
     });
     await deleteUser(id);
-    return NextResponse.json(
-      { message: "Success", user },
-      {
-        status: 200,
-      },
-    );
+    return NextResponse.json({ message: "Success", user },{status: 200});
   } catch (err) {
     console.log(err);
-    return (
-      NextResponse.json({ message: "Error", err }),
-      {
-        status: 500,
-      }
-    );
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
@@ -79,20 +66,10 @@ export const PUT = async (req: Request) => {
       where: { id: id },
     });
     await updateUser(id, email);
-    return NextResponse.json(
-      { message: "Success", user },
-      {
-        status: 200,
-      },
-    );
+    return NextResponse.json({ message: "Success", user },{status: 200});
   } catch (err) {
     console.log(err);
-    return (
-      NextResponse.json({ message: "Error", err }),
-      {
-        status: 500,
-      }
-    );
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
