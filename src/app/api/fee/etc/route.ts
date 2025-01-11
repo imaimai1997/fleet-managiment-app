@@ -25,7 +25,7 @@ export const POST = async (req: Request) => {
     await main();
     const etcFees = await prisma.etcFee.createMany({
       data: body.map((item: CsvRow) => ({
-        etc_card_number: item.cardNumber,
+        etc_card_number: String(item.cardNumber),
         fee_date: new Date(`${item.usageDate}-01`),
         etc_fee: item.etcFee,
       })),
