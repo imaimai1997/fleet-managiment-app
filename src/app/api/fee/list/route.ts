@@ -10,7 +10,7 @@ type ConvertibleData =
   | ConvertibleData[]
   | { [key: string]: ConvertibleData };
 
-export async function main() {
+async function main() {
   try {
     await prisma.$connect();
   } catch (err) {

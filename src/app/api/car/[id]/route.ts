@@ -1,8 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { main } from "../route";
+
 
 const prisma = new PrismaClient();
+async function main() {
+  try {
+    await prisma.$connect();
+  } catch (err) {
+    console.error("DB接続エラー:", err);
+    return new Error("DB接続に失敗しました");
+  }
+}
 
 export const GET = async (req: Request) => {
   const id = parseInt(req.url.split("/car/")[1]);
@@ -43,8 +51,7 @@ export const DELETE = async (req: Request) => {
     );
   } catch (err) {
     console.log(err);
-    return  NextResponse.json({ message: "Error", err }, { status: 500 });
-    
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }

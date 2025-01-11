@@ -1,9 +1,15 @@
 import { PrismaClient } from "@prisma/client";
-import { main } from "@/utils/prisma/prismaMain";
 import { NextResponse } from "next/server";
 
-
 const prisma = new PrismaClient();
+async function main() {
+  try {
+    await prisma.$connect();
+  } catch (err) {
+    console.error("DB接続エラー:", err);
+    return new Error("DB接続に失敗しました");
+  }
+}
 
 //給油カード取得
 export const GET = async () => {
