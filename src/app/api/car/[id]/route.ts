@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-
 const prisma = new PrismaClient();
 async function main() {
   try {
@@ -43,7 +42,7 @@ export const DELETE = async (req: Request) => {
     const car = await prisma.car.delete({
       where: { id: id },
     });
-    return NextResponse.json({ message: "Success", car },{status: 200,});
+    return NextResponse.json({ message: "Success", car }, { status: 200 });
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
