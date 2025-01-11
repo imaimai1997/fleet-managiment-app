@@ -59,12 +59,7 @@ export const DELETE = async (req: Request) => {
     );
   } catch (err) {
     console.log(err);
-    return (
-      NextResponse.json({ message: "Error", err }),
-      {
-        status: 500,
-      }
-    );
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }
