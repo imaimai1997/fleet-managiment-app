@@ -22,12 +22,7 @@ export const GET = async (req: Request) => {
         role: true,
       },
     });
-    return NextResponse.json(
-      { message: "Success", user },
-      {
-        status: 200,
-      },
-    );
+    return NextResponse.json({ message: "Success", user },{status: 200});
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
@@ -46,12 +41,7 @@ export const DELETE = async (req: Request) => {
       where: { id: id },
     });
     await deleteUser(id);
-    return NextResponse.json(
-      { message: "Success", user },
-      {
-        status: 200,
-      },
-    );
+    return NextResponse.json({ message: "Success", user },{status: 200});
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
@@ -76,12 +66,7 @@ export const PUT = async (req: Request) => {
       where: { id: id },
     });
     await updateUser(id, email);
-    return NextResponse.json(
-      { message: "Success", user },
-      {
-        status: 200,
-      },
-    );
+    return NextResponse.json({ message: "Success", user },{status: 200});
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
