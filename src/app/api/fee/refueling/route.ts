@@ -25,7 +25,7 @@ export const POST = async (req: Request) => {
     await main();
     const refuelingFees = await prisma.refuelingFee.createMany({
       data: body.map((item: CsvRow) => ({
-        refueling_card_number: item["カード番号"],
+        refueling_card_number: String(item["カード番号"]),
         fee_date: new Date(`${item["利用日変換"]}-01`),
         refueling_fee: item["合計"],
       })),
@@ -35,6 +35,7 @@ export const POST = async (req: Request) => {
       { status: 201 },
     );
   } catch (err) {
+    console.log(body);
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {

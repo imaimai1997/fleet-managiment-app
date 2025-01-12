@@ -13,6 +13,7 @@
     "@prisma/client": "^6.0.1",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.10",
+    "dayjs": "^1.11.13",
     "firebase": "^11.0.2",
     "firebase-admin": "^13.0.2",
     "next": "^15.0.3",
