@@ -8,7 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useForm, FieldErrors } from "react-hook-form";
 import { CarForm } from "../../type/CarForm";
 import { Select } from "../../type/Select";
-import { deletePDF, replacePDF, uploadPDF } from "@/utils/supabase/uploadPDF";
+import { deletePDF, uploadPDF } from "@/utils/supabase/uploadPDF";
 
 type Props = {
   data?: CarData;
@@ -173,10 +173,12 @@ const CarDetail = ({ data, id }: Props) => {
 
     toast.loading("waiting...", { id: "1" });
     try {
-      const inspectionFilePath =
-        inspectionUploadFile && (await uploadPDF(inspectionUploadFile));
-      const insuaranceFilePath =
-        insuaranceUploadFile && (await uploadPDF(insuaranceUploadFile));
+      const inspectionFilePath = inspectionUploadFile
+        ? await uploadPDF(inspectionUploadFile)
+        : null;
+      const insuaranceFilePath = insuaranceUploadFile
+        ? await uploadPDF(insuaranceUploadFile)
+        : null;
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/car`, {
         method: "POST",
@@ -249,6 +251,12 @@ const CarDetail = ({ data, id }: Props) => {
     if (errors.harf_year_inspection?.message) {
       toast.error(errors.harf_year_inspection.message);
     }
+    if (errors.inspection_expires_date?.message) {
+      toast.error(errors.inspection_expires_date.message);
+    }
+    if (errors.insuarance_expires_date?.message) {
+      toast.error(errors.insuarance_expires_date.message);
+    }
   };
 
   const handleDeleteCar = async () => {
@@ -281,17 +289,13 @@ const CarDetail = ({ data, id }: Props) => {
 
   const handleUpdateCar = async () => {
     toast.loading("waiting...", { id: "1" });
-
     try {
-      const inspectionFilePath =
-        inspectionFileURL &&
-        inspectionUploadFile &&
-        (await replacePDF(inspectionFileURL, inspectionUploadFile));
-
-      const insuaranceFilePath =
-        insuaranceFileURL &&
-        insuaranceUploadFile &&
-        replacePDF(insuaranceFileURL, insuaranceUploadFile);
+      const inspectionFilePath = inspectionUploadFile
+        ? await uploadPDF(inspectionUploadFile)
+        : null;
+      const insuaranceFilePath = insuaranceUploadFile
+        ? await uploadPDF(insuaranceUploadFile)
+        : null;
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/car/${id}`,
