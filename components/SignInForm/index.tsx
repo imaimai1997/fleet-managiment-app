@@ -1,9 +1,11 @@
 "use client";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { useForm, FieldErrors } from "react-hook-form";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../src/utils/firebase";
 import { FirebaseError } from "firebase/app";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type LoginForm = {
   email: string;
@@ -11,15 +13,12 @@ type LoginForm = {
 };
 
 const SignInForm = () => {
-  const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginForm>();
+  const { register, handleSubmit } = useForm<LoginForm>();
 
   const handleSignin = async (data: LoginForm) => {
+    toast.loading("waiting...", { id: "1" });
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -27,41 +26,52 @@ const SignInForm = () => {
         data.password
       );
       const user = userCredential.user;
-      setErrorMessage("");
+      console.log("userCredential:", user);
 
-      console.log("ログイン成功:", user);
+      toast.success("ログインしました", { id: "1" });
+      router.push("/");
+      router.refresh();
     } catch (error) {
       if (error instanceof FirebaseError) {
         console.error("Firebase Error Code:", error.code);
         console.error("Firebase Error Message:", error.message);
         switch (error.code) {
           case "auth/user-not-found":
-            setErrorMessage("メールアドレスが登録されていません。");
+            toast.error("メールアドレスが登録されていません。", { id: "1" });
             break;
           case "auth/missing-password":
-            setErrorMessage("パスワードが間違っています。");
+            toast.error("パスワードが間違っています。", { id: "1" });
             break;
           case "auth/invalid-email":
-            setErrorMessage("無効なメールアドレスです。");
+            toast.error("無効なメールアドレスです。", { id: "1" });
             break;
           case "auth/invalid-credential":
-            setErrorMessage("パスワードがメールが間違えています");
+            toast.error("パスワードがメールが間違えています", { id: "1" });
             break;
           default:
-            setErrorMessage("ログイン中にエラーが発生しました。");
+            toast.error("ログイン中にエラーが発生しました。", { id: "1" });
             console.error(error);
         }
       }
     }
   };
+  const onError = (errors: FieldErrors<LoginForm>) => {
+    if (errors.email?.message) {
+      toast.error(errors.email.message);
+    }
+    if (errors.password?.message) {
+      toast.error(errors.password.message);
+    }
+  };
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center h-[calc(100vh-112px)] w-screen">
-        <h2 className="text-2xl font-bold mb-6">Sign In</h2>
+      <Toaster />
+      <div className="flex flex-col items-center justify-center h-screen w-screen bg-emerald-900">
+        <h2 className="text-2xl font-bold mb-6 text-white">Sign In</h2>
         <form
-          onSubmit={handleSubmit(handleSignin)}
-          className="flex flex-col w-80 text-left"
+          onSubmit={handleSubmit(handleSignin, onError)}
+          className="flex flex-col w-80 text-left p-8 border-4 rounded bg-white"
         >
           <label>Email</label>
           <input
@@ -99,10 +109,6 @@ const SignInForm = () => {
             </button>
           </div>
         </form>
-        <p className="text-red-500">{errors.email?.message}</p>
-        <p className="text-red-500">{errors.password?.message}</p>
-
-        {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
       </div>
     </>
   );

@@ -1,14 +1,15 @@
 "use client";
 import React from "react";
-import PrimaryButton from "../PrimaryButton";
-import { UserData } from "../../type/UserData";
-import Link from "next/link";
+// import PrimaryButton from "../PrimaryButton";
+// import Link from "next/link";
+import { useAuthContext } from "@/context/authContext";
 
-type Props = {
-  data?: UserData;
-};
-
-const UserSetting = ({ data }: Props) => {
+const UserSetting = () => {
+  const authContext = useAuthContext();
+  if (!authContext) {
+    return <div>Loading...</div>;
+  }
+  const { currentUser } = authContext;
   return (
     <div className="w-3/6 mx-auto text-right">
       <form className="p-6 flex flex-col border-2 border-black rounded *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&>div]:flex [&>div]:justify-between [&>div]:items-center ">
@@ -16,7 +17,7 @@ const UserSetting = ({ data }: Props) => {
           <label>ユーザー名</label>
           <input
             type="text"
-            value={data?.name || ""}
+            value={currentUser?.name || ""}
             required
             onChange={() => {}}
           />
@@ -25,12 +26,12 @@ const UserSetting = ({ data }: Props) => {
           <label>メールアドレス</label>
           <input
             type="email"
-            value={data?.email || ""}
+            value={currentUser?.email || ""}
             required
             onChange={() => {}}
           />
         </div>
-        <div className="mx-4 my-2 text-left">
+        {/* <div className="mx-4 my-2 text-left">
           <p>通知設定</p>
           <div className="w-80">
             <label className="inline-flex items-center cursor-pointer">
@@ -44,13 +45,13 @@ const UserSetting = ({ data }: Props) => {
           <button className="w-80 bg-black text-white p-2 rounded-full">
             変更メールを送る
           </button>
-        </div>
+        </div> */}
       </form>
-      <div className="m-6">
+      {/* <div className="m-6">
         <Link href="/userlist">
           <PrimaryButton name={"保存"} />
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 };
