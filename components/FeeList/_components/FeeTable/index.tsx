@@ -47,13 +47,13 @@ const FeeTable = ({ feeData }: Props) => {
               scope="col"
               className="sticky top-0 bg-gray-400 px-6 py-3 w-1/5"
             >
-              ETC料金
+              給油料金
             </th>
             <th
               scope="col"
               className="sticky top-0 bg-gray-400 px-6 py-3 w-1/5"
             >
-              給油料金
+              ETC料金
             </th>
           </tr>
         </thead>

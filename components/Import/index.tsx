@@ -18,21 +18,21 @@ const Import = () => {
               <input
                 type="radio"
                 name="format"
-                value="etc"
-                checked={checkedValue === "etc"}
-                onChange={(e) => setCheckedValue(e.target.value)}
-              />
-              ETC料金
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="format"
                 value="refuel"
                 checked={checkedValue === "refuel"}
                 onChange={(e) => setCheckedValue(e.target.value)}
               />
               給油料金
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="format"
+                value="etc"
+                checked={checkedValue === "etc"}
+                onChange={(e) => setCheckedValue(e.target.value)}
+              />
+              ETC料金
             </label>
           </div>
         </form>
