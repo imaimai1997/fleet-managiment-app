@@ -2,6 +2,7 @@ import React from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { CarData } from "../../type/CarData";
 import Link from "next/link";
+import dayjs from "dayjs";
 
 type Props = {
   data: CarData[];
@@ -49,14 +50,14 @@ const CarList = ({ data }: Props) => {
                 <td className="px-6 py-2">{car.employee.name}</td>
                 <td className="px-6 py-2">{car.leasing.name}</td>
                 <td className="px-6 py-2">
-                  {new Date(car.leasing_finish_date).toLocaleDateString()}
+                  {dayjs(car.leasing_finish_date).format("YYYY/MM/DD")}
                 </td>
                 <td className="px-6 py-2">{car.harf_year_inspection}</td>
                 <td className="px-6 py-2">
-                  {new Date(car.inspection_expires_date).toLocaleDateString()}
+                  {dayjs(car.inspection_expires_date).format("YYYY/MM/DD")}
                 </td>
                 <td className="px-6 py-2">
-                  {new Date(car.insuarance_expires_date).toLocaleDateString()}
+                  {dayjs(car.insuarance_expires_date).format("YYYY/MM/DD")}
                 </td>
                 <td className="px-4 hover:text-primary-700">
                   <Link href={`carlist/${car.id}`}>

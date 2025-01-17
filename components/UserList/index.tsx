@@ -2,6 +2,7 @@ import React from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { UserData } from "../../type/UserData";
 import Link from "next/link";
+import dayjs from "dayjs";
 
 type Props = {
   data: UserData[];
@@ -38,7 +39,7 @@ const UserList = ({ data }: Props) => {
                 </th>
                 <td className="px-6 py-2">{user.role.name}</td>
                 <td className="px-6 py-2">
-                  {new Date(user.created_at).toLocaleDateString()}
+                  {dayjs(user.created_at).format("YYYY/MM/DD")}
                 </td>
 
                 <td className="px-4 hover:text-primary-700">
