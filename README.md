@@ -1,6 +1,6 @@
 # FLEET MANAGIMENT APP
 ## 使用技術一覧
-![](https://skillicons.dev/icons?i=html,css,js,typescript,nextjs,firebase,prisma,tailwind)
+![](https://skillicons.dev/icons?i=html,css,js,typescript,nextjs,firebase,prisma,supabase,tailwind)
  
 ## 概要
 現在勤めている会社の安全運転管理者より、社用車をエクセルの表で管理しているが
