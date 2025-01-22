@@ -99,12 +99,12 @@ const CarDetail = ({ data, id }: Props) => {
       inspection_data_name: data?.inspection_data_name || "",
       insuarance_expires_date: formatDate(data?.insuarance_expires_date) || "",
       insuarance_data_name: data?.insuarance_data_name || "",
-      refueling_cardNumber: data?.refueling_card.number || "",
-      refueling_cardPeriod: formatDate(data?.refueling_card.period) || "",
-      etc_cardName: data?.etc_card.name || "",
-      etc_cardNumber: data?.etc_card.number || "",
-      etc_cardPeriod: formatDate(data?.etc_card.period) || "",
-      tire_change: data?.tire_change.toString() || null,
+      refueling_cardNumber: data?.refueling_card?.number || "",
+      refueling_cardPeriod: formatDate(data?.refueling_card?.period) || "",
+      etc_cardName: data?.etc_card?.name || "",
+      etc_cardNumber: data?.etc_card?.number || "",
+      etc_cardPeriod: formatDate(data?.etc_card?.period) || "",
+      tire_change: data?.tire_change?.toString() || null,
       notes: data?.notes || "",
     },
   });
@@ -196,15 +196,21 @@ const CarDetail = ({ data, id }: Props) => {
           leasing_finish_date: watch("leasing_finish_date"),
           harf_year_inspection: watch("harf_year_inspection"),
           inspection_expires_date: watch("inspection_expires_date"),
-          inspection_data: inspectionFilePath,
-          inspection_data_name: inspectionFileName,
+          inspection_data: inspectionFilePath == "" ? null : inspectionFilePath,
+          inspection_data_name:
+            inspectionFileName == "" ? null : inspectionFileName,
           insuarance_expires_date: watch("insuarance_expires_date"),
-          insuarance_data: insuaranceFilePath,
-          insuarance_data_name: insuaranceFileName,
-          refueling_cardNumber: watch("refueling_cardNumber"),
-          etc_cardName: watch("etc_cardName"),
-          tire_change: watch("tire_change"),
-          notes: watch("notes"),
+          insuarance_data: insuaranceFilePath == "" ? null : insuaranceFilePath,
+          insuarance_data_name:
+            insuaranceFileName == "" ? null : insuaranceFileName,
+          refueling_cardNumber:
+            watch("refueling_cardNumber") == ""
+              ? null
+              : watch("refueling_cardNumber"),
+          etc_cardName:
+            watch("etc_cardName") == "" ? null : watch("etc_cardName"),
+          tire_change: watch("tire_change") == "" ? null : watch("tire_change"),
+          notes: watch("notes") == "" ? null : watch("notes"),
         }),
       });
       if (!res.ok) {
@@ -316,15 +322,24 @@ const CarDetail = ({ data, id }: Props) => {
             leasing_finish_date: watch("leasing_finish_date"),
             harf_year_inspection: watch("harf_year_inspection"),
             inspection_expires_date: watch("inspection_expires_date"),
-            inspection_data: inspectionFilePath,
-            inspection_data_name: inspectionFileName,
+            inspection_data:
+              inspectionFilePath == "" ? null : inspectionFilePath,
+            inspection_data_name:
+              inspectionFileName == "" ? null : inspectionFileName,
             insuarance_expires_date: watch("insuarance_expires_date"),
-            insuarance_data: insuaranceFilePath,
-            insuarance_data_name: insuaranceFileName,
-            refueling_cardNumber: watch("refueling_cardNumber"),
-            etc_cardName: watch("etc_cardName"),
-            tire_change: watch("tire_change"),
-            notes: watch("notes"),
+            insuarance_data:
+              insuaranceFilePath == "" ? null : insuaranceFilePath,
+            insuarance_data_name:
+              insuaranceFileName == "" ? null : insuaranceFileName,
+            refueling_cardNumber:
+              watch("refueling_cardNumber") == ""
+                ? null
+                : watch("refueling_cardNumber"),
+            etc_cardName:
+              watch("etc_cardName") == "" ? null : watch("etc_cardName"),
+            tire_change:
+              watch("tire_change") == "" ? null : watch("tire_change"),
+            notes: watch("notes") == "" ? null : watch("notes"),
           }),
         }
       );
