@@ -10,6 +10,7 @@ type CsvRow = {
   利用日変換: string; // 日付列
   カード番号: number;
   合計: number; // 合計金額
+  数量変換: number; // 給油量
 };
 
 //給油料金csv取込
@@ -28,15 +29,18 @@ const fileParser = (file: File): Promise<CsvRow[]> => {
 
             if (sumData[key]) {
               sumData[key].合計 += row["合計"];
+              sumData[key].数量変換 += row["数量変換"];
             } else {
               sumData[key] = {
                 カード番号: row["カード番号"],
                 利用日変換: yearMonth,
                 合計: row["合計"],
+                数量変換: row["数量変換"],
               };
             }
           });
           resolve(Object.values(sumData));
+          console.log(Object.values(sumData));
         } catch (error) {
           reject(error); // エラーを reject
         }
