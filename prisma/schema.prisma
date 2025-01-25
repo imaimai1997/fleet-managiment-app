@@ -43,6 +43,7 @@ model Car {
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now())
   leaseFee  LeaseFee[]  @relation("FeeToLease")
+  Mileage  Mileage[]  @relation("MileageToCar")
 }
 
 model CarType {
@@ -111,7 +112,8 @@ model RefuelingFee{
   refueling_card   Refueling_card @relation("FeeToRefueling_card",fields: [refueling_card_number], references: [number])
   refueling_card_number String
   fee_date DateTime
-  refueling_fee Int 
+  refueling_fee Int
+  refueling_amount Int
 }
 
 model EtcFee{
@@ -128,5 +130,13 @@ model LeaseFee{
   car_label String 
   fee_date DateTime
   lease_fee Int 
+}
+
+model Mileage{
+  id    Int  @id @default(autoincrement())
+  car   Car @relation("MileageToCar",fields: [car_label], references: [label])
+  car_label String 
+  mileage_date DateTime
+  mileage Int 
 }
   
