@@ -24,9 +24,7 @@ export const GET = async () => {
     const cars = await prisma.car.findMany({
       select: {
         label: true,
-       
       },
-
     });
     return NextResponse.json({ message: "Success", cars }, { status: 200 });
   } catch (err) {
