@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import RefuelImport from "./_components/RefuelImport";
 import EtcImport from "./_components/EtcImport";
+import MileageImport from "./_components/MileageImport";
 
 const Import = () => {
   const [checkedValue, setCheckedValue] = useState<string>("");
@@ -34,10 +35,21 @@ const Import = () => {
               />
               ETC料金
             </label>
+            <label>
+              <input
+                type="radio"
+                name="format"
+                value="mileage"
+                checked={checkedValue === "mileage"}
+                onChange={(e) => setCheckedValue(e.target.value)}
+              />
+              走行距離
+            </label>
           </div>
         </form>
         {checkedValue === "etc" && <EtcImport />}
         {checkedValue === "refuel" && <RefuelImport />}
+        {checkedValue === "mileage" && <MileageImport />}
       </div>
     </>
   );
