@@ -7,35 +7,47 @@ import toast from "react-hot-toast";
 import dayjs from "dayjs";
 
 type CsvRow = {
-  利用日変換: string; // 日付列
-  カード番号: number;
-  合計: number; // 合計金額
-  数量変換: number; // 給油量
+  usageDate: string;
+  carNumber: string;
+  mileage: number;
 };
 
-//給油料金csv取込
+type CsvRowRaw = {
+  走行開始: string;
+  車両名: string;
+  "走行距離(km)": number;
+};
+
+type label = {
+  label: string;
+};
+
+//走行距離csv取込
 const fileParser = (file: File): Promise<CsvRow[]> => {
   const sumData: Record<string, CsvRow> = {};
+
   return new Promise((resolve, reject) => {
-    Papa.parse<CsvRow>(file, {
+    Papa.parse<CsvRowRaw>(file, {
       header: true,
       skipEmptyLines: true,
       dynamicTyping: true,
       complete: (results) => {
         try {
           results.data.forEach((row) => {
-            const yearMonth = dayjs(row["利用日変換"]).format("YYYY-MM");
-            const key = `${yearMonth}-${row["カード番号"]}`;
+            const usageDate = row["走行開始"];
+            const carNumber = row["車両名"];
+            const mileage = row["走行距離(km)"];
+
+            const yearMonth = dayjs(usageDate).format("YYYY-MM");
+            const key = `${yearMonth}-${carNumber}`;
 
             if (sumData[key]) {
-              sumData[key].合計 += row["合計"];
-              sumData[key].数量変換 += row["数量変換"];
+              sumData[key].mileage += mileage;
             } else {
               sumData[key] = {
-                カード番号: row["カード番号"],
-                利用日変換: yearMonth,
-                合計: row["合計"],
-                数量変換: row["数量変換"],
+                usageDate: yearMonth,
+                carNumber,
+                mileage,
               };
             }
           });
@@ -52,8 +64,32 @@ const fileParser = (file: File): Promise<CsvRow[]> => {
   });
 };
 
-const FeeImport = () => {
+const fetchCarLabel = async () => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/fee/mileage`,
+    {
+      cache: "no-store",
+    }
+  );
+  const data = await res.json();
+  return data.cars;
+};
+
+// csvデータの車両番号を正式な車両番号に書き換え
+const changeLabel = async (data: CsvRow[]) => {
+  const labelData = await fetchCarLabel();
+  const updatedData = data.map((car) => {
+    const changelabel = labelData.find((item: label) =>
+      item.label.includes(car.carNumber.split(" ")[0])
+    );
+    return changelabel ? { ...car, carNumber: changelabel.label } : car;
+  });
+  return updatedData;
+};
+
+const MileageImport = () => {
   const [parsedData, setParsedData] = useState<CsvRow[]>([]);
+  console.log(parsedData);
   const handleImport = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     toast.loading("waiting...", { id: "1" });
@@ -65,7 +101,7 @@ const FeeImport = () => {
     }
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/fee/refueling`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/fee/mileage`,
         {
           method: "POST",
           headers: {
@@ -78,10 +114,10 @@ const FeeImport = () => {
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
-      toast.success("給油料金が登録されました", { id: "1" });
+      toast.success("走行距離が登録されました", { id: "1" });
     } catch (err) {
       console.error("Error:", err);
-      toast.error("給油料金の登録がうまくいきませんでした。", { id: "1" });
+      toast.error("走行距離の登録がうまくいきませんでした。", { id: "1" });
     }
   };
 
@@ -98,9 +134,15 @@ const FeeImport = () => {
     e.preventDefault();
     const file = e.target.files?.[0];
     if (file) {
+      toast.loading("waiting...", { id: "1" });
+
       try {
         const data = await fileParser(file);
-        setParsedData(data);
+        const updateData = await changeLabel(data);
+        setParsedData(updateData);
+        toast.success("データを読み込みました。取込ボタンを押してください", {
+          id: "1",
+        });
       } catch (error) {
         toast.error("csvが読み取れません。データが間違っているようです", {
           id: "1",
@@ -112,13 +154,25 @@ const FeeImport = () => {
   return (
     <>
       <input
+        className="mt-6"
         type="file"
         ref={fileRef}
-        className="mt-6"
         onChange={handleFileParser}
       />
+      {/* <div className="w-full h-40 flex flex-col justify-center items-center bg-gray-200 border-2 border-dotted border-primary-700">
+        <input
+          type="file"
+          ref={fileRef}
+          className="hidden"
+          onChange={handleFileParser}
+        />
+        <button onClick={(e) => showFolder(e, fileRef)}>
+          ここにファイルをドラッグ＆ドロップ　またはクリックしてファイルを選択
+        </button>
+        <CiImport size={36} />
+      </div> */}
       <div className="my-8">
-        <PrimaryButton name="給油料金取込" onClick={handleImport} />
+        <PrimaryButton name="走行距離取込" onClick={handleImport} />
       </div>
       <div className="flex items-center">
         <p>csv入力ルール</p>
@@ -146,25 +200,25 @@ const FeeImport = () => {
         <tbody className="[&_th]:border-2 [&_td]:border-2 [&_td]:px-6 [&_td]:py-2">
           <tr>
             <th scope="row" className="px-6 py-2 border-2">
-              利用日変換
+              走行開始
             </th>
-            <td>給油カードを利用した日付</td>
+            <td>走行日付</td>
             <td>必須</td>
             <td>日付形式。20XX/XX/XX</td>
           </tr>
           <tr>
             <th scope="row" className="px-6 py-2">
-              カード番号
+              車両名
             </th>
-            <td>使用した給油カード番号</td>
+            <td>車両番号</td>
             <td>必須</td>
             <td>半角数字。登録されている番号しか取り込めません</td>
           </tr>
           <tr>
             <th scope="row" className="px-6 py-2">
-              合計
+              走行距離(km)
             </th>
-            <td>利用金額</td>
+            <td>走行距離</td>
             <td>必須</td>
             <td>半角数字</td>
           </tr>
@@ -174,4 +228,4 @@ const FeeImport = () => {
   );
 };
 
-export default FeeImport;
+export default MileageImport;

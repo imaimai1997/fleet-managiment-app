@@ -16,6 +16,7 @@ type CsvRow = {
   利用日変換: string;
   カード番号: number;
   合計: number;
+  数量変換: number;
 };
 
 export const POST = async (req: Request) => {
@@ -28,6 +29,7 @@ export const POST = async (req: Request) => {
         refueling_card_number: String(item["カード番号"]),
         fee_date: new Date(`${item["利用日変換"]}-01`),
         refueling_fee: item["合計"],
+        refueling_amount: item["数量変換"],
       })),
     });
     return NextResponse.json(
