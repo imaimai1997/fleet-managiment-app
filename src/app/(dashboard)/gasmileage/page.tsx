@@ -9,7 +9,7 @@ const fetchCarList = async () => {
   return data.cars;
 };
 
-const FeeListPage = async () => {
+const GasMileagePage = async () => {
   const cars = await fetchCarList();
 
   return (
@@ -19,4 +19,4 @@ const FeeListPage = async () => {
   );
 };
 
-export default FeeListPage;
+export default GasMileagePage;
