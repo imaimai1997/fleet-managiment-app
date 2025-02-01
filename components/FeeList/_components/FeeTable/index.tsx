@@ -79,7 +79,7 @@ const FeeTable = ({ feeData }: Props) => {
         </tbody>
       </table>
 
-      <div className="w-5/6 h-12 mx-auto fixed bottom-12 bg-white shadow-inner">
+      <div className="w-5/6 h-12 mx-auto fixed bottom-0 bg-white shadow-inner">
         <div className="w-11/12">
           <table className="w-full text-left">
             <tbody>
