@@ -3,22 +3,22 @@
 import React from "react";
 import { useState } from "react";
 import Select, { SingleValue } from "react-select";
-import { CarSelect } from "../../type/CarSelect";
-import { FeeData } from "../../type/FeeData";
+import { CarSelect } from "../../../type/CarSelect";
+import { GasMileageData } from "../../../type/GasMileageData";
 import toast, { Toaster } from "react-hot-toast";
 
 type Props = {
   carData: CarSelect[];
-  parentData: (data: FeeData[]) => void;
+  parentData: (data: GasMileageData[]) => void;
 };
 
-const fetchFeeList = async (yearMonth: string, carNumber?: string) => {
+const fetchGasMileageList = async (yearMonth: string, carNumber?: string) => {
   const query = new URLSearchParams();
   query.set("yearMonth", yearMonth);
   if (carNumber) query.set("carNumber", encodeURIComponent(carNumber)); // 日本語をエンコード
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/fee/list?${query.toString()}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/fee/gasmileage?${query.toString()}`,
     {
       cache: "no-store",
     }
@@ -33,7 +33,7 @@ const fetchFeeList = async (yearMonth: string, carNumber?: string) => {
   return data.res;
 };
 
-const SearchBox = ({ carData, parentData }: Props) => {
+const GasMileageSearch = ({ carData, parentData }: Props) => {
   const [currentMonth, setCurrentMonth] = useState(() => {
     const now = new Date();
     const year = now.getFullYear();
@@ -87,7 +87,10 @@ const SearchBox = ({ carData, parentData }: Props) => {
   const handleSerchFee = async () => {
     try {
       if (selectedValue) {
-        const data = await fetchFeeList(currentMonth, selectedValue.label);
+        const data = await fetchGasMileageList(
+          currentMonth,
+          selectedValue.label
+        );
         parentData(data);
       }
     } catch (err) {
@@ -141,4 +144,4 @@ const SearchBox = ({ carData, parentData }: Props) => {
   );
 };
 
-export default SearchBox;
+export default GasMileageSearch;
