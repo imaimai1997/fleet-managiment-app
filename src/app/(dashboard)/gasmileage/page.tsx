@@ -1,4 +1,4 @@
-import FeeList from "../../../../components/FeeList";
+import GasMileageList from "../../../../components/GasMileageList";
 
 const fetchCarList = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/car`, {
@@ -14,7 +14,7 @@ const GasMileagePage = async () => {
 
   return (
     <>
-      <FeeList carData={cars} />
+      <GasMileageList carData={cars} />
     </>
   );
 };
