@@ -126,7 +126,7 @@ const FeeImport = () => {
         <RxUpload /> 
         */}
       </div>
-      <table className="text-left border-2">
+      <table className="text-left border-2 mb-4">
         <thead className="[&_th]:border-2 border-white">
           <tr>
             <th scope="col" className=" bg-gray-400 px-6 py-3">
@@ -165,6 +165,14 @@ const FeeImport = () => {
               合計
             </th>
             <td>利用金額</td>
+            <td>必須</td>
+            <td>半角数字</td>
+          </tr>
+          <tr>
+            <th scope="row" className="px-6 py-2">
+              数量変換
+            </th>
+            <td>給油量</td>
             <td>必須</td>
             <td>半角数字</td>
           </tr>

@@ -16,9 +16,19 @@ const Sidebar = () => {
               月額料金一覧
             </li>
           </Link>
+          <Link href="/gasmileage">
+            <li className="mb-4 hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
+              燃費一覧
+            </li>
+          </Link>
           <Link href="/userlist">
-            <li className="hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
+            <li className="mb-4 hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
               ユーザー
+            </li>
+          </Link>
+          <Link href="/import">
+            <li className="mb-4 hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
+              データ設定
             </li>
           </Link>
         </ul>

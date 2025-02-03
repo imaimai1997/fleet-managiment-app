@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import { FeeData } from "../../../../type/FeeData";
+import { GasMileageData } from "../../../../type/GasMileageData";
 
 type Props = {
-  feeData: FeeData[];
+  gasMileageData: GasMileageData[];
 };
 const formatDateToYearMonth = (fee_date: string) => {
   if (!fee_date) {
@@ -13,17 +13,14 @@ const formatDateToYearMonth = (fee_date: string) => {
   return date.toLocaleDateString("ja-JP", { year: "numeric", month: "long" });
 };
 
-const formatNumber = (num: string): string => {
-  return new Intl.NumberFormat("ja-JP").format(Number(num));
-};
-
-const FeeTable = ({ feeData }: Props) => {
-  const totalFee = feeData.reduce(
+const GasMileageTable = ({ gasMileageData }: Props) => {
+  const totalGasMileage = gasMileageData.reduce(
     (sum, data) => ({
-      refuelingFee: sum.refuelingFee + (Number(data.refueling_total_fee) || 0),
-      etcFee: sum.etcFee + (Number(data.etc_total_fee) || 0),
+      refuelingAmount:
+        sum.refuelingAmount + (Number(data.refueling_total_amount) || 0),
+      mileage: sum.mileage + (Number(data.mileage_total_mileage) || 0),
     }),
-    { refuelingFee: 0, etcFee: 0 }
+    { refuelingAmount: 0, mileage: 0 }
   );
 
   return (
@@ -47,18 +44,24 @@ const FeeTable = ({ feeData }: Props) => {
               scope="col"
               className="sticky top-0 bg-gray-400 px-6 py-3 w-1/5"
             >
-              給油料金
+              走行距離
             </th>
             <th
               scope="col"
               className="sticky top-0 bg-gray-400 px-6 py-3 w-1/5"
             >
-              ETC料金
+              給油量
+            </th>
+            <th
+              scope="col"
+              className="sticky top-0 bg-gray-400 px-6 py-3 w-1/5"
+            >
+              燃費
             </th>
           </tr>
         </thead>
         <tbody>
-          {feeData.map((data) => (
+          {gasMileageData.map((data) => (
             <tr
               key={data.car_number}
               className="border-b-2 hover:bg-primary-100"
@@ -68,11 +71,14 @@ const FeeTable = ({ feeData }: Props) => {
               </th>
               <td className="px-6 py-2">{data.car_number}</td>
 
+              <td className="px-6 py-2">{data.mileage_total_mileage}km</td>
+              <td className="px-6 py-2">{data.refueling_total_amount}L</td>
+
               <td className="px-6 py-2">
-                {formatNumber(data.refueling_total_fee)}円
-              </td>
-              <td className="px-6 py-2">
-                {formatNumber(data.etc_total_fee)}円
+                {(
+                  data.mileage_total_mileage / data.refueling_total_amount
+                ).toFixed(2)}
+                km/L
               </td>
             </tr>
           ))}
@@ -85,16 +91,23 @@ const FeeTable = ({ feeData }: Props) => {
             <tbody>
               <tr>
                 <td className="px-6 py-2 w-2/5 text-right text-primary-700 font-bold">
-                  合計
+                  平均燃費
                 </td>
 
                 <td className="px-6 py-2 w-1/5 font-bold">
-                  {totalFee
-                    ? `${totalFee.refuelingFee.toLocaleString()}円`
-                    : "0円"}
+                  {totalGasMileage
+                    ? `${totalGasMileage.mileage.toLocaleString()}km`
+                    : "0km"}
                 </td>
                 <td className="px-6 py-2 w-1/5 font-bold">
-                  {totalFee ? `${totalFee.etcFee.toLocaleString()}円` : "0円"}
+                  {totalGasMileage
+                    ? `${totalGasMileage.refuelingAmount.toLocaleString()}L`
+                    : "0L"}
+                </td>
+                <td className="px-6 py-2 w-1/5 font-bold">
+                  {totalGasMileage
+                    ? `${(totalGasMileage.mileage / totalGasMileage.refuelingAmount).toFixed(2)}km/L`
+                    : "0km/L"}
                 </td>
               </tr>
             </tbody>
@@ -105,4 +118,4 @@ const FeeTable = ({ feeData }: Props) => {
   );
 };
 
-export default FeeTable;
+export default GasMileageTable;
