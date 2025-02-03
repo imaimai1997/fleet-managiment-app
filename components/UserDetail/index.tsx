@@ -3,7 +3,10 @@ import React from "react";
 import PrimaryButton from "../PrimaryButton";
 import { UserData } from "../../type/UserData";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { FieldErrors, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -105,6 +108,7 @@ const UserDetail = ({ data, id }: Props) => {
 
   const handleDeleteUser = async () => {
     try {
+      toast.loading("waiting...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`,
         {
@@ -126,6 +130,7 @@ const UserDetail = ({ data, id }: Props) => {
 
   const handleUpdateUser = async () => {
     try {
+      toast.loading("waiting...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`,
         {
@@ -150,13 +155,22 @@ const UserDetail = ({ data, id }: Props) => {
       toast.error("ユーザー情報を編集できませんでした", { id: "1" });
     }
   };
+  const handlSendPasswordResetMail = async () => {
+    try {
+      await sendPasswordResetEmail(auth, watch("email"));
+      toast.success("パスワード変更メールを送りました", { id: "1" });
+    } catch (error) {
+      console.error(error);
+      toast.error("パスワード変更メールが送れませんでした", { id: "1" });
+    }
+  };
 
   return (
     <>
       <Toaster />
       <div className="w-3/6 mx-auto text-right ">
-        <form onSubmit={handleSubmit(handleSignUp, onError)}>
-          <div className="p-6 flex flex-col rounded *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&_div]:flex [&_div]:justify-between [&_div]:items-center border-2 border-black">
+        <div className="p-6 flex flex-col rounded *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&_div]:flex [&_div]:justify-between [&_div]:items-center border-2 border-black">
+          <form onSubmit={handleSubmit(handleSignUp, onError)}>
             <div className="mx-4 my-2">
               <label>ユーザー名</label>
               <input
@@ -212,13 +226,26 @@ const UserDetail = ({ data, id }: Props) => {
                 <option value="一般">一般</option>
               </select>
             </div>
-          </div>
-          {!data && (
-            <div className="m-6 bg-orange">
-              <PrimaryButton name={"追加"} type="submit" />
+
+            {!data && (
+              <div className="m-6 bg-orange">
+                <PrimaryButton name={"追加"} type="submit" />
+              </div>
+            )}
+          </form>
+          {data && (
+            <div className="mx-4 my-2">
+              <label>パスワード変更</label>
+              <button
+                onClick={handlSendPasswordResetMail}
+                className="w-80 bg-black text-white p-2 rounded-full"
+              >
+                変更メールを送る
+              </button>
             </div>
           )}
-        </form>
+        </div>
+
         {data && (
           <div className="flex justify-between m-6">
             <button
