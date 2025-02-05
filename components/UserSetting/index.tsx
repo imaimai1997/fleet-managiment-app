@@ -1,18 +1,51 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import PrimaryButton from "../PrimaryButton";
 // import Link from "next/link";
 import { useAuthContext } from "@/context/authContext";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import toast, { Toaster } from "react-hot-toast";
+import PrimaryButton from "../PrimaryButton";
+import { UserData } from "../../type/UserData";
 
 const UserSetting = () => {
   const authContext = useAuthContext();
-  if (!authContext) {
-    return <div>Loading...</div>;
-  }
-  const { currentUser } = authContext;
+  const [currentUser, setCurrentUser] = useState<UserData | null>(null);
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+
+  const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserName(e.target.value);
+  };
+  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserEmail(e.target.value);
+  };
+  const handleUpdateUser = async () => {
+    try {
+      toast.loading("waiting...", { id: "1" });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/${currentUser?.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: currentUser?.id,
+            roleName: currentUser?.role.name,
+            name: userName,
+            email: userEmail,
+          }),
+        }
+      );
+      toast.success("ユーザー情報を編集しました", { id: "1" });
+      return res.json();
+    } catch (error) {
+      console.error(error);
+      toast.error("ユーザー情報を編集できませんでした", { id: "1" });
+    }
+  };
 
   const handlSendPasswordResetMail = async () => {
     try {
@@ -26,6 +59,18 @@ const UserSetting = () => {
     }
   };
 
+  useEffect(() => {
+    if (authContext) {
+      setCurrentUser(authContext.currentUser);
+    }
+  }, [authContext]);
+  useEffect(() => {
+    if (currentUser) {
+      setUserName(currentUser.name);
+      setUserEmail(currentUser.email);
+    }
+  }, [currentUser]);
+
   return (
     <>
       <Toaster />
@@ -36,18 +81,18 @@ const UserSetting = () => {
               <label>ユーザー名</label>
               <input
                 type="text"
-                value={currentUser?.name || ""}
+                value={userName}
                 required
-                onChange={() => {}}
+                onChange={changeName}
               />
             </div>
             <div className="mx-4 my-2">
               <label>メールアドレス</label>
               <input
                 type="email"
-                value={currentUser?.email || ""}
+                value={userEmail}
                 required
-                onChange={() => {}}
+                onChange={changeEmail}
               />
             </div>
             {/* <div className="mx-4 my-2 text-left">
@@ -69,11 +114,9 @@ const UserSetting = () => {
               変更メールを送る
             </button>
           </div>
-          {/* <div className="m-6">
-        <Link href="/userlist">
-          <PrimaryButton name={"保存"} />
-        </Link>
-      </div> */}
+        </div>
+        <div className="m-6">
+          <PrimaryButton name={"保存"} onClick={handleUpdateUser} />
         </div>
       </div>
     </>
