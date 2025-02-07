@@ -6,10 +6,10 @@ import Link from "next/link";
 import { CarData } from "../../../type/CarData";
 
 type Props = {
-  searchParams?: {
+  searchParams?: Promise<{
     query?: string;
     page?: string;
-  };
+  }>;
 };
 
 const fetchFilteredCars = async (query: string) => {
@@ -22,7 +22,7 @@ const fetchFilteredCars = async (query: string) => {
   const filteredCar = await cars.filter(
     (car: CarData) =>
       car.label.toLowerCase().includes(query.toLowerCase()) ||
-      car.employee.name.toLowerCase().includes(query.toLowerCase()),
+      car.employee.name.toLowerCase().includes(query.toLowerCase())
   );
 
   return filteredCar;
