@@ -29,7 +29,8 @@ const fetchFilteredCars = async (query: string) => {
 };
 
 const CarListPage = async ({ searchParams }: Props) => {
-  const query = (await searchParams?.query) || "";
+  const params = await searchParams;
+  const query = params?.query || "";
   const cars = await fetchFilteredCars(query);
 
   return (
