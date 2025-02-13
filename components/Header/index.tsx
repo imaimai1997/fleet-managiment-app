@@ -39,11 +39,11 @@ const Header = () => {
   return (
     <>
       <Toaster />
-      <div className="bg-primary-700 flex justify-between items-center h-14 px-16">
-        <h2 className="text-white text-2xl italic">FLEET-MANAGIMENT</h2>
+      <div className="bg-primary-700 flex justify-between items-center h-14 ">
+        <img src="../fleet.png" className="w-48" />
         <div className="relative h-10 text-white ">
           <button onClick={handleUserMenu}>
-            <IoPersonCircle size={40} />
+            <IoPersonCircle size={40} className="mx-16" />
           </button>
           {isUserMenu && (
             <div className="bg-gray-300 absolute right-1/2 translate-x-2/4 w-40 flex flex-col items-center px-4 py-4 rounded-3xl text-black font-bold z-10">
