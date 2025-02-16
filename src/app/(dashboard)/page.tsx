@@ -22,7 +22,7 @@ const fetchFilteredCars = async (query: string) => {
   const filteredCar = await cars.filter(
     (car: CarData) =>
       car.label.toLowerCase().includes(query.toLowerCase()) ||
-      car.employee.name.toLowerCase().includes(query.toLowerCase())
+      car.employee.name.toLowerCase().includes(query.toLowerCase()),
   );
 
   return filteredCar;
