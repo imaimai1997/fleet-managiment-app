@@ -9,6 +9,7 @@ import { useForm, FieldErrors } from "react-hook-form";
 import { CarForm } from "../../type/CarForm";
 import { Select } from "../../type/Select";
 import { deletePDF, uploadPDF } from "@/utils/supabase/uploadPDF";
+import { useAuthContext } from "@/context/authContext";
 
 type Props = {
   data?: CarData;
@@ -81,6 +82,8 @@ const CarDetail = ({ data, id }: Props) => {
     const date = new Date(cardate);
     return isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10); // 有効なら変換
   };
+  const { currentUser } = useAuthContext();
+  const userRole = currentUser?.roleName;
 
   const router = useRouter();
   const { register, handleSubmit, watch, setValue } = useForm<CarForm>({
@@ -728,7 +731,7 @@ const CarDetail = ({ data, id }: Props) => {
           </div>
         )}
       </form>
-      {data && (
+      {data && userRole == "管理者" && (
         <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
           <div className="flex justify-between max-w-5xl mx-auto">
             <button
@@ -742,7 +745,6 @@ const CarDetail = ({ data, id }: Props) => {
           </div>
         </div>
       )}
-      {/* </div> */}
     </>
   );
 };

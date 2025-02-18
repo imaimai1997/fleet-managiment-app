@@ -19,7 +19,10 @@ type AuthProviderProps = {
   children: ReactNode;
 };
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  currentUser: null,
+});
 const fetchCurrentUser = async (id: string | undefined) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`, {
     cache: "no-store",
@@ -60,7 +63,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAuthContext = (): AuthContextType | null => {
+export const useAuthContext = (): AuthContextType => {
   const context = useContext(AuthContext);
 
   return context;
