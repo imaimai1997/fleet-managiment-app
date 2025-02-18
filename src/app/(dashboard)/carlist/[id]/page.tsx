@@ -20,7 +20,7 @@ const CarDetailPage = async ({
 
   return (
     <>
-      <h2 className="m-16 text-xl">車両詳細/編集画面</h2>
+      <h2 className="m-16 text-xl">車両詳細画面</h2>
       <div>
         <CarDetail data={carData} id={id} />
       </div>

@@ -1,7 +1,10 @@
+import { useAuthContext } from "@/context/authContext";
 import Link from "next/link";
 import React from "react";
 
 const Sidebar = () => {
+  const { currentUser } = useAuthContext();
+  const userRole = currentUser?.roleName;
   return (
     <div className="bg-gray-300 min-w-40 h-full">
       <nav>
@@ -21,16 +24,20 @@ const Sidebar = () => {
               燃費一覧
             </li>
           </Link>
-          <Link href="/userlist">
-            <li className="mb-4 hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
-              ユーザー
-            </li>
-          </Link>
-          <Link href="/import">
-            <li className="mb-4 hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
-              データ設定
-            </li>
-          </Link>
+          {userRole == "管理者" && (
+            <>
+              <Link href="/userlist">
+                <li className="mb-4 hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
+                  ユーザー
+                </li>
+              </Link>
+              <Link href="/import">
+                <li className="mb-4 hover:before:inline-block hover:before:bg-primary-700 hover:before:w-2 hover:before:h-4 hover:before:mr-2 hover:before:align-middle">
+                  データ設定
+                </li>
+              </Link>
+            </>
+          )}
         </ul>
       </nav>
     </div>
