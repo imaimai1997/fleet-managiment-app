@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendMail = async (email: string, carlabel: string) => {
+export const sendInspectionMail = async (email: string, carlabel: string) => {
   const info = await transporter.sendMail({
     from: process.env.GMAILUSER,
     to: email,
