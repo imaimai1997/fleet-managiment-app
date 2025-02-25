@@ -53,7 +53,7 @@ export const DELETE = async (req: Request) => {
 //ユーザー情報編集
 export const PUT = async (req: Request) => {
   const id = req.url.split("/user/")[1];
-  const { roleName, name, email } = await req.json();
+  const { roleName, name, email, notice } = await req.json();
 
   try {
     await main();
@@ -62,6 +62,7 @@ export const PUT = async (req: Request) => {
         roleName,
         name,
         email,
+        notice,
       },
       where: { id: id },
     });

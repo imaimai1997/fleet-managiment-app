@@ -10,4 +10,5 @@ export type UserData ={
     password:string;
     created_at: Date;
     updated_at: Date;
+    notice: boolean;
     }
