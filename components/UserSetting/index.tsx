@@ -14,12 +14,16 @@ const UserSetting = () => {
   const [currentUser, setCurrentUser] = useState<UserData | null>(null);
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [userNotice, setUserNotice] = useState<boolean>(false);
 
   const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value);
   };
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserEmail(e.target.value);
+  };
+  const changeNotice = () => {
+    setUserNotice((prev) => !prev);
   };
   const handleUpdateUser = async () => {
     try {
@@ -36,6 +40,7 @@ const UserSetting = () => {
             roleName: currentUser?.role.name,
             name: userName,
             email: userEmail,
+            notice: userNotice,
           }),
         }
       );
@@ -68,6 +73,7 @@ const UserSetting = () => {
     if (currentUser) {
       setUserName(currentUser.name);
       setUserEmail(currentUser.email);
+      setUserNotice(currentUser.notice);
     }
   }, [currentUser]);
 
@@ -95,15 +101,20 @@ const UserSetting = () => {
                 onChange={changeEmail}
               />
             </div>
-            {/* <div className="mx-4 my-2 text-left">
-          <p>通知設定</p>
-          <div className="w-80">
-            <label className="inline-flex items-center cursor-pointer">
-              <input type="checkbox" value="" className="sr-only peer" />
-              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-        </div>*/}
+            <div className="mx-4 my-2 text-left">
+              <p>通知設定</p>
+              <div className="w-80">
+                <label className="inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={userNotice}
+                    onChange={changeNotice}
+                    className="sr-only peer"
+                  />
+                  <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+            </div>
           </form>
           <div className="mx-4 my-2">
             <label>パスワード変更</label>
