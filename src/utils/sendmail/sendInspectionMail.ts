@@ -10,10 +10,15 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendInspectionMail = async (email: string, carlabel: string) => {
+export const sendInspectionMail = async (
+  email: string,
+  noticeUser: string[],
+  carlabel: string,
+) => {
   const info = await transporter.sendMail({
     from: process.env.GMAILUSER,
     to: email,
+    cc: noticeUser,
     subject: `${carlabel}の車検期限は残り1カ月です`,
     text: `こちらのメールは${carlabel}の車両管理者に送信しております。
     ${carlabel}の車検期限まで残り1カ月となりました`,
