@@ -2,6 +2,10 @@ import { sendInspectionMail } from "@/utils/sendmail/sendInspectionMail";
 import { sendInsuaranceMail } from "@/utils/sendmail/sendInsuaranceMail";
 import { NextResponse } from "next/server";
 
+type noticeEmail = {
+  email: string;
+};
+
 const fetchUserByInspection = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/cron/getInspectionUser`,
@@ -11,9 +15,6 @@ const fetchUserByInspection = async () => {
   );
 
   const data = await res.json();
-  if (!data.car || data.car.length === 0) {
-    throw new Error("No data found");
-  }
   return data.car;
 };
 
@@ -26,21 +27,33 @@ const fetchUserByInsuarance = async () => {
   );
 
   const data = await res.json();
-  if (!data.car || data.car.length === 0) {
-    throw new Error("No data found");
-  }
   return data.car;
+};
+const fetchUserByNotice = async () => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/cron/getNoticeUser`,
+    {
+      cache: "no-store",
+    },
+  );
+
+  const data = await res.json();
+  const noticeUser: noticeEmail[] = data.user;
+  return noticeUser.map((item) => item.email);
 };
 
 export const GET = async () => {
   try {
-    //車検期限1カ月前の車両管理者にメール送信
+    const noticeUser = await fetchUserByNotice();
+
+    // 車検期限1カ月前の車両管理者にメール送信
+
     const inspectionMailData = await fetchUserByInspection();
     for (const data of inspectionMailData) {
       const inspectionEmail = data.employee.email;
       const inspectionCarlabel = data.label;
 
-      await sendInspectionMail(inspectionEmail, inspectionCarlabel);
+      await sendInspectionMail(inspectionEmail, noticeUser, inspectionCarlabel);
     }
     //保険期限1カ月前の車両管理者にメール送信
     const insuaranceMailData = await fetchUserByInsuarance();
@@ -48,7 +61,7 @@ export const GET = async () => {
       const insuaranceEmail = data.employee.email;
       const insuaranceCarlabel = data.label;
 
-      await sendInsuaranceMail(insuaranceEmail, insuaranceCarlabel);
+      await sendInsuaranceMail(insuaranceEmail, noticeUser, insuaranceCarlabel);
     }
 
     return NextResponse.json({ message: "Success" }, { status: 201 });
