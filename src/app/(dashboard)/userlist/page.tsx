@@ -2,22 +2,37 @@ import React from "react";
 import UserList from "../../../../components/UserList";
 import Link from "next/link";
 import PrimaryButton from "../../../../components/PrimaryButton";
+import { UserData } from "../../../../type/UserData";
+import SearchBar from "../../../../components/SearchBar";
 
-const fetchUserList = async () => {
+type Props = {
+  searchParams?: Promise<{
+    query?: string;
+    page?: string;
+  }>;
+};
+
+const fetchFilteredUser = async (query: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
     cache: "no-store",
   });
 
   const data = await res.json();
-  return data.users;
+  const users = await data.users;
+  const filteredUser = await users.filter((user: UserData) =>
+    user.name.toLowerCase().includes(query.toLowerCase()),
+  );
+  return filteredUser;
 };
 
-const UserListPage = async () => {
-  const users = await fetchUserList();
+const UserListPage = async ({ searchParams }: Props) => {
+  const params = await searchParams;
+  const query = params?.query || "";
+  const users = await fetchFilteredUser(query);
   return (
     <>
-      <h2 className="m-16 text-xl">ユーザー一覧</h2>
       <div className="mx-8 mt-8 mb-16">
+        <SearchBar />
         <UserList data={users} />
       </div>
       <div className="w-5/6 fixed bottom-0 text-end px-16 py-2 bg-white shadow-inner">
