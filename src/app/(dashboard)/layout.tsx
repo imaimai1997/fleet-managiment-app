@@ -14,10 +14,10 @@ const RootLayout = ({
       <Header />
 
       <div className="flex h-[calc(100vh-56px)]">
-        <div className="basis-1/6">
+        <div>
           <Sidebar />
         </div>
-        <div className="basis-5/6 h-full overflow-y-scroll">
+        <div className="w-screen h-full overflow-y-scroll ml-20">
           <AuthProvider>{children}</AuthProvider>
         </div>
       </div>
