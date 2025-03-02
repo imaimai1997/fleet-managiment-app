@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-// import { RxUpload } from "react-icons/rx";
 import { CiImport } from "react-icons/ci";
 import Papa from "papaparse";
 import toast from "react-hot-toast";
@@ -7,6 +6,8 @@ import dayjs from "dayjs";
 import Dropzone from "react-dropzone";
 import ImportButton from "../../../ImportButton";
 import ImportSubButton from "../../../ImportSubButton";
+import Modal from "../../../Modal";
+import { RxDoubleArrowDown } from "react-icons/rx";
 
 type CsvRow = {
   usageDate: string;
@@ -92,6 +93,7 @@ const changeLabel = async (data: CsvRow[]) => {
 const MileageImport = () => {
   const [parsedData, setParsedData] = useState<CsvRow[]>([]);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleImport = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -177,11 +179,68 @@ const MileageImport = () => {
   };
   return (
     <>
+      <Modal
+        open={isModalOpen}
+        name="走行距離csv取込ルール"
+        onCancel={() => setIsModalOpen(false)}
+      >
+        <table className="text-left border-2">
+          <thead className="[&_th]:border-2 border-white">
+            <tr>
+              <th scope="col" className=" bg-gray-400 px-6 py-3 min-w-[150px]">
+                項目名
+              </th>
+              <th scope="col" className=" bg-gray-400 px-6 py-3 min-w-[200px]">
+                説明
+              </th>
+              <th scope="col" className=" bg-gray-400 px-6 py-3 min-w-[120px]">
+                必須有無
+              </th>
+              <th scope="col" className=" bg-gray-400 px-6 py-3 min-w-[200px]">
+                入力ルール
+              </th>
+            </tr>
+          </thead>
+          <tbody className="[&_th]:border-2 [&_td]:border-2 [&_td]:px-6 [&_td]:py-2 [&_th]:text-sm [&_td]:text-sm">
+            <tr>
+              <th scope="row" className="px-6 py-2 border-2">
+                走行開始
+              </th>
+              <td>走行日付</td>
+              <td>必須</td>
+              <td>日付形式。20XX/XX/XX</td>
+            </tr>
+            <tr>
+              <th scope="row" className="px-6 py-2">
+                車両名
+              </th>
+              <td>車両番号</td>
+              <td>必須</td>
+              <td>半角数字。登録されている番号しか取り込めません</td>
+            </tr>
+            <tr>
+              <th scope="row" className="px-6 py-2">
+                走行距離(km)
+              </th>
+              <td>走行距離</td>
+              <td>必須</td>
+              <td>半角数字</td>
+            </tr>
+          </tbody>
+        </table>
+      </Modal>
+      <button
+        className=" mt-4 text-primary-700 font-semibold flex items-center"
+        onClick={() => setIsModalOpen(true)}
+      >
+        csv入力ルール
+        <RxDoubleArrowDown />
+      </button>
       <Dropzone onDrop={(acceptedFiles) => handleDragFileParser(acceptedFiles)}>
         {({ getRootProps, getInputProps }) => (
           <div
             {...getRootProps()}
-            className="w-1/2 h-40 mt-4 flex flex-col justify-center items-center bg-gray-200 border-2 border-primary-700"
+            className="w-1/2 h-40 flex flex-col justify-center items-center bg-gray-200 border-2 border-primary-700"
           >
             <input
               {...getInputProps()}
@@ -217,57 +276,6 @@ const MileageImport = () => {
         )}
         {fileName && <ImportButton name="クリア" onClick={handleClear} />}
       </div>
-
-      <div className="flex items-center">
-        <p>csv入力ルール</p>
-        {/* <p className="text-primary-700 pl-2">テンプレートをダウンロード</p>
-        <RxUpload /> 
-        */}
-      </div>
-      <table className="text-left border-2">
-        <thead className="[&_th]:border-2 border-white">
-          <tr>
-            <th scope="col" className=" bg-gray-400 px-6 py-3">
-              項目名
-            </th>
-            <th scope="col" className=" bg-gray-400 px-6 py-3">
-              説明
-            </th>
-            <th scope="col" className=" bg-gray-400 px-6 py-3">
-              必須有無
-            </th>
-            <th scope="col" className=" bg-gray-400 px-6 py-3">
-              入力ルール
-            </th>
-          </tr>
-        </thead>
-        <tbody className="[&_th]:border-2 [&_td]:border-2 [&_td]:px-6 [&_td]:py-2">
-          <tr>
-            <th scope="row" className="px-6 py-2 border-2">
-              走行開始
-            </th>
-            <td>走行日付</td>
-            <td>必須</td>
-            <td>日付形式。20XX/XX/XX</td>
-          </tr>
-          <tr>
-            <th scope="row" className="px-6 py-2">
-              車両名
-            </th>
-            <td>車両番号</td>
-            <td>必須</td>
-            <td>半角数字。登録されている番号しか取り込めません</td>
-          </tr>
-          <tr>
-            <th scope="row" className="px-6 py-2">
-              走行距離(km)
-            </th>
-            <td>走行距離</td>
-            <td>必須</td>
-            <td>半角数字</td>
-          </tr>
-        </tbody>
-      </table>
     </>
   );
 };
