@@ -6,50 +6,33 @@ import EtcImport from "./_components/EtcImport";
 import MileageImport from "./_components/MileageImport";
 
 const Import = () => {
-  const [checkedValue, setCheckedValue] = useState<string>("");
+  const [selectedOption, setSelectedOption] = useState<string>("");
 
   return (
     <>
       <Toaster />
 
-      <div className="w-5/6 mx-auto">
+      <div className="mt-8 mx-auto">
         <form>
           <div className="flex flex-col [&_input]:mr-2 [&_input]:mb-2">
-            <label>
-              <input
-                type="radio"
-                name="format"
-                value="refuel"
-                checked={checkedValue === "refuel"}
-                onChange={(e) => setCheckedValue(e.target.value)}
-              />
-              給油料金
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="format"
-                value="etc"
-                checked={checkedValue === "etc"}
-                onChange={(e) => setCheckedValue(e.target.value)}
-              />
-              ETC料金
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="format"
-                value="mileage"
-                checked={checkedValue === "mileage"}
-                onChange={(e) => setCheckedValue(e.target.value)}
-              />
-              走行距離
-            </label>
+            <label>設定データ</label>
+            <select
+              className="w-48 p-2 border-2 "
+              value={selectedOption}
+              onChange={(e) => setSelectedOption(e.target.value)}
+            >
+              <option value="" disabled>
+                選択してください
+              </option>
+              <option value="refuel">給油料金</option>
+              <option value="etc">ETC料金</option>
+              <option value="mileage">走行距離</option>
+            </select>
           </div>
         </form>
-        {checkedValue === "etc" && <EtcImport />}
-        {checkedValue === "refuel" && <RefuelImport />}
-        {checkedValue === "mileage" && <MileageImport />}
+        {selectedOption === "etc" && <EtcImport />}
+        {selectedOption === "refuel" && <RefuelImport />}
+        {selectedOption === "mileage" && <MileageImport />}
       </div>
     </>
   );
