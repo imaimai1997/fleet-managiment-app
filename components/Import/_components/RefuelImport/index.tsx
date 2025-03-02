@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import Dropzone from "react-dropzone";
 import ImportButton from "../../../ImportButton";
-import ImportSubButton from "../../../ImportSub1Button";
+import ImportSubButton from "../../../ImportSubButton";
 
 type CsvRow = {
   利用日変換: string; // 日付列
