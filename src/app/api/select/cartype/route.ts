@@ -25,3 +25,22 @@ export const GET = async () => {
     await prisma.$disconnect();
   }
 };
+
+export const POST = async (req: Request) => {
+  const { name } = await req.json();
+
+  try {
+    await main();
+    const cartype = await prisma.carType.create({
+      data: {
+        name,
+      },
+    });
+    return NextResponse.json({ message: "Success", cartype }, { status: 201 });
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+};
