@@ -20,13 +20,10 @@ const CarTypeImport = () => {
       );
 
       const data = await res.json();
-      console.log(data.cartype);
-
-      // data.cartypes が存在するか確認してからセット
       setCarTypeData(data.cartype);
     } catch (error) {
       console.error("Error fetching car types:", error);
-      setCarTypeData([]); // エラーが発生した場合も空の配列に設定
+      setCarTypeData([]);
     }
   };
 
