@@ -44,15 +44,12 @@ export const DELETE = async (req: Request) => {
 };
 
 export const PUT = async (req: Request) => {
-  const id = parseInt(req.url.split("/select/cartype")[1]);
-  const { name } = await req.json();
+  const { id, name } = await req.json();
   try {
     await main();
     const cartype = await prisma.carType.update({
-      data: {
-        name,
-      },
       where: { id: id },
+      data: { name },
     });
     return NextResponse.json({ message: "Success", cartype }, { status: 200 });
   } catch (err) {
