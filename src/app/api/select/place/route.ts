@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
@@ -18,6 +17,25 @@ export const GET = async () => {
     await main();
     const places = await prisma.place.findMany({});
     return NextResponse.json({ message: "Success", places }, { status: 200 });
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+export const POST = async (req: Request) => {
+  const { name } = await req.json();
+
+  try {
+    await main();
+    const place = await prisma.place.create({
+      data: {
+        name,
+      },
+    });
+    return NextResponse.json({ message: "Success", place }, { status: 201 });
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
