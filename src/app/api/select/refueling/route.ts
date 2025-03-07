@@ -27,3 +27,25 @@ export const GET = async () => {
     await prisma.$disconnect();
   }
 };
+export const POST = async (req: Request) => {
+  const { number, period } = await req.json();
+
+  try {
+    await main();
+    const refuelingCard = await prisma.refueling_card.create({
+      data: {
+        number,
+        period,
+      },
+    });
+    return NextResponse.json(
+      { message: "Success", refuelingCard },
+      { status: 201 },
+    );
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+};
