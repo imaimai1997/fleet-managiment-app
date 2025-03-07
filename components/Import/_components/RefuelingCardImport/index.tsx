@@ -35,6 +35,12 @@ const RefuelingCardImport = () => {
 
   const handleCreate = async () => {
     try {
+      if (createNumber == "" || createPeriod == "") {
+        toast.error("データを入力してください", {
+          id: "1",
+        });
+        return;
+      }
       toast.loading("wating...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/refueling`,
@@ -88,8 +94,16 @@ const RefuelingCardImport = () => {
   };
   const handleEdit = async (id: number) => {
     const editRefuelingCard = refuelingCardData.find((item) => item.id == id);
-    console.log(id, editRefuelingCard);
     try {
+      if (
+        editRefuelingCard?.number == "" ||
+        editRefuelingCard?.period == null
+      ) {
+        toast.error("データを入力してください", {
+          id: "1",
+        });
+        return;
+      }
       toast.loading("wating...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/refueling/${id}`,

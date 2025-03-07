@@ -29,7 +29,12 @@ const CarTypeImport = () => {
 
   const handleCreate = async () => {
     try {
-      console.log(createData);
+      if (createData == "") {
+        toast.error("車種データ名を入力してください", {
+          id: "1",
+        });
+        return;
+      }
       toast.loading("wating...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype`,
@@ -62,7 +67,6 @@ const CarTypeImport = () => {
   };
 
   const handleChange = (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(id, e.target.value);
     const updatedData = carTypeData.map((item) =>
       item.id === id ? { ...item, name: e.target.value } : item
     );
@@ -70,8 +74,13 @@ const CarTypeImport = () => {
   };
   const handleEdit = async (id: number) => {
     const editCarName = carTypeData.find((item) => item.id == id);
-    console.log(id, editCarName);
     try {
+      if (editCarName?.name == "") {
+        toast.error("車種データ名を入力してください", {
+          id: "1",
+        });
+        return;
+      }
       toast.loading("wating...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype/${id}`,
@@ -140,6 +149,7 @@ const CarTypeImport = () => {
         <input
           type="text"
           value={createData}
+          placeholder="車種名"
           onChange={(e) => setCreateData(e.target.value)}
           className=" w-80 mt-8 p-2 border-2 border-primary-700"
         />

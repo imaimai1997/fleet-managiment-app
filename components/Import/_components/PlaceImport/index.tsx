@@ -20,9 +20,7 @@ const PlaceImport = () => {
       );
 
       const data = await res.json();
-
       setPlaceData(data.places);
-      console.log(placeData);
     } catch (error) {
       console.error("Error fetching place:", error);
       setPlaceData([]);
@@ -31,6 +29,12 @@ const PlaceImport = () => {
 
   const handleCreate = async () => {
     try {
+      if (createData == "") {
+        toast.error("データを入力してください", {
+          id: "1",
+        });
+        return;
+      }
       toast.loading("wating...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/place`,
@@ -63,7 +67,6 @@ const PlaceImport = () => {
   };
 
   const handleChange = (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(id, e.target.value);
     const updatedData = placeData.map((item) =>
       item.id === id ? { ...item, name: e.target.value } : item
     );
@@ -71,8 +74,13 @@ const PlaceImport = () => {
   };
   const handleEdit = async (id: number) => {
     const editPlaceName = placeData.find((item) => item.id == id);
-    console.log(id, editPlaceName);
     try {
+      if (editPlaceName?.name == "") {
+        toast.error("データを入力してください", {
+          id: "1",
+        });
+        return;
+      }
       toast.loading("wating...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/place/${id}`,

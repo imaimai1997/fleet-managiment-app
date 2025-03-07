@@ -32,6 +32,12 @@ const EmployeeImport = () => {
 
   const handleCreate = async () => {
     try {
+      if (createName == "" || createEmail == "") {
+        toast.error("データを入力してください", {
+          id: "1",
+        });
+        return;
+      }
       toast.loading("wating...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/employee`,
@@ -85,8 +91,13 @@ const EmployeeImport = () => {
   };
   const handleEdit = async (id: number) => {
     const editEmployee = employeeData.find((item) => item.id == id);
-    console.log(id, editEmployee);
     try {
+      if (editEmployee?.name == "" || editEmployee?.email == "") {
+        toast.error("データを入力してください", {
+          id: "1",
+        });
+        return;
+      }
       toast.loading("wating...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/employee/${id}`,

@@ -35,6 +35,12 @@ const EtcCardImport = () => {
 
   const handleCreate = async () => {
     try {
+      if (createName == "" || createNumber == "" || createPeriod == "") {
+        toast.error("データを入力してください", {
+          id: "1",
+        });
+        return;
+      }
       toast.loading("wating...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/etc`,
@@ -99,8 +105,18 @@ const EtcCardImport = () => {
   };
   const handleEdit = async (id: number) => {
     const editEtcCard = etcCardData.find((item) => item.id == id);
-    console.log(id, editEtcCard);
+    console.log(editEtcCard?.period);
     try {
+      if (
+        editEtcCard?.name == "" ||
+        editEtcCard?.number == "" ||
+        editEtcCard?.period == null
+      ) {
+        toast.error("データを入力してください", {
+          id: "1",
+        });
+        return;
+      }
       toast.loading("wating...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/etc/${id}`,
