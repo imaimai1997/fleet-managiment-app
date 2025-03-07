@@ -28,3 +28,23 @@ export const GET = async () => {
     await prisma.$disconnect();
   }
 };
+
+export const POST = async (req: Request) => {
+  const { name, email } = await req.json();
+
+  try {
+    await main();
+    const employee = await prisma.employee.create({
+      data: {
+        name,
+        email,
+      },
+    });
+    return NextResponse.json({ message: "Success", employee }, { status: 201 });
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+};
