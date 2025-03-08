@@ -16,7 +16,7 @@ const Sidebar = () => {
   return (
     <div className="bg-gray-300 w-24 h-full ">
       <nav>
-        <ul className="pt-32 mx-auto text-xs text-center font-semibold ">
+        <ul className="pt-16 mx-auto text-xs text-center font-semibold ">
           <Link href="/">
             <li className="py-2 mb-4  hover:text-primary-700 ">
               <FaCarSide
