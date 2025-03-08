@@ -18,7 +18,7 @@ const Import = () => {
     <>
       <Toaster />
 
-      <div className="mt-8 mx-auto">
+      <div className="ml-20 mt-8 mx-auto">
         <form>
           <div className="flex flex-col [&_input]:mr-2 [&_input]:mb-2">
             <label>設定データ</label>

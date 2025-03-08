@@ -17,7 +17,7 @@ const RootLayout = ({
         <div>
           <Sidebar />
         </div>
-        <div className="w-screen h-full overflow-y-scroll ml-20">
+        <div className="w-full h-full overflow-y-scroll">
           <AuthProvider>{children}</AuthProvider>
         </div>
       </div>
