@@ -439,6 +439,7 @@ const CarDetail = ({ data, id }: Props) => {
                   required: "車種を選択してください。",
                 })}
                 className="w-60 border-2 border-primary-700 p-2"
+                value={watch("carTypeName")}
               >
                 <option value="" disabled>
                   選択してください
@@ -457,6 +458,7 @@ const CarDetail = ({ data, id }: Props) => {
                   required: "車種を選択してください。",
                 })}
                 className="w-60 border-2 border-primary-700 p-2"
+                value={watch("employeeName")}
               >
                 <option value="" disabled>
                   選択してください
@@ -484,6 +486,7 @@ const CarDetail = ({ data, id }: Props) => {
                   required: "使用場所を選択してください。",
                 })}
                 className="w-60 border-2 border-primary-700 p-2"
+                value={watch("placeName")}
               >
                 <option value="" disabled>
                   選択してください
@@ -502,6 +505,7 @@ const CarDetail = ({ data, id }: Props) => {
                   required: "リース会社を選択してください。",
                 })}
                 className="w-60 border-2 border-primary-700 p-2"
+                value={watch("leasingName")}
               >
                 <option value="" disabled>
                   選択してください
@@ -547,6 +551,7 @@ const CarDetail = ({ data, id }: Props) => {
                   required: "6カ月点検日を選択してください。",
                 })}
                 className="w-60 border-2 border-primary-700 p-2"
+                value={watch("harf_year_inspection")}
               >
                 <option value="" disabled>
                   選択してください
@@ -640,6 +645,7 @@ const CarDetail = ({ data, id }: Props) => {
               <select
                 {...register("refueling_cardNumber")}
                 className="w-60 border-2 border-primary-700 p-2"
+                value={watch("refueling_cardNumber")}
               >
                 <option value="" disabled>
                   選択してください
@@ -665,6 +671,7 @@ const CarDetail = ({ data, id }: Props) => {
               <select
                 {...register("etc_cardName")}
                 className="w-60 border-2 border-primary-700 p-2"
+                value={watch("etc_cardName")}
               >
                 <option value="" disabled>
                   選択してください
@@ -697,10 +704,15 @@ const CarDetail = ({ data, id }: Props) => {
             <div>
               <label>タイヤ交換有無</label>
               <select
-                {...register("tire_change", {
-                  setValueAs: (value) => value === "true",
-                })}
+                {...register("tire_change", {})}
                 className="w-60 border-2 border-primary-700 p-2"
+                value={
+                  watch("tire_change") === null
+                    ? ""
+                    : watch("tire_change") === "true"
+                      ? "true"
+                      : "false"
+                }
               >
                 <option value="" disabled>
                   選択してください
@@ -714,9 +726,7 @@ const CarDetail = ({ data, id }: Props) => {
             <label>備考欄</label>
             <div>
               <textarea
-                {...register("notes", {
-                  // required: "備考欄を入力してください。",
-                })}
+                {...register("notes", {})}
                 className="h-24 w-full border-2 border-primary-700 p-2"
               />
             </div>
@@ -724,7 +734,7 @@ const CarDetail = ({ data, id }: Props) => {
         </div>
 
         {!data && (
-          <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
+          <div className="w-[calc(100vw-96px)] fixed bottom-0 py-2 bg-white shadow-inner">
             <div className="flex justify-end max-w-5xl mx-auto">
               <PrimaryButton name="追加" />
             </div>
@@ -732,7 +742,7 @@ const CarDetail = ({ data, id }: Props) => {
         )}
       </form>
       {data && userRole == "管理者" && (
-        <div className="w-5/6 fixed bottom-0 py-2 bg-white shadow-inner">
+        <div className="w-[calc(100vw-96px)] fixed bottom-0 py-2 bg-white shadow-inner">
           <div className="flex justify-between max-w-5xl mx-auto">
             <button
               onClick={handleDeleteCar}
