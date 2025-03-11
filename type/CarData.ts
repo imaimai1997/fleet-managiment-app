@@ -11,11 +11,11 @@ export type CarData ={
         email:string;
       };
       place: {
-        id: 1;
+        id: number;
         name: string;
       };
       leasing: {
-        id: 1;
+        id: number;
         name:string;
       };
       first_registration_date:Date;
