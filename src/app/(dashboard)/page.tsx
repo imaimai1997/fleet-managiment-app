@@ -3,7 +3,7 @@ import SearchBar from "../../../components/SearchBar";
 import CarList from "../../../components/CarList";
 import PrimaryButton from "../../../components/PrimaryButton";
 import Link from "next/link";
-import { CarData } from "../../../type/CarData";
+import { CarListData } from "../../../type/CarListData";
 
 type Props = {
   searchParams?: Promise<{
@@ -13,16 +13,16 @@ type Props = {
 };
 
 const fetchFilteredCars = async (query: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/car`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/carlist`, {
     cache: "no-store",
   });
 
   const data = await res.json();
   const cars = await data.cars;
   const filteredCar = await cars.filter(
-    (car: CarData) =>
+    (car: CarListData) =>
       car.label.toLowerCase().includes(query.toLowerCase()) ||
-      car.employee.name.toLowerCase().includes(query.toLowerCase()),
+      car.employeeName.toLowerCase().includes(query.toLowerCase()),
   );
 
   return filteredCar;

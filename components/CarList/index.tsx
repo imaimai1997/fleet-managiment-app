@@ -1,11 +1,11 @@
 import React from "react";
 import { MdOutlineEdit } from "react-icons/md";
-import { CarData } from "../../type/CarData";
 import Link from "next/link";
 import dayjs from "dayjs";
+import { CarListData } from "../../type/CarListData";
 
 type Props = {
-  data: CarData[];
+  data: CarListData[];
 };
 const CarList = ({ data }: Props) => {
   return (
@@ -14,30 +14,51 @@ const CarList = ({ data }: Props) => {
         <table className="w-full text-left mt-8">
           <thead>
             <tr>
-              <th scope="col" className="sticky top-0 bg-gray-400 px-6 py-3">
+              <th
+                scope="col"
+                className="sticky top-0 bg-gray-400 px-6 py-3 border-2 border-white"
+              >
                 車両No
               </th>
-              <th scope="col" className="sticky top-0 bg-gray-400 px-6 py-3">
+              <th
+                scope="col"
+                className="sticky top-0 bg-gray-400 px-6 py-3 border-2 border-white"
+              >
                 管理者
               </th>
-              <th scope="col" className="sticky top-0 bg-gray-400 px-6 py-3">
+              <th
+                scope="col"
+                className="sticky top-0 bg-gray-400 px-6 py-3 border-2 border-white"
+              >
                 リース会社
               </th>
-              <th scope="col" className="sticky top-0 bg-gray-400 px-6 py-3">
+              <th
+                scope="col"
+                className="sticky top-0 bg-gray-400 px-6 py-3 border-2 border-white"
+              >
                 リース終了日
               </th>
-              <th scope="col" className="sticky top-0 bg-gray-400 px-6 py-3">
+              <th
+                scope="col"
+                className="sticky top-0 bg-gray-400 px-6 py-3 border-2 border-white"
+              >
                 半年点検日
               </th>
-              <th scope="col" className="sticky top-0 bg-gray-400 px-6 py-3">
+              <th
+                scope="col"
+                className="sticky top-0 bg-gray-400 px-6 py-3 border-2 border-white"
+              >
                 車検終了日
               </th>
-              <th scope="col" className="sticky top-0 bg-gray-400 px-6 py-3">
+              <th
+                scope="col"
+                className="sticky top-0 bg-gray-400 px-6 py-3 border-2 border-white"
+              >
                 保険終了日
               </th>
               <th
                 scope="col"
-                className="sticky top-0 bg-gray-400 px-6 py-3"
+                className="sticky top-0 bg-gray-400 px-6 py-3 border-2 border-white"
               ></th>
             </tr>
           </thead>
@@ -47,8 +68,8 @@ const CarList = ({ data }: Props) => {
                 <th scope="row" className="px-6 py-2">
                   {car.label}
                 </th>
-                <td className="px-6 py-2">{car.employee.name}</td>
-                <td className="px-6 py-2">{car.leasing.name}</td>
+                <td className="px-6 py-2">{car.employeeName}</td>
+                <td className="px-6 py-2">{car.leasingName}</td>
                 <td className="px-6 py-2">
                   {dayjs(car.leasing_finish_date).format("YYYY/MM/DD")}
                 </td>
