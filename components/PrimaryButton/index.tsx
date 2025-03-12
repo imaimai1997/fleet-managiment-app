@@ -1,8 +1,5 @@
-import React from "react";
-
 type Props = {
   name: string;
-  // onClick?: () => void;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   type?: "submit" | "reset" | "button" | undefined;
 };
