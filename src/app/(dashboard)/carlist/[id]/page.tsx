@@ -1,18 +1,21 @@
 import CarDetail from "../../../../../components/CarDetail";
 
 const fetchCarData = async (id: string) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/car/${id}`, {
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/car/${id}`,
+    {
+      cache: "no-store",
+    },
+  );
 
   const { car } = await response.json();
   return car;
-}
+};
 
 const CarDetailPage = async ({
-  params
+  params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
   const carData = await fetchCarData(id);
