@@ -1,9 +1,9 @@
 import React from "react";
 import UserList from "../../../../components/UserList";
 import Link from "next/link";
-import PrimaryButton from "../../../../components/PrimaryButton";
 import { UserData } from "../../../../type/UserData";
 import SearchBar from "../../../../components/SearchBar";
+import { Button } from "@/components/Button";
 
 type Props = {
   searchParams?: Promise<{
@@ -37,7 +37,11 @@ const UserListPage = async ({ searchParams }: Props) => {
       </div>
       <div className="w-[calc(100vw-96px)] fixed bottom-0 text-end  pr-16 py-2 bg-white shadow-inner">
         <Link href="userlist/create">
-          <PrimaryButton name="新規追加" />
+          <Button
+            className={"bg-primary-700 w-32 py-2 rounded-3xl text-white hover:bg-primary-600"}
+          >
+            新規追加
+          </Button>
         </Link>
       </div>
     </>

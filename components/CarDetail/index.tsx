@@ -1,7 +1,7 @@
 "use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import { CarData } from "../../type/CarData";
-import PrimaryButton from "../PrimaryButton";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
@@ -10,6 +10,7 @@ import { CarForm } from "../../type/CarForm";
 import { Select } from "../../type/Select";
 import { deletePDF, uploadPDF } from "@/utils/supabase/uploadPDF";
 import { useAuthContext } from "@/context/authContext";
+import { Button } from "@/components/Button";
 
 type Props = {
   data?: CarData;
@@ -736,22 +737,31 @@ const CarDetail = ({ data, id }: Props) => {
         {!data && (
           <div className="w-[calc(100vw-96px)] fixed bottom-0 py-2 bg-white shadow-inner">
             <div className="flex justify-end max-w-5xl mx-auto">
-              <PrimaryButton name="追加" />
+              <Button>
+                追加
+              </Button>
             </div>
           </div>
         )}
       </form>
+
       {data && userRole == "管理者" && (
         <div className="w-[calc(100vw-96px)] fixed bottom-0 py-2 bg-white shadow-inner">
           <div className="flex justify-between max-w-5xl mx-auto">
-            <button
+            <Button
               onClick={handleDeleteCar}
-              className="flex items-center py-2 text-slate-500"
+              className={"flex gap-1 items-center py-2 text-slate-500"}
             >
               削除
               <FaRegTrashAlt />
-            </button>
-            <PrimaryButton name="保存" onClick={handleUpdateCar} />
+            </Button>
+
+            <Button
+              onClick={handleUpdateCar}
+              className={"bg-primary-700 w-32 py-2 rounded-3xl text-white hover:bg-primary-600"}
+            >
+              保存
+            </Button>
           </div>
         </div>
       )}

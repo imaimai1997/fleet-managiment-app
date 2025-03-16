@@ -1,17 +1,14 @@
 "use client";
-import React from "react";
-import PrimaryButton from "../PrimaryButton";
+
 import { UserData } from "../../type/UserData";
 import { FaRegTrashAlt } from "react-icons/fa";
-import {
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { FieldErrors, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { FirebaseError } from "firebase/app";
+import { Button } from "@/components/Button";
 
 type Props = {
   data?: UserData;
@@ -229,33 +226,46 @@ const UserDetail = ({ data, id }: Props) => {
 
             {!data && (
               <div className="m-6 bg-orange">
-                <PrimaryButton name={"追加"} type="submit" />
+                <Button
+                  type={"submit"}
+                  className={"bg-primary-700 w-32 py-2 rounded-3xl text-white hover:bg-primary-600"}
+                >
+                  追加
+                </Button>
               </div>
             )}
           </form>
+
           {data && (
             <div className="mx-4 my-2">
               <label>パスワード変更</label>
-              <button
+
+              <Button
                 onClick={handlSendPasswordResetMail}
-                className="w-80 bg-black text-white p-2 rounded-full"
+                className={"w-80 bg-black text-white p-2 rounded-full"}
               >
                 変更メールを送る
-              </button>
+              </Button>
             </div>
           )}
         </div>
 
         {data && (
           <div className="flex justify-between m-6">
-            <button
+            <Button
               onClick={handleDeleteUser}
-              className="flex items-center py-2 text-slate-500"
+              className={"flex items-center gap-1 py-2 text-slate-500"}
             >
               削除
               <FaRegTrashAlt />
-            </button>
-            <PrimaryButton name={"保存"} onClick={handleUpdateUser} />
+            </Button>
+
+            <Button
+              onClick={handleUpdateUser}
+              className={"bg-primary-700 w-32 py-2 rounded-3xl text-white hover:bg-primary-600"}
+            >
+              保存
+            </Button>
           </div>
         )}
       </div>
