@@ -71,7 +71,7 @@ export const SignInForm = () => {
         <h2 className="text-2xl font-bold mb-6 text-white">Sign In</h2>
         <form
           onSubmit={handleSubmit(handleSignin, onError)}
-          className="flex flex-col w-80 text-left p-8 border-4 rounded bg-white"
+          className="flex flex-col w-80 text-left p-8 border-4 rounded-sm bg-white"
         >
           <label>
             Email

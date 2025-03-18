@@ -29,7 +29,7 @@ const SearchBar = () => {
             placeholder="Search"
             onChange={(e) => setTerm(e.target.value)}
             defaultValue={searchParams.get("query")?.toString()}
-            className="bg-gray-200 w-80 p-4 pr-14 rounded-3xl focus:ring-4 focus:outline-none focus:ring-primary-700 "
+            className="bg-gray-200 w-80 p-4 pr-14 rounded-3xl focus:ring-4 focus:outline-hidden focus:ring-primary-700 "
           />
           <button
             onClick={handleSearch}

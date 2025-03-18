@@ -130,7 +130,7 @@ const FeeListSearch = ({ carData, parentData }: Props) => {
             className="w-48 border-2 border-primary-700 mx-6 p-2"
           />
         </div>
-        <div className="flex justify-end p-4 [&>button]:border [&>button]:border-2 [&>button]:border-black [&>button]:px-2 [&>button]:mx-4 [&>button]:rounded">
+        <div className="flex justify-end p-4 [&>button]:border [&>button]:border-2 [&>button]:border-black [&>button]:px-2 [&>button]:mx-4 [&>button]:rounded-sm">
           <button onClick={handlePreviousMonth}>前月</button>
           <button onClick={handleNextMonth}>翌月</button>
           <button onClick={handleSerchFee}>検索</button>

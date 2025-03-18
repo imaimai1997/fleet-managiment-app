@@ -247,7 +247,7 @@ const EtcImport = () => {
         {fileName ? (
           <Button
             onClick={handleImport}
-            className={"bg-primary-700 text-white border-2 border-transparent p-2 mr-4 text-sm font-semibold rounded-lg shadow-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 hover:shadow-lg"}
+            className={"bg-primary-700 text-white border-2 border-transparent p-2 mr-4 text-sm font-semibold rounded-lg shadow-md hover:bg-primary-600 focus:outline-hidden focus:ring-2 focus:ring-primary-500 hover:shadow-lg"}
           >
             ETC料金取込
           </Button>
@@ -263,7 +263,7 @@ const EtcImport = () => {
           fileName &&
           <Button
             onClick={handleClear}
-            className={"bg-primary-700 text-white border-2 border-transparent p-2 mr-4 text-sm font-semibold rounded-lg shadow-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 hover:shadow-lg"}
+            className={"bg-primary-700 text-white border-2 border-transparent p-2 mr-4 text-sm font-semibold rounded-lg shadow-md hover:bg-primary-600 focus:outline-hidden focus:ring-2 focus:ring-primary-500 hover:shadow-lg"}
           >
             クリア
           </Button>
