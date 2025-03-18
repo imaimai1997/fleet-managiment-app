@@ -17,7 +17,7 @@ const Modal = (props: Props) => {
       >
         <div className="relative w-screen h-screen">
           <div
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-12 bg-white border-2 rounded-lg shadow-sm  z-20"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-12 bg-white border-2 rounded-lg shadow-xs  z-20"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mx-auto text-gray-800 font-semibold ">

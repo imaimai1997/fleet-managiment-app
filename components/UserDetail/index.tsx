@@ -166,7 +166,7 @@ const UserDetail = ({ data, id }: Props) => {
     <>
       <Toaster />
       <div className="w-3/6 mx-auto text-right ">
-        <div className="p-6 flex flex-col rounded *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&_div]:flex [&_div]:justify-between [&_div]:items-center border-2 border-black">
+        <div className="p-6 flex flex-col rounded-sm *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&_div]:flex [&_div]:justify-between [&_div]:items-center border-2 border-black">
           <form onSubmit={handleSubmit(handleSignUp, onError)}>
             <div className="mx-4 my-2">
               <label>ユーザー名</label>
