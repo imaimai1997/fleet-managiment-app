@@ -40,11 +40,7 @@ const CarListPage = async ({ searchParams }: Props) => {
       </div>
       <div className="w-[calc(100vw-96px)] fixed bottom-0 text-end  pr-16 py-2 bg-white shadow-inner">
         <Link href="carlist/create">
-          <Button
-            className={
-              "bg-primary-700 w-32 py-2 rounded-3xl text-white hover:bg-primary-600"
-            }
-          >
+          <Button rounded="full">
             新規追加
           </Button>
         </Link>

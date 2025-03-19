@@ -41,6 +41,10 @@
   @apply p-2 w-40;
 }
 
+.size_auto {
+  @apply p-2 w-auto
+}
+
 /* rounded */
 .rounded_none {
   @apply rounded-none;

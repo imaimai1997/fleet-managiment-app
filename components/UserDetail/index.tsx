@@ -165,7 +165,7 @@ const UserDetail = ({ data, id }: Props) => {
   return (
     <>
       <Toaster />
-      <div className="w-3/6 mx-auto text-right ">
+      <div className="w-3/6 mx-auto text-right">
         <div className="p-6 flex flex-col rounded *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&_div]:flex [&_div]:justify-between [&_div]:items-center border-2 border-black">
           <form onSubmit={handleSubmit(handleSignUp, onError)}>
             <div className="mx-4 my-2">
@@ -225,11 +225,8 @@ const UserDetail = ({ data, id }: Props) => {
             </div>
 
             {!data && (
-              <div className="m-6 bg-orange">
-                <Button
-                  type={"submit"}
-                  className={"bg-primary-700 w-32 py-2 rounded-3xl text-white hover:bg-primary-600"}
-                >
+              <div className="mt-6">
+                <Button rounded="full">
                   追加
                 </Button>
               </div>
@@ -240,10 +237,7 @@ const UserDetail = ({ data, id }: Props) => {
             <div className="mx-4 my-2">
               <label>パスワード変更</label>
 
-              <Button
-                onClick={handlSendPasswordResetMail}
-                className={"w-80 bg-black text-white p-2 rounded-full"}
-              >
+              <Button onClick={handlSendPasswordResetMail} variant="secondary" size="auto" rounded="md">
                 変更メールを送る
               </Button>
             </div>
@@ -252,18 +246,12 @@ const UserDetail = ({ data, id }: Props) => {
 
         {data && (
           <div className="flex justify-between m-6">
-            <Button
-              onClick={handleDeleteUser}
-              className={"flex items-center gap-1 py-2 text-slate-500"}
-            >
+            <Button onClick={handleDeleteUser} variant="secondary" rounded="full" className="flex items-center justify-center gap-2">
               削除
               <FaRegTrashAlt />
             </Button>
 
-            <Button
-              onClick={handleUpdateUser}
-              className={"bg-primary-700 w-32 py-2 rounded-3xl text-white hover:bg-primary-600"}
-            >
+            <Button onClick={handleUpdateUser} rounded="full">
               保存
             </Button>
           </div>

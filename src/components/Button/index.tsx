@@ -1,10 +1,10 @@
 import { ButtonHTMLAttributes } from "react";
-import  styles from "./styles.module.css";
 import classNames from "classnames";
+import styles from "./styles.module.css";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary";
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "auto";
   rounded?: "none" | "sm" | "md" | "lg" | "xl" | "full";
 }
 
