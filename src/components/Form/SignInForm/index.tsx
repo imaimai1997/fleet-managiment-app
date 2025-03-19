@@ -71,7 +71,7 @@ export const SignInForm = () => {
         <h2 className="text-2xl font-bold mb-6 text-white">Sign In</h2>
         <form
           onSubmit={handleSubmit(handleSignin, onError)}
-          className="flex flex-col w-80 text-left p-8 border-4 rounded bg-white"
+          className="flex flex-col gap-6 w-80 text-left p-8 border-4 rounded bg-white"
         >
           <label>
             Email
@@ -86,7 +86,7 @@ export const SignInForm = () => {
               type="email"
               placeholder="Enter your Email"
               required
-              className="bg-gray-200 px-4 py-2 mt-2 mb-4 border-solid border border-black rounded-xl w-full"
+              className="bg-gray-200 px-4 py-2 mt-1 border-solid border border-black rounded-xl w-full"
             />
           </label>
 
@@ -102,15 +102,12 @@ export const SignInForm = () => {
               })}
               type="password"
               placeholder="Enter your Password"
-              className="bg-gray-200 px-4 py-2 my-2 border-solid border border-black rounded-xl w-full"
+              className="bg-gray-200 px-4 py-2 mt-1 border-solid border border-black rounded-xl w-full"
             />
           </label>
 
           <div className="mx-auto">
-            <Button
-              type={"submit"}
-              className={"bg-primary-700 w-28 px-2 py-2 mt-6 rounded-3xl text-white"}
-            >
+            <Button rounded="md">
               Sign In
             </Button>
           </div>
