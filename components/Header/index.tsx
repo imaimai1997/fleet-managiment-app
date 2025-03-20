@@ -41,13 +41,15 @@ const Header = () => {
     <>
       <Toaster />
       <div className="bg-primary-700 flex justify-between items-center h-14 ">
-        <Image
-          src="/fleet.png"
-          className="w-48"
-          alt="FleetManagiment"
-          width={500}
-          height={150}
-        />
+        <Link href="/">
+          <Image
+            src="/fleet.png"
+            className="w-48"
+            alt="FleetManagiment"
+            width={500}
+            height={150}
+          />
+        </Link>
         <div className="relative h-10 text-white ">
           <div className="mx-16">
             <button onClick={handleUserMenu}>
