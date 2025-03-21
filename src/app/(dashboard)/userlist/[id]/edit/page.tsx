@@ -1,5 +1,5 @@
 import React from "react";
-import UserDetail from "../../../../../../components/UserDetail";
+import UserDetail from "@/components/UserDetail";
 
 const fetchUserById = async (id: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`, {

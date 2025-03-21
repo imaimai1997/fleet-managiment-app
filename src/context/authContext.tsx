@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { auth } from "@/utils/firebase";
 import { User } from "firebase/auth";
-import { UserData } from "../../type/UserData";
+import { UserData } from "@/type/UserData";
 import { useRouter } from "next/navigation";
 
 export type AuthContextType = {

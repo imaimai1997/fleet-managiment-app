@@ -1,9 +1,9 @@
 import React from "react";
-import UserList from "../../../../components/UserList";
+import UserList from "@/components/UserList";
 import Link from "next/link";
-import PrimaryButton from "../../../../components/PrimaryButton";
-import { UserData } from "../../../../type/UserData";
-import SearchBar from "../../../../components/SearchBar";
+import PrimaryButton from "@/components/PrimaryButton";
+import { UserData } from "@/type/UserData";
+import SearchBar from "@/components/SearchBar";
 
 type Props = {
   searchParams?: Promise<{
