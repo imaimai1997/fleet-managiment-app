@@ -6,10 +6,9 @@ import Papa from "papaparse";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import Dropzone from "react-dropzone";
-import ImportButton from "../../../ImportButton";
-import ImportSubButton from "../../../ImportSubButton";
 import Modal from "../../../Modal";
 import { RxDoubleArrowDown } from "react-icons/rx";
+import { Button } from "@/components/Button";
 
 type CsvRow = {
   usageDate: string;
@@ -246,11 +245,29 @@ const EtcImport = () => {
       </Dropzone>
       <div className="my-8">
         {fileName ? (
-          <ImportButton name="ETC料金取込" onClick={handleImport} />
+          <Button
+            onClick={handleImport}
+            className={"bg-primary-700 text-white border-2 border-transparent p-2 mr-4 text-sm font-semibold rounded-lg shadow-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 hover:shadow-lg"}
+          >
+            ETC料金取込
+          </Button>
         ) : (
-          <ImportSubButton name="ETC料金取込" />
+          <Button
+            className={"bg-gray-200 p-2 border-2 border-gray-400 text-gray-400 text-sm font-semibold"}
+          >
+            ETC料金取込
+          </Button>
         )}
-        {fileName && <ImportButton name="クリア" onClick={handleClear} />}
+
+        {
+          fileName &&
+          <Button
+            onClick={handleClear}
+            className={"bg-primary-700 text-white border-2 border-transparent p-2 mr-4 text-sm font-semibold rounded-lg shadow-md hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 hover:shadow-lg"}
+          >
+            クリア
+          </Button>
+        }
       </div>
     </>
   );

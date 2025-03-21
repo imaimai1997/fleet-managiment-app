@@ -1,13 +1,12 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-// import PrimaryButton from "../PrimaryButton";
-// import Link from "next/link";
 import { useAuthContext } from "@/context/authContext";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import toast, { Toaster } from "react-hot-toast";
-import PrimaryButton from "../PrimaryButton";
 import { UserData } from "../../type/UserData";
+import { Button } from "@/components/Button";
 
 const UserSetting = () => {
   const authContext = useAuthContext();
@@ -127,7 +126,12 @@ const UserSetting = () => {
           </div>
         </div>
         <div className="m-6">
-          <PrimaryButton name={"保存"} onClick={handleUpdateUser} />
+          <Button
+            onClick={handleUpdateUser}
+            className={"bg-primary-700 w-32 py-2 rounded-3xl text-white hover:bg-primary-600"}
+          >
+            保存
+          </Button>
         </div>
       </div>
     </>

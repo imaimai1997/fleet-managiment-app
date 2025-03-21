@@ -1,17 +1,14 @@
 "use client";
-import React from "react";
-import PrimaryButton from "../PrimaryButton";
+
 import { UserData } from "../../type/UserData";
 import { FaRegTrashAlt } from "react-icons/fa";
-import {
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { FieldErrors, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { FirebaseError } from "firebase/app";
+import { Button } from "@/components/Button";
 
 type Props = {
   data?: UserData;
@@ -168,7 +165,7 @@ const UserDetail = ({ data, id }: Props) => {
   return (
     <>
       <Toaster />
-      <div className="w-3/6 mx-auto text-right ">
+      <div className="w-3/6 mx-auto text-right">
         <div className="p-6 flex flex-col rounded *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&_div]:flex [&_div]:justify-between [&_div]:items-center border-2 border-black">
           <form onSubmit={handleSubmit(handleSignUp, onError)}>
             <div className="mx-4 my-2">
@@ -228,34 +225,35 @@ const UserDetail = ({ data, id }: Props) => {
             </div>
 
             {!data && (
-              <div className="m-6 bg-orange">
-                <PrimaryButton name={"追加"} type="submit" />
+              <div className="mt-6">
+                <Button rounded="full">
+                  追加
+                </Button>
               </div>
             )}
           </form>
+
           {data && (
             <div className="mx-4 my-2">
               <label>パスワード変更</label>
-              <button
-                onClick={handlSendPasswordResetMail}
-                className="w-80 bg-black text-white p-2 rounded-full"
-              >
+
+              <Button onClick={handlSendPasswordResetMail} variant="secondary" size="auto" rounded="md">
                 変更メールを送る
-              </button>
+              </Button>
             </div>
           )}
         </div>
 
         {data && (
           <div className="flex justify-between m-6">
-            <button
-              onClick={handleDeleteUser}
-              className="flex items-center py-2 text-slate-500"
-            >
+            <Button onClick={handleDeleteUser} variant="secondary" rounded="full" className="flex items-center justify-center gap-2">
               削除
               <FaRegTrashAlt />
-            </button>
-            <PrimaryButton name={"保存"} onClick={handleUpdateUser} />
+            </Button>
+
+            <Button onClick={handleUpdateUser} rounded="full">
+              保存
+            </Button>
           </div>
         )}
       </div>

@@ -1,4 +1,3 @@
-import React from "react";
 import CarDetail from "../../../../../components/CarDetail";
 
 const CreateCar = () => {

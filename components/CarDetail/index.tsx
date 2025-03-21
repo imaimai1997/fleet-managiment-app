@@ -1,7 +1,7 @@
 "use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import { CarData } from "../../type/CarData";
-import PrimaryButton from "../PrimaryButton";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
@@ -10,6 +10,7 @@ import { CarForm } from "../../type/CarForm";
 import { Select } from "../../type/Select";
 import { deletePDF, uploadPDF } from "@/utils/supabase/uploadPDF";
 import { useAuthContext } from "@/context/authContext";
+import { Button } from "@/components/Button";
 
 type Props = {
   data?: CarData;
@@ -418,7 +419,7 @@ const CarDetail = ({ data, id }: Props) => {
   return (
     <>
       <Toaster />
-      {/* <div className="max-w-5xl  mx-auto my-20"> */}
+
       <form onSubmit={handleSubmit(handleCreateCar, onError)}>
         <div className="max-w-5xl  mx-auto my-20">
           <div className="w-full grid grid-cols-2 gap-y-4 gap-x-12 *:text-xl [&_input]:w-60 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2  [&>div]:max-w-lg [&>div]:flex [&>div]:justify-between [&>div]:items-center">
@@ -736,22 +737,25 @@ const CarDetail = ({ data, id }: Props) => {
         {!data && (
           <div className="w-[calc(100vw-96px)] fixed bottom-0 py-2 bg-white shadow-inner">
             <div className="flex justify-end max-w-5xl mx-auto">
-              <PrimaryButton name="追加" />
+              <Button rounded="full">
+                追加
+              </Button>
             </div>
           </div>
         )}
       </form>
+
       {data && userRole == "管理者" && (
         <div className="w-[calc(100vw-96px)] fixed bottom-0 py-2 bg-white shadow-inner">
-          <div className="flex justify-between max-w-5xl mx-auto">
-            <button
-              onClick={handleDeleteCar}
-              className="flex items-center py-2 text-slate-500"
-            >
+          <div className="flex justify-end gap-4 max-w-5xl mx-auto">
+            <Button onClick={handleDeleteCar} variant="secondary" rounded="full" className="flex gap-2 items-center justify-center">
               削除
               <FaRegTrashAlt />
-            </button>
-            <PrimaryButton name="保存" onClick={handleUpdateCar} />
+            </Button>
+
+            <Button onClick={handleUpdateCar} rounded="full">
+              保存
+            </Button>
           </div>
         </div>
       )}
