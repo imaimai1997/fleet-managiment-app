@@ -1,8 +1,8 @@
 "use client";
 
-import Header from "../../../components/Header";
-import Sidebar from "../../../components/Sidebar";
-import { AuthProvider } from "../../context/authContext";
+import Header from "@/components/Header";
+import Sidebar from "@/components/Sidebar";
+import { AuthProvider } from "@/context/authContext";
 
 const RootLayout = ({
   children,

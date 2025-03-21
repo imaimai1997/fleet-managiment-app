@@ -1,4 +1,4 @@
-import FeeList from "../../../../components/FeeList";
+import FeeList from "@/components/FeeList";
 
 const fetchCarList = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/car`, {
