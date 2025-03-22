@@ -4,12 +4,12 @@ import "./globals.css";
 import { AuthProvider } from "@/context/authContext";
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: "../fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+  src: "../fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
@@ -19,13 +19,13 @@ export const metadata: Metadata = {
   description: "車両台帳特化型アプリです。社用車のデータを格納することが来ます",
 };
 
-const SinInLayout = ({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
   return (
-    <html lang="en">
+    <html lang="ja">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -37,4 +37,4 @@ const SinInLayout = ({
   );
 };
 
-export default SinInLayout;
+export default RootLayout;
