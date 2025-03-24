@@ -4,26 +4,15 @@ import Papa from "papaparse";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import Dropzone from "react-dropzone";
-import ImportButton from "../../../ImportButton";
-import ImportSubButton from "../../../ImportSubButton";
 import Modal from "../../../Modal";
 import { RxDoubleArrowDown } from "react-icons/rx";
+import { Button } from "@/components/Button";
 
-type CsvRow = {
-  usageDate: string;
-  carNumber: string;
-  mileage: number;
-};
+type CsvRow = { usageDate: string; carNumber: string; mileage: number };
 
-type CsvRowRaw = {
-  走行開始: string;
-  車両名: string;
-  "走行距離(km)": number;
-};
+type CsvRowRaw = { 走行開始: string; 車両名: string; "走行距離(km)": number };
 
-type label = {
-  label: string;
-};
+type label = { label: string };
 
 //走行距離csv取込
 const fileParser = (file: File): Promise<CsvRow[]> => {
@@ -47,11 +36,7 @@ const fileParser = (file: File): Promise<CsvRow[]> => {
             if (sumData[key]) {
               sumData[key].mileage += mileage;
             } else {
-              sumData[key] = {
-                usageDate: yearMonth,
-                carNumber,
-                mileage,
-              };
+              sumData[key] = { usageDate: yearMonth, carNumber, mileage };
             }
           });
           resolve(Object.values(sumData));
@@ -70,9 +55,7 @@ const fileParser = (file: File): Promise<CsvRow[]> => {
 const fetchCarLabel = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/fee/mileage`,
-    {
-      cache: "no-store",
-    },
+    { cache: "no-store" },
   );
   const data = await res.json();
   return data.cars;
@@ -109,9 +92,7 @@ const MileageImport = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/api/fee/mileage`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(parsedData),
         },
       );
@@ -270,11 +251,15 @@ const MileageImport = () => {
       </Dropzone>
       <div className="my-8">
         {fileName ? (
-          <ImportButton name="走行距離取込" onClick={handleImport} />
+          <Button onClick={handleImport}>走行距離取込</Button>
         ) : (
-          <ImportSubButton name="走行距離取込" />
+          <Button variant="gray">走行距離取込</Button>
         )}
-        {fileName && <ImportButton name="クリア" onClick={handleClear} />}
+        {fileName && (
+          <Button variant="secondary" onClick={handleClear} className="ml-4">
+            クリア
+          </Button>
+        )}
       </div>
     </>
   );

@@ -6,16 +6,11 @@ import Papa from "papaparse";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import Dropzone from "react-dropzone";
-import ImportButton from "../../../ImportButton";
-import ImportSubButton from "../../../ImportSubButton";
 import Modal from "../../../Modal";
 import { RxDoubleArrowDown } from "react-icons/rx";
+import { Button } from "@/components/Button";
 
-type CsvRow = {
-  usageDate: string;
-  cardNumber: number;
-  etcFee: number;
-};
+type CsvRow = { usageDate: string; cardNumber: number; etcFee: number };
 
 type CsvRowRaw = {
   ご利用日: string;
@@ -45,11 +40,7 @@ const fileParser = (file: File): Promise<CsvRow[]> => {
             if (sumData[key]) {
               sumData[key].etcFee += etcFee;
             } else {
-              sumData[key] = {
-                usageDate: yearMonth,
-                cardNumber,
-                etcFee,
-              };
+              sumData[key] = { usageDate: yearMonth, cardNumber, etcFee };
             }
           });
           resolve(Object.values(sumData));
@@ -82,9 +73,7 @@ const EtcImport = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/api/fee/etc`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(parsedData),
         },
       );
@@ -246,11 +235,15 @@ const EtcImport = () => {
       </Dropzone>
       <div className="my-8">
         {fileName ? (
-          <ImportButton name="ETC料金取込" onClick={handleImport} />
+          <Button onClick={handleImport}>ETC料金取込</Button>
         ) : (
-          <ImportSubButton name="ETC料金取込" />
+          <Button variant="gray">ETC料金取込</Button>
         )}
-        {fileName && <ImportButton name="クリア" onClick={handleClear} />}
+        {fileName && (
+          <Button variant="secondary" onClick={handleClear} className="ml-4">
+            クリア
+          </Button>
+        )}
       </div>
     </>
   );
