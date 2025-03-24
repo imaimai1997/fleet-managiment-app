@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import PrimaryButton from "../PrimaryButton";
 import { UserData } from "@/type/UserData";
 import { FaRegTrashAlt } from "react-icons/fa";
 import {
@@ -12,11 +11,9 @@ import { FieldErrors, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { FirebaseError } from "firebase/app";
+import { Button } from "../Button";
 
-type Props = {
-  data?: UserData;
-  id?: string;
-};
+type Props = { data?: UserData; id?: string };
 
 type UserCreateForm = {
   userName: string;
@@ -41,9 +38,7 @@ const UserDetail = ({ data, id }: Props) => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: userId,
           roleName: watch("userRole"),
@@ -111,12 +106,7 @@ const UserDetail = ({ data, id }: Props) => {
       toast.loading("waiting...", { id: "1" });
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
+        { method: "DELETE", headers: { "Content-Type": "application/json" } },
       );
       toast.success("ユーザーを削除しました", { id: "1" });
       router.push("/userlist");
@@ -135,9 +125,7 @@ const UserDetail = ({ data, id }: Props) => {
         `${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`,
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             id: id,
             roleName: watch("userRole"),
@@ -228,34 +216,40 @@ const UserDetail = ({ data, id }: Props) => {
             </div>
 
             {!data && (
-              <div className="m-6 bg-orange">
-                <PrimaryButton name={"追加"} type="submit" />
-              </div>
+              <Button rounded="full" className="mx-4 my-2">
+                追加
+              </Button>
             )}
           </form>
           {data && (
             <div className="mx-4 my-2">
               <label>パスワード変更</label>
-              <button
+              <Button
                 onClick={handlSendPasswordResetMail}
-                className="w-80 bg-black text-white p-2 rounded-full"
+                variant="secondary"
+                size="auto"
+                rounded="md"
               >
                 変更メールを送る
-              </button>
+              </Button>
             </div>
           )}
         </div>
 
         {data && (
           <div className="flex justify-between m-6">
-            <button
+            <Button
               onClick={handleDeleteUser}
-              className="flex items-center py-2 text-slate-500"
+              variant="secondary"
+              rounded="full"
+              className="flex items-center justify-center gap-2"
             >
               削除
               <FaRegTrashAlt />
-            </button>
-            <PrimaryButton name={"保存"} onClick={handleUpdateUser} />
+            </Button>
+            <Button onClick={handleUpdateUser} rounded="full">
+              保存
+            </Button>
           </div>
         )}
       </div>

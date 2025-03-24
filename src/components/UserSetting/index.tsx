@@ -1,13 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-// import PrimaryButton from "../PrimaryButton";
-// import Link from "next/link";
 import { useAuthContext } from "@/context/authContext";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import toast, { Toaster } from "react-hot-toast";
-import PrimaryButton from "../PrimaryButton";
 import { UserData } from "@/type/UserData";
+import { Button } from "../Button";
 
 const UserSetting = () => {
   const authContext = useAuthContext();
@@ -32,9 +30,7 @@ const UserSetting = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/api/user/${currentUser?.id}`,
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             id: currentUser?.id,
             roleName: currentUser?.role.name,
@@ -118,16 +114,20 @@ const UserSetting = () => {
           </form>
           <div className="mx-4 my-2">
             <label>パスワード変更</label>
-            <button
+            <Button
               onClick={handlSendPasswordResetMail}
-              className="w-80 bg-black text-white p-2 rounded-full"
+              variant="secondary"
+              size="auto"
+              rounded="md"
             >
               変更メールを送る
-            </button>
+            </Button>
           </div>
         </div>
         <div className="m-6">
-          <PrimaryButton name={"保存"} onClick={handleUpdateUser} />
+          <Button rounded="full" onClick={handleUpdateUser}>
+            保存
+          </Button>
         </div>
       </div>
     </>
