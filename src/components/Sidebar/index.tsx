@@ -14,53 +14,48 @@ const Sidebar = () => {
 
   const pathname = usePathname();
   return (
-    <div className="bg-gray-300 w-24 h-full ">
+    <div className="bg-primary-700 w-60 h-full pt-8 ">
       <nav>
-        <ul className="pt-16 mx-auto text-xs text-center font-semibold ">
+        <ul className="text-white font-bold">
           <Link href="/">
-            <li className="py-2 mb-4  hover:text-primary-700 ">
-              <FaCarSide
-                size="2rem"
-                className={`mx-auto ${pathname === "/" ? "text-primary-700" : ""}`}
-              />
+            <li
+              className={`flex items-center p-2 mx-4 mb-2 hover:bg-primary-800 rounded-md ${pathname === "/" ? "bg-primary-800 rounded-md" : ""}`}
+            >
+              <FaCarSide size={16} className="mr-2" />
               車両一覧
             </li>
           </Link>
           <Link href="/feelist">
-            <li className="py-2 mb-4  hover:text-primary-700">
-              <RiMoneyCnyCircleFill
-                size="2rem"
-                className={`mx-auto ${pathname === "/feelist" ? "text-primary-700" : ""}`}
-              />
+            <li
+              className={`flex items-center p-2 mx-4 mb-2 hover:bg-primary-800 rounded-md ${pathname === "/feelist" ? "bg-primary-800 rounded-md" : ""}`}
+            >
+              <RiMoneyCnyCircleFill size={16} className="mr-2" />
               月額料金
             </li>
           </Link>
           <Link href="/gasmileage">
-            <li className="py-2 mb-4  hover:text-primary-700">
-              <FaFireAlt
-                size="2rem"
-                className={`mx-auto ${pathname === "/gasmileage" ? "text-primary-700" : ""}`}
-              />
+            <li
+              className={`flex items-center p-2 mx-4 mb-2 hover:bg-primary-800 rounded-md ${pathname === "gasmileage" ? "bg-primary-800 rounded-md" : ""}`}
+            >
+              <FaFireAlt size={16} className="mr-2" />
               燃費
             </li>
           </Link>
           {userRole == "管理者" && (
             <>
               <Link href="/userlist">
-                <li className="py-2 mb-4  hover:text-primary-700">
-                  <FaUserFriends
-                    size="2rem"
-                    className={`mx-auto ${pathname === "/userlist" ? "text-primary-700" : ""}`}
-                  />
+                <li
+                  className={`flex items-center p-2 mx-4 mb-2 hover:bg-primary-800 rounded-md ${pathname === "/userlist" ? "bg-primary-800 rounded-md" : ""}`}
+                >
+                  <FaUserFriends size={16} className="mr-2" />
                   ユーザー
                 </li>
               </Link>
               <Link href="/import">
-                <li className="py-2 mb-4  hover:text-primary-700">
-                  <IoSettings
-                    size="2rem"
-                    className={`mx-auto ${pathname === "/import" ? "text-primary-700" : ""}`}
-                  />
+                <li
+                  className={`flex items-center p-2 mx-4 mb-2 hover:bg-primary-800 rounded-md ${pathname === "/import" ? "bg-primary-800 rounded-md" : ""}`}
+                >
+                  <IoSettings size={16} className="mr-2" />
                   データ設定
                 </li>
               </Link>
