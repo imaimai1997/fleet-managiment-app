@@ -2,7 +2,6 @@
 import { useAuthContext } from "@/context/authContext";
 import { auth } from "@/utils/firebase";
 import { signOut } from "firebase/auth";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -10,6 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { IoPersonCircle } from "react-icons/io5";
 import { IoSettingsSharp } from "react-icons/io5";
 import { TbDoorExit } from "react-icons/tb";
+import { FaCarSide } from "react-icons/fa";
 
 const Header = () => {
   const router = useRouter();
@@ -40,17 +40,14 @@ const Header = () => {
   return (
     <>
       <Toaster />
-      <div className="bg-primary-700 flex justify-between items-center h-14 ">
+      <div className="flex justify-between items-center h-14 shadow-md">
         <Link href="/">
-          <Image
-            src="/fleet.png"
-            className="w-48"
-            alt="FleetManagiment"
-            width={500}
-            height={150}
-          />
+          <h1 className="w-60 text-white font-extrabold flex items-center justify-center text-xl  bg-primary-700 h-14">
+            <FaCarSide size={28} className="mr-2" />
+            Fleet Managiment
+          </h1>
         </Link>
-        <div className="relative h-10 text-white ">
+        <div className="relative h-10 text-primary-700 ">
           <div className="mx-16">
             <button onClick={handleUserMenu}>
               <IoPersonCircle size={40} />
