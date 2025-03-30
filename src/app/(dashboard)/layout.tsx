@@ -17,7 +17,7 @@ const DashboardLayout = ({
         <div>
           <Sidebar />
         </div>
-        <div className="w-full h-full overflow-y-scroll">
+        <div className="w-full h-full overflow-y-scroll bg-gray-100">
           <AuthProvider>{children}</AuthProvider>
         </div>
       </div>
