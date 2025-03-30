@@ -3,7 +3,11 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 
-const SearchBar = () => {
+type Props = {
+  placeholder: string;
+};
+
+const SearchBar = (props: Props) => {
   const [term, setTerm] = useState<string>();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -23,17 +27,17 @@ const SearchBar = () => {
   return (
     <>
       <form>
-        <div className="bg-gray-200 w-80 rounded-3xl relative group">
+        <div className="border-2 border-gray-300 w-80 rounded-md relative group">
           <input
             type="search"
-            placeholder="Search"
+            placeholder={props.placeholder}
             onChange={(e) => setTerm(e.target.value)}
             defaultValue={searchParams.get("query")?.toString()}
-            className="bg-gray-200 w-80 p-4 pr-14 rounded-3xl focus:ring-4 focus:outline-none focus:ring-primary-700 "
+            className="w-full p-2 rounded-md focus:ring-4 focus:outline-none focus:ring-primary-700"
           />
           <button
             onClick={handleSearch}
-            className="absolute top-1/2 right-0 h-full px-4 rounded-r-3xl transform -translate-y-1/2 group-focus-within:bg-primary-700"
+            className="absolute top-1/2 right-0 h-full p-2 rounded-r-md transform -translate-y-1/2 group-focus-within:bg-primary-700"
             aria-label="Search"
           >
             <IoIosSearch />
