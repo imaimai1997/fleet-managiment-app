@@ -15,7 +15,7 @@ const fetchFilteredUser = async (query: string) => {
   const data = await res.json();
   const users = await data.users;
   const filteredUser = await users.filter((user: UserData) =>
-    user.name.toLowerCase().includes(query.toLowerCase()),
+    user.name.toLowerCase().includes(query.toLowerCase())
   );
   return filteredUser;
 };
@@ -30,7 +30,7 @@ const UserListPage = async ({ searchParams }: Props) => {
         <SearchBar />
         <UserList data={users} />
       </div>
-      <div className="w-[calc(100vw-96px)] fixed bottom-0 text-end  pr-16 py-2 bg-white shadow-inner">
+      <div className="w-[calc(100vw-240px)] fixed bottom-0 text-end  pr-16 py-2 bg-white shadow-inner">
         <Link href="userlist/create">
           <Button rounded="full">新規追加</Button>
         </Link>

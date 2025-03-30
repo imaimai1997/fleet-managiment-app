@@ -17,7 +17,7 @@ type Props = { data?: CarData; id?: string };
 const fetchCarType = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype`,
-    { cache: "no-store" },
+    { cache: "no-store" }
   );
   const data = await res.json();
   return data.cartype;
@@ -25,7 +25,7 @@ const fetchCarType = async () => {
 const fetchEmployee = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/select/employee`,
-    { cache: "no-store" },
+    { cache: "no-store" }
   );
   const data = await res.json();
   return data.employees;
@@ -34,7 +34,7 @@ const fetchEmployee = async () => {
 const fetchPlace = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/select/place`,
-    { cache: "no-store" },
+    { cache: "no-store" }
   );
   const data = await res.json();
   return data.places;
@@ -42,7 +42,7 @@ const fetchPlace = async () => {
 const fetchCompany = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/select/company`,
-    { cache: "no-store" },
+    { cache: "no-store" }
   );
   const data = await res.json();
   return data.leasingCompanyes;
@@ -50,7 +50,7 @@ const fetchCompany = async () => {
 const fetchRefueling = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/select/refueling`,
-    { cache: "no-store" },
+    { cache: "no-store" }
   );
   const data = await res.json();
   return data.refueling_cards;
@@ -123,7 +123,7 @@ const CarDetail = ({ data, id }: Props) => {
   >(data?.insuarance_data_name || "選択してください");
 
   const handleInspectionFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     console.log(e.target.files);
     const file = e.target.files?.[0];
@@ -134,7 +134,7 @@ const CarDetail = ({ data, id }: Props) => {
     }
   };
   const handleInsuaranceFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     console.log(e.target.files);
     const file = e.target.files?.[0];
@@ -145,7 +145,7 @@ const CarDetail = ({ data, id }: Props) => {
   };
   const showFolder = (
     e: React.MouseEvent<HTMLButtonElement>,
-    ref: React.RefObject<HTMLInputElement>,
+    ref: React.RefObject<HTMLInputElement>
   ) => {
     e.preventDefault();
     ref.current?.click();
@@ -264,7 +264,7 @@ const CarDetail = ({ data, id }: Props) => {
       }
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/car/${id}`,
-        { method: "DELETE", headers: { "Content-Type": "application/json" } },
+        { method: "DELETE", headers: { "Content-Type": "application/json" } }
       );
       toast.success("車両情報が削除されました", { id: "1" });
       router.push("/");
@@ -322,7 +322,7 @@ const CarDetail = ({ data, id }: Props) => {
               watch("tire_change") == "" ? null : watch("tire_change"),
             notes: watch("notes") == "" ? null : watch("notes"),
           }),
-        },
+        }
       );
       if (!res.ok) throw new Error("Failed to update car data");
       toast.success("車両情報が編集されました", { id: "1" });
@@ -378,7 +378,7 @@ const CarDetail = ({ data, id }: Props) => {
 
   useEffect(() => {
     const selected = refuelingCard.find(
-      (r) => r.number === watch("refueling_cardNumber"),
+      (r) => r.number === watch("refueling_cardNumber")
     );
     if (selected) {
       setValue("refueling_cardPeriod", formatDate(selected.period));
@@ -711,7 +711,7 @@ const CarDetail = ({ data, id }: Props) => {
         </div>
 
         {!data && (
-          <div className="w-[calc(100vw-96px)] fixed bottom-0 py-2 bg-white shadow-inner">
+          <div className="w-[calc(100vw-240px)] fixed bottom-0 py-2 bg-white shadow-inner">
             <div className="flex justify-end max-w-5xl mx-auto">
               <Button rounded="full">追加</Button>
             </div>
@@ -719,7 +719,7 @@ const CarDetail = ({ data, id }: Props) => {
         )}
       </form>
       {data && userRole == "管理者" && (
-        <div className="w-[calc(100vw-96px)] fixed bottom-0 py-2 bg-white shadow-inner">
+        <div className="w-[calc(100vw-240px)] fixed bottom-0 py-2 bg-white shadow-inner">
           <div className="flex justify-end gap-4 max-w-5xl mx-auto">
             <Button
               onClick={handleDeleteCar}
