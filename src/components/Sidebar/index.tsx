@@ -14,9 +14,15 @@ const Sidebar = () => {
 
   const pathname = usePathname();
   return (
-    <div className="bg-primary-700 w-60 h-full pt-8 ">
+    <div className="bg-primary-700 w-60 h-screen">
+      <Link href="/">
+        <h1 className="w-60 text-white font-extrabold flex items-center justify-center text-xl  bg-primary-700 h-14 border-b-2 border-primary-800">
+          <FaCarSide size={28} className="mr-2" />
+          Fleet Managiment
+        </h1>
+      </Link>
       <nav>
-        <ul className="text-white font-bold">
+        <ul className="mt-8 text-white font-bold">
           <Link href="/">
             <li
               className={`flex items-center p-2 mx-4 mb-2 hover:bg-primary-800 rounded-md ${pathname === "/" ? "bg-primary-800 rounded-md" : ""}`}

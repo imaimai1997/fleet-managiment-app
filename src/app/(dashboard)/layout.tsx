@@ -11,14 +11,14 @@ const DashboardLayout = ({
 }>) => {
   return (
     <>
-      <Header />
+      <div className="flex">
+        <Sidebar />
 
-      <div className="flex h-[calc(100vh-56px)]">
-        <div>
-          <Sidebar />
-        </div>
-        <div className="w-full h-full overflow-y-scroll bg-gray-100">
-          <AuthProvider>{children}</AuthProvider>
+        <div className="w-full">
+          <Header />
+          <div className="h-[calc(100vh-56px)] overflow-y-scroll bg-gray-100">
+            <AuthProvider>{children}</AuthProvider>
+          </div>
         </div>
       </div>
     </>
