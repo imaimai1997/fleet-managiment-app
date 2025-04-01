@@ -6,6 +6,8 @@ import Select, { SingleValue } from "react-select";
 import { CarSelect } from "@/type/CarSelect";
 import { GasMileageData } from "@/type/GasMileageData";
 import toast, { Toaster } from "react-hot-toast";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 
 type Props = {
   carData: CarSelect[];
@@ -101,11 +103,10 @@ const GasMileageSearch = ({ carData, parentData }: Props) => {
   return (
     <>
       <Toaster />
-      <div className="w-11/12 bg-gray-200 m-4 mx-auto border-2 border-black">
-        <p className="border-b-2 border-black p-4">検索条件</p>
-
-        <div className="p-4 flex items-center">
-          <label className="mx-6">車両番号</label>
+      <p className="px-8 py-4">検索条件</p>
+      <div className="border-2 border-gray-200 bg-white rounded-md p-8 mx-8 mt-2 flex gap-8">
+        <div>
+          <p>車両番号</p>
           <Select
             instanceId="search-select-box"
             value={selectedValue}
@@ -121,21 +122,39 @@ const GasMileageSearch = ({ carData, parentData }: Props) => {
                 primary50: "#68D391", // 部分的なハイライト色
               },
             })}
-            className="w-48 border-2 border-primary-700"
+            classNames={{
+              container: () => "border-2 border-gray-200 rounded ",
+              control: () => "w-60 px-2 pt-1 pb-1 border-none",
+            }}
           />
-
-          <label className="ml-12">年月</label>
+        </div>
+        <div>
+          <p>年月</p>
           <input
             type="month"
             value={currentMonth}
             onChange={handleMonthChange}
-            className="w-48 border-2 border-primary-700 mx-6 p-2"
+            className="w-60 border-2 border-gray-200 p-2"
           />
         </div>
-        <div className="flex justify-end p-4 [&>button]:border [&>button]:border-2 [&>button]:border-black [&>button]:px-2 [&>button]:mx-4 [&>button]:rounded">
-          <button onClick={handlePreviousMonth}>前月</button>
-          <button onClick={handleNextMonth}>翌月</button>
-          <button onClick={handleSerchFee}>検索</button>
+        <div className="flex items-end justify-end gap-4 [&>button]:border-2 [&>button]:border-gray-200 [&>button]:px-4 [&>button]:py-1 [&>button]:rounded">
+          <button
+            onClick={handlePreviousMonth}
+            className="flex items-center gap-2"
+          >
+            <IoIosArrowBack />
+            前月
+          </button>
+          <button onClick={handleNextMonth} className="flex items-center gap-2">
+            翌月
+            <IoIosArrowForward />
+          </button>
+          <button
+            onClick={handleSerchFee}
+            className="bg-primary-700 text-white font-bold"
+          >
+            検索
+          </button>
           <button onClick={handleClearSearch}>クリア</button>
         </div>
       </div>
