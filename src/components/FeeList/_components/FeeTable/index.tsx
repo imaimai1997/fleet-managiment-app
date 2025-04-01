@@ -27,81 +27,78 @@ const FeeTable = ({ feeData }: Props) => {
   );
 
   return (
-    <div className="w-11/12 mx-auto m-4 mb-24">
-      <table className="w-full text-left mt-8">
-        <thead>
+    <>
+      <div className="bg-white p-8 mx-8 mt-4 mb-16 rounded-md border-2 border-gray-200">
+        <table className="w-full text-left mt-2">
           <tr>
             <th
               scope="col"
-              className="sticky top-0 bg-gray-400 px-6 py-3 w-1/5"
+              className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
             >
               年月
             </th>
             <th
               scope="col"
-              className="sticky top-0 bg-gray-400 px-6 py-3 w-1/5"
+              className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
             >
               車両番号
             </th>
             <th
               scope="col"
-              className="sticky top-0 bg-gray-400 px-6 py-3 w-1/5"
+              className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
             >
               給油料金
             </th>
             <th
               scope="col"
-              className="sticky top-0 bg-gray-400 px-6 py-3 w-1/5"
+              className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
             >
               ETC料金
             </th>
           </tr>
-        </thead>
-        <tbody>
-          {feeData.map((data) => (
-            <tr
-              key={data.car_number}
-              className="border-b-2 hover:bg-primary-100"
-            >
-              <th scope="row" className="px-6 py-2">
-                {formatDateToYearMonth(data.year_month)}
-              </th>
-              <td className="px-6 py-2">{data.car_number}</td>
+          <tbody>
+            {feeData.map((data) => (
+              <tr
+                key={data.car_number}
+                className="border-b-2 hover:bg-primary-100"
+              >
+                <th scope="row" className="px-6 py-4">
+                  {formatDateToYearMonth(data.year_month)}
+                </th>
+                <td className="px-6 py-4">{data.car_number}</td>
 
-              <td className="px-6 py-2">
-                {formatNumber(data.refueling_total_fee)}円
-              </td>
-              <td className="px-6 py-2">
-                {formatNumber(data.etc_total_fee)}円
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div className="w-5/6 h-12 mx-auto fixed bottom-0 bg-white shadow-inner">
-        <div className="w-11/12">
-          <table className="w-full text-left">
-            <tbody>
-              <tr>
-                <td className="px-6 py-2 w-2/5 text-right text-primary-700 font-bold">
-                  合計
+                <td className="px-6 py-4">
+                  {formatNumber(data.refueling_total_fee)}円
                 </td>
-
-                <td className="px-6 py-2 w-1/5 font-bold">
-                  {totalFee
-                    ? `${totalFee.refuelingFee.toLocaleString()}円`
-                    : "0円"}
-                </td>
-                <td className="px-6 py-2 w-1/5 font-bold">
-                  {totalFee ? `${totalFee.etcFee.toLocaleString()}円` : "0円"}
+                <td className="px-6 py-4">
+                  {formatNumber(data.etc_total_fee)}円
                 </td>
               </tr>
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </div>
+
+      <div className="w-[calc(100vw-240px)] h-12 fixed bottom-0 bg-white border-t-2 border-gray-200">
+        <table className="w-full text-left">
+          <tbody>
+            <tr>
+              <td className="px-6 py-2 w-2/5 text-right text-primary-700 font-bold">
+                合計
+              </td>
+              <td className="px-6 py-2 w-1/5 font-bold">
+                {totalFee
+                  ? `${totalFee.refuelingFee.toLocaleString()}円`
+                  : "0円"}
+              </td>
+              <td className="px-6 py-2 w-1/5 font-bold">
+                {totalFee ? `${totalFee.etcFee.toLocaleString()}円` : "0円"}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 };
 
