@@ -23,39 +23,41 @@ const FeeTable = ({ feeData }: Props) => {
       refuelingFee: sum.refuelingFee + (Number(data.refueling_total_fee) || 0),
       etcFee: sum.etcFee + (Number(data.etc_total_fee) || 0),
     }),
-    { refuelingFee: 0, etcFee: 0 },
+    { refuelingFee: 0, etcFee: 0 }
   );
 
   return (
     <>
-      <div className="bg-white p-8 mx-8 mt-4 mb-16 rounded-md border-2 border-gray-200">
+      <div className="bg-white px-8 py-4 mx-8 mt-4 mb-16 rounded-md border-2 border-gray-200">
         <table className="w-full text-left mt-2">
-          <tr>
-            <th
-              scope="col"
-              className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
-            >
-              年月
-            </th>
-            <th
-              scope="col"
-              className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
-            >
-              車両番号
-            </th>
-            <th
-              scope="col"
-              className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
-            >
-              給油料金
-            </th>
-            <th
-              scope="col"
-              className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
-            >
-              ETC料金
-            </th>
-          </tr>
+          <thead>
+            <tr>
+              <th
+                scope="col"
+                className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
+              >
+                年月
+              </th>
+              <th
+                scope="col"
+                className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
+              >
+                車両番号
+              </th>
+              <th
+                scope="col"
+                className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
+              >
+                給油料金
+              </th>
+              <th
+                scope="col"
+                className="sticky top-0 px-6 py-3 border-b border-gray-200 bg-white font-light text-gray-500"
+              >
+                ETC料金
+              </th>
+            </tr>
+          </thead>
           <tbody>
             {feeData.map((data) => (
               <tr

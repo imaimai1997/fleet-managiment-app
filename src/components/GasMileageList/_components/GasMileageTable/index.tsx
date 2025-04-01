@@ -20,12 +20,12 @@ const GasMileageTable = ({ gasMileageData }: Props) => {
         sum.refuelingAmount + (Number(data.refueling_total_amount) || 0),
       mileage: sum.mileage + (Number(data.mileage_total_mileage) || 0),
     }),
-    { refuelingAmount: 0, mileage: 0 },
+    { refuelingAmount: 0, mileage: 0 }
   );
 
   return (
     <>
-      <div className="bg-white p-8 mx-8 mt-4 mb-16 rounded-md border-2 border-gray-200">
+      <div className="bg-white first-letter:px-8 py-4 mx-8 mt-4 mb-16 rounded-md border-2 border-gray-200">
         <table className="w-full text-left mt-2">
           <thead>
             <tr>
