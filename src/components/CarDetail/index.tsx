@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import { CarData } from "@/type/CarData";
 import { FaRegTrashAlt } from "react-icons/fa";
@@ -15,50 +16,37 @@ type Props = { data?: CarData; id?: string };
 
 //Selectタグ選択肢
 const fetchCarType = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype`,
-    { cache: "no-store" },
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype`);
   const data = await res.json();
   return data.cartype;
 };
+
 const fetchEmployee = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/employee`,
-    { cache: "no-store" },
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/select/employee`);
   const data = await res.json();
   return data.employees;
 };
 
 const fetchPlace = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/place`,
-    { cache: "no-store" },
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/select/place`);
   const data = await res.json();
   return data.places;
 };
+
 const fetchCompany = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/company`,
-    { cache: "no-store" },
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/select/company`);
   const data = await res.json();
   return data.leasingCompanyes;
 };
+
 const fetchRefueling = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/refueling`,
-    { cache: "no-store" },
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/select/refueling`);
   const data = await res.json();
   return data.refueling_cards;
 };
+
 const fetchEtc = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/select/etc`, {
-    cache: "no-store",
-  });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/select/etc`);
   const data = await res.json();
   return data.etc_cards;
 };
