@@ -20,7 +20,7 @@ const GasMileageTable = ({ gasMileageData }: Props) => {
         sum.refuelingAmount + (Number(data.refueling_total_amount) || 0),
       mileage: sum.mileage + (Number(data.mileage_total_mileage) || 0),
     }),
-    { refuelingAmount: 0, mileage: 0 }
+    { refuelingAmount: 0, mileage: 0 },
   );
 
   return (

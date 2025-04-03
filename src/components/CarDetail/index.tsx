@@ -10,6 +10,15 @@ import { Select } from "@/type/Select";
 import { deletePDF, uploadPDF } from "@/utils/supabase/uploadPDF";
 import { useAuthContext } from "@/context/authContext";
 import { Button } from "../Button";
+import { FaCarSide } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
+import { FaRegBuilding } from "react-icons/fa";
+import { MdHomeRepairService } from "react-icons/md";
+import { CiCalendar } from "react-icons/ci";
+import { AiOutlineInsurance } from "react-icons/ai";
+import { RiGasStationLine } from "react-icons/ri";
+import { CiCreditCard1 } from "react-icons/ci";
+import { MdOutlineStickyNote2 } from "react-icons/md";
 
 type Props = { data?: CarData; id?: string };
 
@@ -397,44 +406,81 @@ const CarDetail = ({ data, id }: Props) => {
     <>
       <Toaster />
       <form onSubmit={handleSubmit(handleCreateCar, onError)}>
-        <div className="max-w-5xl  mx-auto my-20">
-          <div className="w-full grid grid-cols-2 gap-y-4 gap-x-12 *:text-xl [&_input]:w-60 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2  [&>div]:max-w-lg [&>div]:flex [&>div]:justify-between [&>div]:items-center">
-            <div>
-              <label>車両番号 *</label>
-              <input
-                {...register("label", {
-                  required: "車両番号を入力してください。",
-                })}
-                className="focus:bg-gray-200"
-                type="text"
-              />
+        <div className="grid grid-cols-2 gap-4 m-4 [&_input]:w-full [&_select]:w-full [&_input]:border-2 [&_input]:border-gray-200 [&_input]:p-2 [&_input]:mb-2 [&_select]:border-2 [&_select]:border-gray-200 [&_select]:p-2 [&_select]:mb-2 ">
+          <div className="bg-white p-4 border-2 border-gray-200">
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <FaCarSide size={20} className="text-primary-700 mr-2" />
+              車両情報
+            </h3>
+            <div className="grid grid-cols-2 gap-x-2">
+              <div>
+                <label>
+                  車両番号 <span className="text-red-500">*</span>
+                </label>
+                <input
+                  {...register("label", {
+                    required: "車両番号を入力してください。",
+                  })}
+                  className="focus:bg-gray-200"
+                  type="text"
+                />
+              </div>
+              <div>
+                <p>
+                  車種 <span className="text-red-500">*</span>
+                </p>
+                <select
+                  {...register("carTypeName", {
+                    required: "車種を選択してください。",
+                  })}
+                  value={watch("carTypeName")}
+                >
+                  <option value="" disabled>
+                    選択してください
+                  </option>
+                  {carType.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
+
             <div>
-              <label>車種 *</label>
+              <p>
+                使用場所 <span className="text-red-500">*</span>
+              </p>
               <select
-                {...register("carTypeName", {
-                  required: "車種を選択してください。",
+                {...register("placeName", {
+                  required: "使用場所を選択してください。",
                 })}
-                className="w-60 border-2 border-primary-700 p-2"
-                value={watch("carTypeName")}
+                value={watch("placeName")}
               >
                 <option value="" disabled>
                   選択してください
                 </option>
-                {carType.map((item) => (
+                {place.map((item) => (
                   <option key={item.id} value={item.name}>
                     {item.name}
                   </option>
                 ))}
               </select>
             </div>
+          </div>
+          <div className="bg-white p-4 border-2 border-gray-200">
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <FaUser size={20} className="text-primary-700 mr-2" />
+              管理者情報
+            </h3>
             <div>
-              <label>管理者 *</label>
+              <p>
+                管理者 <span className="text-red-500">*</span>
+              </p>
               <select
                 {...register("employeeName", {
                   required: "車種を選択してください。",
                 })}
-                className="w-60 border-2 border-primary-700 p-2"
                 value={watch("employeeName")}
               >
                 <option value="" disabled>
@@ -448,7 +494,7 @@ const CarDetail = ({ data, id }: Props) => {
               </select>
             </div>
             <div>
-              <label>管理者アドレス</label>
+              <p>管理者アドレス</p>
               <input
                 {...register("employeeEmail")}
                 type="text"
@@ -456,78 +502,86 @@ const CarDetail = ({ data, id }: Props) => {
                 className="bg-gray-200"
               />
             </div>
-            <div>
-              <label>使用場所 *</label>
-              <select
-                {...register("placeName", {
-                  required: "使用場所を選択してください。",
-                })}
-                className="w-60 border-2 border-primary-700 p-2"
-                value={watch("placeName")}
-              >
-                <option value="" disabled>
-                  選択してください
-                </option>
-                {place.map((item) => (
-                  <option key={item.id} value={item.name}>
-                    {item.name}
+          </div>
+          <div className="bg-white p-4 border-2 border-gray-200">
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <FaRegBuilding size={20} className="text-primary-700 mr-2" />
+              リース情報
+            </h3>
+            <div className="grid grid-cols-2 gap-x-2">
+              <div>
+                <p>
+                  リース会社 <span className="text-red-500">*</span>
+                </p>
+                <select
+                  {...register("leasingName", {
+                    required: "リース会社を選択してください。",
+                  })}
+                  value={watch("leasingName")}
+                >
+                  <option value="" disabled>
+                    選択してください
                   </option>
-                ))}
-              </select>
+                  {company.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <p>
+                  初度登録 <span className="text-red-500">*</span>
+                </p>
+                <input
+                  {...register("first_registration_date", {
+                    required: "初度登録を入力してください。",
+                  })}
+                  type="date"
+                />
+              </div>
             </div>
-            <div>
-              <label>リース会社 *</label>
-              <select
-                {...register("leasingName", {
-                  required: "リース会社を選択してください。",
-                })}
-                className="w-60 border-2 border-primary-700 p-2"
-                value={watch("leasingName")}
-              >
-                <option value="" disabled>
-                  選択してください
-                </option>
-                {company.map((item) => (
-                  <option key={item.id} value={item.name}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
+            <div className="grid grid-cols-2 gap-x-2">
+              <div>
+                <p>
+                  リース開始日 <span className="text-red-500">*</span>
+                </p>
+                <input
+                  {...register("leasing_start_date", {
+                    required: "リース開始日を入力してください。",
+                  })}
+                  type="date"
+                />
+              </div>
+              <div>
+                <p>
+                  リース終了日 <span className="text-red-500">*</span>
+                </p>
+                <input
+                  {...register("leasing_finish_date", {
+                    required: "リース終了日を入力してください。",
+                  })}
+                  type="date"
+                />
+              </div>
             </div>
-            <div>
-              <label>初度登録 *</label>
-              <input
-                {...register("first_registration_date", {
-                  required: "初度登録を入力してください。",
-                })}
-                type="date"
+          </div>
+          <div className="bg-white p-4 border-2 border-gray-200">
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <MdHomeRepairService
+                size={20}
+                className="text-primary-700 mr-2"
               />
-            </div>
+              点検情報
+            </h3>
             <div>
-              <label>リース開始日 *</label>
-              <input
-                {...register("leasing_start_date", {
-                  required: "リース開始日を入力してください。",
-                })}
-                type="date"
-              />
-            </div>
-            <div>
-              <label>リース終了日 *</label>
-              <input
-                {...register("leasing_finish_date", {
-                  required: "リース終了日を入力してください。",
-                })}
-                type="date"
-              />
-            </div>
-            <div>
-              <label>6カ月点検日 *</label>
+              <p>
+                6カ月点検日 <span className="text-red-500">*</span>
+              </p>
               <select
                 {...register("harf_year_inspection", {
                   required: "6カ月点検日を選択してください。",
                 })}
-                className="w-60 border-2 border-primary-700 p-2"
                 value={watch("harf_year_inspection")}
               >
                 <option value="" disabled>
@@ -542,147 +596,9 @@ const CarDetail = ({ data, id }: Props) => {
               </select>
             </div>
             <div>
-              <label>車検満了日 *</label>
-              <input
-                {...register("inspection_expires_date", {
-                  required: "車検日を入力してください。",
-                })}
-                type="date"
-              />
-            </div>
-            <div>
-              <label>車検PDF</label>
-              <div className="w-60 border-2 border-primary-700 p-2 flex justify-between items-center">
-                <div className="w-4/5">
-                  <input
-                    type="file"
-                    ref={inspectionFileRef}
-                    accept="application/pdf"
-                    onChange={handleInspectionFileChange}
-                    className="hidden"
-                  />
-                  <a
-                    href={inspectionFileURL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <p className="truncate">{inspectionFileName}</p>
-                  </a>
-                </div>
-                <button
-                  type="button"
-                  onClick={(e) => showFolder(e, inspectionFileRef)}
-                  className="bg-gray-200"
-                >
-                  選択
-                </button>
-              </div>
-            </div>
-            <div>
-              <label>保険満了日 *</label>
-              <input
-                {...register("insuarance_expires_date", {
-                  required: "保険満了日を入力してください。",
-                })}
-                type="date"
-              />
-            </div>
-            <div>
-              <label>保険PDF</label>
-              <div className="w-60 border-2 relative border-primary-700 p-2 flex justify-between items-center ">
-                <div className="w-4/5">
-                  <input
-                    type="file"
-                    ref={insuaranceFileRef}
-                    accept="application/pdf"
-                    onChange={handleInsuaranceFileChange}
-                    className="hidden"
-                  />
-
-                  <a
-                    href={insuaranceFileURL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <p className="truncate">{insuaranceFileName}</p>
-                  </a>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={(e) => showFolder(e, insuaranceFileRef)}
-                  className="bg-gray-200"
-                >
-                  選択
-                </button>
-              </div>
-            </div>
-            <div>
-              <label>給油カード番号</label>
-              <select
-                {...register("refueling_cardNumber")}
-                className="w-60 border-2 border-primary-700 p-2"
-                value={watch("refueling_cardNumber")}
-              >
-                <option value="" disabled>
-                  選択してください
-                </option>
-                {refuelingCard.map((item) => (
-                  <option key={item.id} value={item.number}>
-                    {item.number}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label>給油カード期限</label>
-              <input
-                {...register("refueling_cardPeriod")}
-                type="date"
-                readOnly
-                className="bg-gray-200"
-              />
-            </div>
-            <div>
-              <label>ETCカード名</label>
-              <select
-                {...register("etc_cardName")}
-                className="w-60 border-2 border-primary-700 p-2"
-                value={watch("etc_cardName")}
-              >
-                <option value="" disabled>
-                  選択してください
-                </option>
-                {etcCard.map((item) => (
-                  <option key={item.id} value={item.name}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label>ETCカード番号</label>
-              <input
-                {...register("etc_cardNumber")}
-                type="text"
-                readOnly
-                className="bg-gray-200"
-              />
-            </div>
-            <div>
-              <label>ETCカード期限</label>
-              <input
-                {...register("etc_cardPeriod")}
-                type="date"
-                readOnly
-                className="bg-gray-200"
-              />
-            </div>
-            <div>
-              <label>タイヤ交換有無</label>
+              <p>タイヤ交換有無</p>
               <select
                 {...register("tire_change", {})}
-                className="w-60 border-2 border-primary-700 p-2"
                 value={
                   watch("tire_change") === null
                     ? ""
@@ -699,14 +615,187 @@ const CarDetail = ({ data, id }: Props) => {
               </select>
             </div>
           </div>
-          <div className=" text-xl mt-6 w-full">
-            <label>備考欄</label>
+
+          <div className="bg-white p-4 border-2 border-gray-200">
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <CiCalendar size={20} className="text-primary-700 mr-2" />
+              車検情報
+            </h3>
+            <div className="grid grid-cols-2 gap-x-2">
+              <div>
+                <p>
+                  車検満了日 <span className="text-red-500">*</span>
+                </p>
+                <input
+                  {...register("inspection_expires_date", {
+                    required: "車検日を入力してください。",
+                  })}
+                  type="date"
+                />
+              </div>
+              <div>
+                <p>車検PDF</p>
+                <div className="w-60 border-2 border-gray-200 p-2 flex justify-between items-center">
+                  <div className="w-4/5">
+                    <input
+                      type="file"
+                      ref={inspectionFileRef}
+                      accept="application/pdf"
+                      onChange={handleInspectionFileChange}
+                      className="hidden"
+                    />
+                    <a
+                      href={inspectionFileURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <p className="truncate">{inspectionFileName}</p>
+                    </a>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => showFolder(e, inspectionFileRef)}
+                    className="bg-gray-200"
+                  >
+                    選択
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white p-4 border-2 border-gray-200">
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <AiOutlineInsurance size={20} className="text-primary-700 mr-2" />
+              保険情報
+            </h3>
+            <div className="grid grid-cols-2 gap-x-2">
+              <div>
+                <p>
+                  保険満了日 <span className="text-red-500">*</span>
+                </p>
+                <input
+                  {...register("insuarance_expires_date", {
+                    required: "保険満了日を入力してください。",
+                  })}
+                  type="date"
+                />
+              </div>
+              <div>
+                <p>保険PDF</p>
+                <div className="w-60 border-2 relative border-gray-200 p-2 flex justify-between items-center ">
+                  <div className="w-4/5">
+                    <input
+                      type="file"
+                      ref={insuaranceFileRef}
+                      accept="application/pdf"
+                      onChange={handleInsuaranceFileChange}
+                      className="hidden"
+                    />
+
+                    <a
+                      href={insuaranceFileURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <p className="truncate">{insuaranceFileName}</p>
+                    </a>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={(e) => showFolder(e, insuaranceFileRef)}
+                    className="bg-gray-200"
+                  >
+                    選択
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white p-4 border-2 border-gray-200">
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <RiGasStationLine size={20} className="text-primary-700 mr-2" />
+              給油カード情報
+            </h3>
             <div>
-              <textarea
-                {...register("notes", {})}
-                className="h-24 w-full border-2 border-primary-700 p-2"
+              <p>給油カード番号</p>
+              <select
+                {...register("refueling_cardNumber")}
+                value={watch("refueling_cardNumber")}
+              >
+                <option value="" disabled>
+                  選択してください
+                </option>
+                {refuelingCard.map((item) => (
+                  <option key={item.id} value={item.number}>
+                    {item.number}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <p>給油カード期限</p>
+              <input
+                {...register("refueling_cardPeriod")}
+                type="date"
+                readOnly
+                className="bg-gray-200"
               />
             </div>
+          </div>
+          <div className="bg-white p-4 border-2 border-gray-200">
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <CiCreditCard1 size={20} className="text-primary-700 mr-2" />
+              ETCカード情報
+            </h3>
+            <div>
+              <p>ETCカード名</p>
+              <select
+                {...register("etc_cardName")}
+                value={watch("etc_cardName")}
+              >
+                <option value="" disabled>
+                  選択してください
+                </option>
+                {etcCard.map((item) => (
+                  <option key={item.id} value={item.name}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="grid grid-cols-2 gap-x-2">
+              <div>
+                <p>ETCカード番号</p>
+                <input
+                  {...register("etc_cardNumber")}
+                  type="text"
+                  readOnly
+                  className="bg-gray-200"
+                />
+              </div>
+              <div>
+                <p>ETCカード期限</p>
+                <input
+                  {...register("etc_cardPeriod")}
+                  type="date"
+                  readOnly
+                  className="bg-gray-200"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white p-4 border-2 border-gray-200 mx-4 mt-4 mb-16">
+          <h3 className="text-2xl font-bold mb-8 flex items-center">
+            <MdOutlineStickyNote2 size={20} className="text-primary-700 mr-2" />
+            備考欄
+          </h3>
+          <div>
+            <textarea
+              {...register("notes", {})}
+              className="h-24 w-full border-2 border-gray-200 p-2"
+            />
           </div>
         </div>
 

@@ -23,7 +23,7 @@ const FeeTable = ({ feeData }: Props) => {
       refuelingFee: sum.refuelingFee + (Number(data.refueling_total_fee) || 0),
       etcFee: sum.etcFee + (Number(data.etc_total_fee) || 0),
     }),
-    { refuelingFee: 0, etcFee: 0 }
+    { refuelingFee: 0, etcFee: 0 },
   );
 
   return (
