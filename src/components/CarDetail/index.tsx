@@ -10,6 +10,15 @@ import { Select } from "@/type/Select";
 import { deletePDF, uploadPDF } from "@/utils/supabase/uploadPDF";
 import { useAuthContext } from "@/context/authContext";
 import { Button } from "../Button";
+import { FaCarSide } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
+import { FaRegBuilding } from "react-icons/fa";
+import { MdHomeRepairService } from "react-icons/md";
+import { CiCalendar } from "react-icons/ci";
+import { AiOutlineInsurance } from "react-icons/ai";
+import { RiGasStationLine } from "react-icons/ri";
+import { CiCreditCard1 } from "react-icons/ci";
+import { MdOutlineStickyNote2 } from "react-icons/md";
 
 type Props = { data?: CarData; id?: string };
 
@@ -399,7 +408,10 @@ const CarDetail = ({ data, id }: Props) => {
       <form onSubmit={handleSubmit(handleCreateCar, onError)}>
         <div className="grid grid-cols-2 gap-4 m-4 [&_input]:w-full [&_select]:w-full [&_input]:border-2 [&_input]:border-gray-200 [&_input]:p-2 [&_input]:mb-2 [&_select]:border-2 [&_select]:border-gray-200 [&_select]:p-2 [&_select]:mb-2 ">
           <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8">車両情報</h3>
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <FaCarSide size={20} className="text-primary-700 mr-2" />
+              車両情報
+            </h3>
             <div className="grid grid-cols-2 gap-x-2">
               <div>
                 <label>
@@ -457,7 +469,10 @@ const CarDetail = ({ data, id }: Props) => {
             </div>
           </div>
           <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8">管理者情報</h3>
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <FaUser size={20} className="text-primary-700 mr-2" />
+              管理者情報
+            </h3>
             <div>
               <p>
                 管理者 <span className="text-red-500">*</span>
@@ -489,7 +504,10 @@ const CarDetail = ({ data, id }: Props) => {
             </div>
           </div>
           <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8">リース情報</h3>
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <FaRegBuilding size={20} className="text-primary-700 mr-2" />
+              リース情報
+            </h3>
             <div className="grid grid-cols-2 gap-x-2">
               <div>
                 <p>
@@ -549,7 +567,13 @@ const CarDetail = ({ data, id }: Props) => {
             </div>
           </div>
           <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8">点検情報</h3>
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <MdHomeRepairService
+                size={20}
+                className="text-primary-700 mr-2"
+              />
+              点検情報
+            </h3>
             <div>
               <p>
                 6カ月点検日 <span className="text-red-500">*</span>
@@ -593,7 +617,10 @@ const CarDetail = ({ data, id }: Props) => {
           </div>
 
           <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8">車検情報</h3>
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <CiCalendar size={20} className="text-primary-700 mr-2" />
+              車検情報
+            </h3>
             <div className="grid grid-cols-2 gap-x-2">
               <div>
                 <p>
@@ -637,7 +664,10 @@ const CarDetail = ({ data, id }: Props) => {
             </div>
           </div>
           <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8">保険情報</h3>
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <AiOutlineInsurance size={20} className="text-primary-700 mr-2" />
+              保険情報
+            </h3>
             <div className="grid grid-cols-2 gap-x-2">
               <div>
                 <p>
@@ -683,7 +713,10 @@ const CarDetail = ({ data, id }: Props) => {
             </div>
           </div>
           <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8">給油カード情報</h3>
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <RiGasStationLine size={20} className="text-primary-700 mr-2" />
+              給油カード情報
+            </h3>
             <div>
               <p>給油カード番号</p>
               <select
@@ -711,7 +744,10 @@ const CarDetail = ({ data, id }: Props) => {
             </div>
           </div>
           <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8">ETCカード情報</h3>
+            <h3 className="text-2xl font-bold mb-8 flex items-center">
+              <CiCreditCard1 size={20} className="text-primary-700 mr-2" />
+              ETCカード情報
+            </h3>
             <div>
               <p>ETCカード名</p>
               <select
@@ -751,7 +787,10 @@ const CarDetail = ({ data, id }: Props) => {
           </div>
         </div>
         <div className="bg-white p-4 border-2 border-gray-200 mx-4 mt-4 mb-16">
-          <h3 className="text-2xl font-bold mb-8">備考欄</h3>
+          <h3 className="text-2xl font-bold mb-8 flex items-center">
+            <MdOutlineStickyNote2 size={20} className="text-primary-700 mr-2" />
+            備考欄
+          </h3>
           <div>
             <textarea
               {...register("notes", {})}
