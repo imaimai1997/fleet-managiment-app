@@ -1,10 +1,8 @@
 import React from "react";
 import UserList from "@/components/UserList";
-import Link from "next/link";
 import { UserData } from "@/type/UserData";
 import SearchBar from "@/components/SearchBar";
-import { Button } from "@/components/Button";
-import { FaPlus } from "react-icons/fa";
+import UserModal from "@/components/Modal/UserModal";
 
 type Props = { searchParams?: Promise<{ query?: string; page?: string }> };
 
@@ -30,15 +28,8 @@ const UserListPage = async ({ searchParams }: Props) => {
       <div className="bg-white p-4 mx-4 mt-4 mb-16 rounded-md border-2 border-gray-200">
         <div className="flex justify-between">
           <SearchBar placeholder="ユーザー名を検索..." />
-          <Link href="userlist/create">
-            <Button
-              rounded="md"
-              className="flex gap-2 items-center justify-center"
-            >
-              <FaPlus />
-              新規追加
-            </Button>
-          </Link>
+
+          <UserModal />
         </div>
         <UserList data={users} />
       </div>
