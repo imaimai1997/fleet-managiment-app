@@ -38,7 +38,7 @@ const UserSetting = () => {
             email: userEmail,
             notice: userNotice,
           }),
-        }
+        },
       );
       toast.success("ユーザー情報を編集しました", { id: "1" });
       return res.json();
