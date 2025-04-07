@@ -1,5 +1,7 @@
+import { createUser } from "@/utils/adminFirebase";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -30,17 +32,19 @@ export const GET = async () => {
 };
 
 export const POST = async (req: Request) => {
-  const { id, roleName, name, password, email } = await req.json();
+  const { roleName, name, password, email } = await req.json();
 
   try {
+    const id = await createUser(email, password);
+    const hashedPassword = await bcrypt.hash(password, 10);
     await main();
     const user = await prisma.user.create({
       data: {
         id,
         roleName,
         name,
-        password,
         email,
+        password: hashedPassword,
       },
     });
     return NextResponse.json({ message: "Success", user }, { status: 201 });

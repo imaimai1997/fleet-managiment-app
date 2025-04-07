@@ -2,10 +2,7 @@
 import React from "react";
 import { UserData } from "@/type/UserData";
 import { FaRegTrashAlt } from "react-icons/fa";
-import {
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { FieldErrors, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -34,39 +31,28 @@ const UserDetail = ({ userData }: Props) => {
     },
   });
 
-  const handleCreateUser = async (userId: string) => {
+  const handleCreateUser = async () => {
+    toast.loading("作成中です", { id: "1" });
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id: userId,
           roleName: watch("userRole"),
           name: watch("userName"),
           password: watch("password"),
           email: watch("email"),
         }),
       });
+
       if (!res.ok) {
+        toast.error("既にこのメールアドレスは登録されています。", {
+          id: "1",
+        });
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
-    } catch (err) {
-      console.error("Error:", err);
-    }
-  };
-
-  const handleSignUp = async () => {
-    toast.loading("作成中です", { id: "1" });
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        watch("email"),
-        watch("password"),
-      );
-      const user = userCredential.user;
-      await handleCreateUser(user.uid);
       toast.success("ユーザーが作成されました", { id: "1" });
-
       router.push("/userlist");
       router.refresh();
     } catch (error) {
@@ -86,6 +72,7 @@ const UserDetail = ({ userData }: Props) => {
       }
     }
   };
+
   const onError = (errors: FieldErrors<UserCreateForm>) => {
     if (errors.userName?.message) {
       toast.error(errors.userName?.message);
@@ -157,7 +144,7 @@ const UserDetail = ({ userData }: Props) => {
     <>
       <div className=" mx-auto text-right ">
         <div className="text-left p-2  border-2 border-gray-200 rounded *:text-lg [&_input]:w-auto [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&_div]:grid [&_div]:grid-cols-2 [&_div]:items-center ">
-          <form onSubmit={handleSubmit(handleSignUp, onError)}>
+          <form onSubmit={handleSubmit(handleCreateUser, onError)}>
             <div className="mx-4 my-2">
               <label>ユーザー名</label>
               <input
