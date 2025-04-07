@@ -23,6 +23,19 @@ if (!admin.apps.length) {
 
 const adminAuth = admin.auth();
 
+const createUser = async (email: string, password: string) => {
+  try {
+    const userRecord = await adminAuth.createUser({ email, password });
+    return userRecord.uid;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error message:", error.message);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+  }
+};
+
 const deleteUser = async (uid: string) => {
   try {
     await adminAuth.deleteUser(uid);
@@ -52,4 +65,4 @@ const updateUser = async (uid: string, updateEmail: string) => {
   }
 };
 
-export { adminAuth, deleteUser, updateUser };
+export { adminAuth, createUser, deleteUser, updateUser };

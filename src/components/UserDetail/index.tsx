@@ -2,18 +2,15 @@
 import React from "react";
 import { UserData } from "@/type/UserData";
 import { FaRegTrashAlt } from "react-icons/fa";
-import {
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { FieldErrors, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { FirebaseError } from "firebase/app";
 import { Button } from "../Button";
 
-type Props = { data?: UserData; id?: string };
+type Props = { userData?: UserData };
 
 type UserCreateForm = {
   userName: string;
@@ -22,51 +19,40 @@ type UserCreateForm = {
   password: string;
 };
 
-const UserDetail = ({ data, id }: Props) => {
+const UserDetail = ({ userData }: Props) => {
   const router = useRouter();
 
   const { register, handleSubmit, watch } = useForm<UserCreateForm>({
     defaultValues: {
-      userName: data?.name || "",
-      userRole: data?.role.name || "",
-      email: data?.email || "",
+      userName: userData?.name || "",
+      userRole: userData?.role.name || "",
+      email: userData?.email || "",
       password: "",
     },
   });
 
-  const handleCreateUser = async (userId: string) => {
+  const handleCreateUser = async () => {
+    toast.loading("作成中です", { id: "1" });
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id: userId,
           roleName: watch("userRole"),
           name: watch("userName"),
           password: watch("password"),
           email: watch("email"),
         }),
       });
+
       if (!res.ok) {
+        toast.error("既にこのメールアドレスは登録されています。", {
+          id: "1",
+        });
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
-    } catch (err) {
-      console.error("Error:", err);
-    }
-  };
-
-  const handleSignUp = async () => {
-    toast.loading("作成中です", { id: "1" });
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        watch("email"),
-        watch("password"),
-      );
-      const user = userCredential.user;
-      await handleCreateUser(user.uid);
       toast.success("ユーザーが作成されました", { id: "1" });
-
       router.push("/userlist");
       router.refresh();
     } catch (error) {
@@ -86,6 +72,7 @@ const UserDetail = ({ data, id }: Props) => {
       }
     }
   };
+
   const onError = (errors: FieldErrors<UserCreateForm>) => {
     if (errors.userName?.message) {
       toast.error(errors.userName?.message);
@@ -105,7 +92,7 @@ const UserDetail = ({ data, id }: Props) => {
     try {
       toast.loading("waiting...", { id: "1" });
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/${userData?.id}`,
         { method: "DELETE", headers: { "Content-Type": "application/json" } },
       );
       toast.success("ユーザーを削除しました", { id: "1" });
@@ -122,12 +109,12 @@ const UserDetail = ({ data, id }: Props) => {
     try {
       toast.loading("waiting...", { id: "1" });
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/${userData?.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            id: id,
+            id: userData?.id,
             roleName: watch("userRole"),
             name: watch("userName"),
             email: watch("email"),
@@ -155,10 +142,9 @@ const UserDetail = ({ data, id }: Props) => {
 
   return (
     <>
-      <Toaster />
-      <div className="w-3/6 mx-auto text-right ">
-        <div className="p-6 flex flex-col rounded *:text-lg [&_input]:w-80 [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&_div]:flex [&_div]:justify-between [&_div]:items-center border-2 border-black">
-          <form onSubmit={handleSubmit(handleSignUp, onError)}>
+      <div className=" mx-auto text-right ">
+        <div className="text-left p-2  border-2 border-gray-200 rounded *:text-lg [&_input]:w-auto [&_input]:border-2 [&_input]:border-primary-700 [&_input]:p-2 [&_div]:grid [&_div]:grid-cols-2 [&_div]:items-center ">
+          <form onSubmit={handleSubmit(handleCreateUser, onError)}>
             <div className="mx-4 my-2">
               <label>ユーザー名</label>
               <input
@@ -183,7 +169,7 @@ const UserDetail = ({ data, id }: Props) => {
                 required
               />
             </div>
-            {!data && (
+            {!userData && (
               <div className="mx-4 my-2">
                 <label>パスワード</label>
                 <input
@@ -205,7 +191,7 @@ const UserDetail = ({ data, id }: Props) => {
                 {...register("userRole", {
                   required: "権限を選択してください。",
                 })}
-                className="w-80 border-2 border-primary-700 p-2"
+                className="border-2 border-primary-700 p-2"
               >
                 <option value="" disabled>
                   選択してください
@@ -215,13 +201,13 @@ const UserDetail = ({ data, id }: Props) => {
               </select>
             </div>
 
-            {!data && (
+            {!userData && (
               <Button rounded="full" className="mx-4 my-2">
                 追加
               </Button>
             )}
           </form>
-          {data && (
+          {userData && (
             <div className="mx-4 my-2">
               <label>パスワード変更</label>
               <Button
@@ -236,7 +222,7 @@ const UserDetail = ({ data, id }: Props) => {
           )}
         </div>
 
-        {data && (
+        {userData && (
           <div className="flex justify-between m-6">
             <Button
               onClick={handleDeleteUser}
