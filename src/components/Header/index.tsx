@@ -52,7 +52,7 @@ const Header = () => {
         name="ユーザー設定"
         onCancel={() => setIsModalOpen(false)}
       >
-        <UserSetting />
+        <UserSetting setIsModalOpen={setIsModalOpen} />
       </Modal>
       <div className="h-14 border-b-2 text-primary-700 flex items-center justify-end">
         <div className="w-12 relative mr-20">

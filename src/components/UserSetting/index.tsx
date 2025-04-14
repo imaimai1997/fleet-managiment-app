@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { UserData } from "@/type/UserData";
 import { Button } from "../Button";
 
-const UserSetting = () => {
+const UserSetting = ({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const authContext = useAuthContext();
   const [currentUser, setCurrentUser] = useState<UserData | null>(null);
   const [userName, setUserName] = useState("");
@@ -26,8 +26,7 @@ const UserSetting = () => {
   const handleUpdateUser = async () => {
     try {
       toast.loading("waiting...", { id: "1" });
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/user/${currentUser?.id}`,
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/${currentUser?.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -40,7 +39,10 @@ const UserSetting = () => {
           }),
         },
       );
+
+      await authContext.refreshCurrentUser();
       toast.success("ユーザー情報を編集しました", { id: "1" });
+      setIsModalOpen(false);
       return res.json();
     } catch (error) {
       console.error(error);
