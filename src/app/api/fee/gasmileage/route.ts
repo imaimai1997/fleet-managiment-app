@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma, prismaExecute } from "@/utils/prisma/prisma";
 import { NextResponse } from "next/server";
-const prisma = new PrismaClient();
 
 type ConvertibleData =
   | bigint
@@ -9,15 +8,6 @@ type ConvertibleData =
   | string
   | ConvertibleData[]
   | { [key: string]: ConvertibleData };
-
-async function main() {
-  try {
-    await prisma.$connect();
-  } catch (err) {
-    console.error("DB接続エラー:", err);
-    return new Error("DB接続に失敗しました");
-  }
-}
 
 function convertBigIntToString(data: ConvertibleData): ConvertibleData {
   if (Array.isArray(data)) {
@@ -75,27 +65,26 @@ async function getGasMileageData(
 
 export async function GET(req: Request) {
   try {
-    await main();
-    const { searchParams } = new URL(req.url);
+    return await prismaExecute(async () => {
+      const { searchParams } = new URL(req.url);
 
-    const yearMonth = searchParams.get("yearMonth");
-    const carNumber = searchParams.get("carNumber")
-      ? decodeURIComponent(searchParams.get("carNumber")!)
-      : null;
-    console.log(yearMonth, carNumber);
-    if (!yearMonth) {
-      return NextResponse.json(
-        { success: false, message: "yearMonth パラメータが必要です" },
-        { status: 400 },
-      );
-    }
-    const res = await getGasMileageData(carNumber, yearMonth);
-    console.log(res);
-    return NextResponse.json({ success: true, res }, { status: 200 });
+      const yearMonth = searchParams.get("yearMonth");
+      const carNumber = searchParams.get("carNumber")
+        ? decodeURIComponent(searchParams.get("carNumber")!)
+        : null;
+      console.log(yearMonth, carNumber);
+      if (!yearMonth) {
+        return NextResponse.json(
+          { success: false, message: "yearMonth パラメータが必要です" },
+          { status: 400 },
+        );
+      }
+      const res = await getGasMileageData(carNumber, yearMonth);
+      console.log(res);
+      return NextResponse.json({ success: true, res }, { status: 200 });
+    });
   } catch (err) {
     console.error("Error fetching aggregated data:", err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 }
