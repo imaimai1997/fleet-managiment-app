@@ -1,33 +1,22 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma, prismaExecute } from "@/utils/prisma/prisma";
 import { NextResponse } from "next/server";
 import { deleteUser, updateUser } from "@/utils/adminFirebase";
-
-const prisma = new PrismaClient();
-async function main() {
-  try {
-    await prisma.$connect();
-  } catch (err) {
-    console.error("DB接続エラー:", err);
-    return new Error("DB接続に失敗しました");
-  }
-}
 
 export const GET = async (req: Request) => {
   const id = req.url.split("/user/")[1];
   try {
-    await main();
-    const user = await prisma.user.findFirst({
-      where: { id: id },
-      include: {
-        role: true,
-      },
+    return await prismaExecute(async () => {
+      const user = await prisma.user.findFirst({
+        where: { id: id },
+        include: {
+          role: true,
+        },
+      });
+      return NextResponse.json({ message: "Success", user }, { status: 200 });
     });
-    return NextResponse.json({ message: "Success", user }, { status: 200 });
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
@@ -36,17 +25,16 @@ export const GET = async (req: Request) => {
 export const DELETE = async (req: Request) => {
   const id = req.url.split("/user/")[1];
   try {
-    await main();
-    const user = await prisma.user.delete({
-      where: { id: id },
+    return await prismaExecute(async () => {
+      const user = await prisma.user.delete({
+        where: { id: id },
+      });
+      await deleteUser(id);
+      return NextResponse.json({ message: "Success", user }, { status: 200 });
     });
-    await deleteUser(id);
-    return NextResponse.json({ message: "Success", user }, { status: 200 });
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
@@ -56,22 +44,21 @@ export const PUT = async (req: Request) => {
   const { roleName, name, email, notice } = await req.json();
 
   try {
-    await main();
-    const user = await prisma.user.update({
-      data: {
-        roleName,
-        name,
-        email,
-        notice,
-      },
-      where: { id: id },
+    return await prismaExecute(async () => {
+      const user = await prisma.user.update({
+        data: {
+          roleName,
+          name,
+          email,
+          notice,
+        },
+        where: { id: id },
+      });
+      await updateUser(id, email);
+      return NextResponse.json({ message: "Success", user }, { status: 200 });
     });
-    await updateUser(id, email);
-    return NextResponse.json({ message: "Success", user }, { status: 200 });
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };

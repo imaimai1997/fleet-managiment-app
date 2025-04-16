@@ -1,30 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma, prismaExecute } from "@/utils/prisma/prisma";
 import { NextResponse } from "next/server";
-
-const prisma = new PrismaClient();
-async function main() {
-  try {
-    await prisma.$connect();
-  } catch (err) {
-    console.error("DB接続エラー:", err);
-    return new Error("DB接続に失敗しました");
-  }
-}
 
 //リース会社取得
 export const GET = async () => {
   try {
-    await main();
-    const leasingCompanyes = await prisma.leasingCompany.findMany({});
-    return NextResponse.json(
-      { message: "Success", leasingCompanyes },
-      { status: 200 },
-    );
+    return await prismaExecute(async () => {
+      const leasingCompanyes = await prisma.leasingCompany.findMany({});
+      return NextResponse.json(
+        { message: "Success", leasingCompanyes },
+        { status: 200 },
+      );
+    });
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
@@ -32,20 +21,19 @@ export const POST = async (req: Request) => {
   const { name } = await req.json();
 
   try {
-    await main();
-    const leasingCompany = await prisma.leasingCompany.create({
-      data: {
-        name,
-      },
+    return await prismaExecute(async () => {
+      const leasingCompany = await prisma.leasingCompany.create({
+        data: {
+          name,
+        },
+      });
+      return NextResponse.json(
+        { message: "Success", leasingCompany },
+        { status: 201 },
+      );
     });
-    return NextResponse.json(
-      { message: "Success", leasingCompany },
-      { status: 201 },
-    );
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };

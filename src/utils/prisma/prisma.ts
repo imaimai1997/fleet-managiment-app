@@ -20,4 +20,3 @@ export async function prismaExecute<T>(callback: () => Promise<T>): Promise<T> {
     await prisma.$disconnect();
   }
 }
-
