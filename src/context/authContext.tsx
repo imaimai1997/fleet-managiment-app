@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return () => {
       unsubscribed();
     };
-  }, []);
+  }, [router]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
