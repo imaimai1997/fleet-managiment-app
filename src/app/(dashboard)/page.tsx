@@ -9,9 +9,7 @@ import { FaPlus } from "react-icons/fa";
 type Props = { searchParams?: Promise<{ query?: string; page?: string }> };
 
 const fetchFilteredCars = async (query: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/carlist`, {
-    cache: "no-store",
-  });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/carlist`);
 
   const data = await res.json();
   const cars = await data.cars;

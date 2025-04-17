@@ -19,9 +19,6 @@ const EtcCardImport = () => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/etc`,
-        {
-          cache: "no-store",
-        },
       );
 
       const data = await res.json();

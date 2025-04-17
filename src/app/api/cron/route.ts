@@ -9,9 +9,6 @@ type noticeEmail = {
 const fetchUserByInspection = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/cron/getInspectionUser`,
-    {
-      cache: "no-store",
-    },
   );
 
   const data = await res.json();
@@ -21,9 +18,6 @@ const fetchUserByInspection = async () => {
 const fetchUserByInsuarance = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/cron/getInsuaranceUser`,
-    {
-      cache: "no-store",
-    },
   );
 
   const data = await res.json();
@@ -32,9 +26,6 @@ const fetchUserByInsuarance = async () => {
 const fetchUserByNotice = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/cron/getNoticeUser`,
-    {
-      cache: "no-store",
-    },
   );
 
   const data = await res.json();

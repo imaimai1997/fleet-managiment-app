@@ -26,7 +26,6 @@ type Props = { data?: CarData; id?: string };
 const fetchCarType = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype`,
-    { cache: "no-store" },
   );
   const data = await res.json();
   return data.cartype;
@@ -34,7 +33,6 @@ const fetchCarType = async () => {
 const fetchEmployee = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/select/employee`,
-    { cache: "no-store" },
   );
   const data = await res.json();
   return data.employees;
@@ -43,7 +41,6 @@ const fetchEmployee = async () => {
 const fetchPlace = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/select/place`,
-    { cache: "no-store" },
   );
   const data = await res.json();
   return data.places;
@@ -51,7 +48,6 @@ const fetchPlace = async () => {
 const fetchCompany = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/select/company`,
-    { cache: "no-store" },
   );
   const data = await res.json();
   return data.leasingCompanyes;
@@ -59,15 +55,12 @@ const fetchCompany = async () => {
 const fetchRefueling = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/select/refueling`,
-    { cache: "no-store" },
   );
   const data = await res.json();
   return data.refueling_cards;
 };
 const fetchEtc = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/select/etc`, {
-    cache: "no-store",
-  });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/select/etc`);
   const data = await res.json();
   return data.etc_cards;
 };
