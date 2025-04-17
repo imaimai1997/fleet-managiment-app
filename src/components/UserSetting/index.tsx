@@ -7,7 +7,11 @@ import toast from "react-hot-toast";
 import { UserData } from "@/type/UserData";
 import { Button } from "../Button";
 
-const UserSetting = () => {
+const UserSetting = ({
+  setIsModalOpen,
+}: {
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const authContext = useAuthContext();
   const [currentUser, setCurrentUser] = useState<UserData | null>(null);
   const [userName, setUserName] = useState("");
@@ -38,9 +42,10 @@ const UserSetting = () => {
             email: userEmail,
             notice: userNotice,
           }),
-        },
+        }
       );
       toast.success("ユーザー情報を編集しました", { id: "1" });
+      setIsModalOpen(false);
       return res.json();
     } catch (error) {
       console.error(error);
