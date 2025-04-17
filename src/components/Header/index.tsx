@@ -62,17 +62,13 @@ const Header = () => {
           {isUserMenu && (
             <div className="bg-gray-300 absolute right-1/2 translate-x-2/4 w-40 flex flex-col items-center px-4 py-4 rounded-3xl text-black font-bold z-10">
               <p>{currentUser?.name}</p>
-              {/* <Link href="/setting"> */}
-
               <button
                 onClick={handleUserSetting}
-                // onClick={handleUserMenu}
                 className="bg-primary-700 flex items-center px-4 py-2 my-2 rounded-3xl hover:bg-primary-500"
               >
                 SETTING
                 <IoSettingsSharp className="ml-2" />
               </button>
-              {/* </Link> */}
               <button
                 onClick={handleLogout}
                 className="bg-primary-700 flex items-center px-4 py-2 rounded-3xl hover:bg-primary-500"

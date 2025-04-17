@@ -42,8 +42,9 @@ const UserSetting = ({
             email: userEmail,
             notice: userNotice,
           }),
-        }
+        },
       );
+      await authContext.refreshCurrentUser();
       toast.success("ユーザー情報を編集しました", { id: "1" });
       setIsModalOpen(false);
       return res.json();
