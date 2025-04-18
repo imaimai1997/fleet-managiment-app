@@ -20,6 +20,7 @@ import { RiGasStationLine } from "react-icons/ri";
 import { CiCreditCard1 } from "react-icons/ci";
 import { MdOutlineStickyNote2 } from "react-icons/md";
 import { Box } from "../Box";
+import { Input } from "../Input";
 
 type Props = { data?: CarData; id?: string };
 
@@ -407,14 +408,12 @@ const CarDetail = ({ data, id }: Props) => {
           >
             <div className="grid grid-cols-2 gap-x-2">
               <div>
-                <label>
-                  車両番号 <span className="text-red-500">*</span>
-                </label>
-                <input
+                <Input
+                  label="車両番号"
+                  required
                   {...register("label", {
                     required: "車両番号を入力してください。",
                   })}
-                  className="focus:bg-gray-200"
                   type="text"
                 />
               </div>
@@ -487,11 +486,12 @@ const CarDetail = ({ data, id }: Props) => {
               </select>
             </div>
             <div>
-              <p>管理者アドレス</p>
-              <input
+              <Input
+                label="管理者アドレス"
+                required
                 {...register("employeeEmail")}
                 type="text"
-                readOnly
+                disabled
                 className="bg-gray-200"
               />
             </div>
@@ -522,10 +522,9 @@ const CarDetail = ({ data, id }: Props) => {
                 </select>
               </div>
               <div>
-                <p>
-                  初度登録 <span className="text-red-500">*</span>
-                </p>
-                <input
+                <Input
+                  label="初度登録"
+                  required
                   {...register("first_registration_date", {
                     required: "初度登録を入力してください。",
                   })}
@@ -535,10 +534,9 @@ const CarDetail = ({ data, id }: Props) => {
             </div>
             <div className="grid grid-cols-2 gap-x-2">
               <div>
-                <p>
-                  リース開始日 <span className="text-red-500">*</span>
-                </p>
-                <input
+                <Input
+                  label="リース開始日"
+                  required
                   {...register("leasing_start_date", {
                     required: "リース開始日を入力してください。",
                   })}
@@ -546,10 +544,9 @@ const CarDetail = ({ data, id }: Props) => {
                 />
               </div>
               <div>
-                <p>
-                  リース終了日 <span className="text-red-500">*</span>
-                </p>
-                <input
+                <Input
+                  label="リース終了日"
+                  required
                   {...register("leasing_finish_date", {
                     required: "リース終了日を入力してください。",
                   })}
@@ -615,10 +612,9 @@ const CarDetail = ({ data, id }: Props) => {
           >
             <div className="grid grid-cols-2 gap-x-2">
               <div>
-                <p>
-                  車検満了日 <span className="text-red-500">*</span>
-                </p>
-                <input
+                <Input
+                  label="車検満了日"
+                  required
                   {...register("inspection_expires_date", {
                     required: "車検日を入力してください。",
                   })}
@@ -627,7 +623,7 @@ const CarDetail = ({ data, id }: Props) => {
               </div>
               <div>
                 <p>車検PDF</p>
-                <div className="w-60 border-2 border-gray-200 p-2 flex justify-between items-center">
+                <div className=" border-2 border-gray-200 p-2 flex justify-between items-center">
                   <div className="w-4/5">
                     <input
                       type="file"
@@ -663,10 +659,9 @@ const CarDetail = ({ data, id }: Props) => {
           >
             <div className="grid grid-cols-2 gap-x-2">
               <div>
-                <p>
-                  保険満了日 <span className="text-red-500">*</span>
-                </p>
-                <input
+                <Input
+                  label="保険満了日"
+                  required
                   {...register("insuarance_expires_date", {
                     required: "保険満了日を入力してください。",
                   })}
@@ -675,7 +670,7 @@ const CarDetail = ({ data, id }: Props) => {
               </div>
               <div>
                 <p>保険PDF</p>
-                <div className="w-60 border-2 relative border-gray-200 p-2 flex justify-between items-center ">
+                <div className="border-2 relative border-gray-200 p-2 flex justify-between items-center ">
                   <div className="w-4/5">
                     <input
                       type="file"
@@ -728,11 +723,11 @@ const CarDetail = ({ data, id }: Props) => {
               </select>
             </div>
             <div>
-              <p>給油カード期限</p>
-              <input
+              <Input
+                label="給油カード期限"
                 {...register("refueling_cardPeriod")}
                 type="date"
-                readOnly
+                disabled
                 className="bg-gray-200"
               />
             </div>
@@ -759,20 +754,20 @@ const CarDetail = ({ data, id }: Props) => {
             </div>
             <div className="grid grid-cols-2 gap-x-2">
               <div>
-                <p>ETCカード番号</p>
-                <input
+                <Input
+                  label="ETCカード番号"
                   {...register("etc_cardNumber")}
                   type="text"
-                  readOnly
+                  disabled
                   className="bg-gray-200"
                 />
               </div>
               <div>
-                <p>ETCカード期限</p>
-                <input
+                <Input
+                  label="ETCカード期限"
                   {...register("etc_cardPeriod")}
                   type="date"
-                  readOnly
+                  disabled
                   className="bg-gray-200"
                 />
               </div>
