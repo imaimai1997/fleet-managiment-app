@@ -7,9 +7,7 @@ import UserModal from "@/components/Modal/UserModal";
 type Props = { searchParams?: Promise<{ query?: string; page?: string }> };
 
 const fetchFilteredUser = async (query: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
-    cache: "no-store",
-  });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`);
 
   const data = await res.json();
   const users = await data.users;

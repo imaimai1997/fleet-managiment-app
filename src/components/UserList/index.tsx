@@ -16,9 +16,6 @@ const UserList = ({ data }: Props) => {
   const fetchUserById = async (id: string) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`,
-      {
-        cache: "no-store",
-      },
     );
 
     return res.json();

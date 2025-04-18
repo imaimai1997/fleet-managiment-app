@@ -21,9 +21,6 @@ const fetchFeeList = async (yearMonth: string, carNumber?: string) => {
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/fee/list?${query.toString()}`,
-    {
-      cache: "no-store",
-    },
   );
 
   if (!res.ok) {

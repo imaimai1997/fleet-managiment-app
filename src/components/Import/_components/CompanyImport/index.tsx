@@ -14,9 +14,6 @@ const CompanyImport = () => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/company`,
-        {
-          cache: "no-store",
-        },
       );
 
       const data = await res.json();

@@ -19,9 +19,6 @@ const RefuelingCardImport = () => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/refueling`,
-        {
-          cache: "no-store",
-        },
       );
 
       const data = await res.json();
