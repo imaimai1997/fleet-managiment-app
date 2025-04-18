@@ -19,20 +19,21 @@ import { AiOutlineInsurance } from "react-icons/ai";
 import { RiGasStationLine } from "react-icons/ri";
 import { CiCreditCard1 } from "react-icons/ci";
 import { MdOutlineStickyNote2 } from "react-icons/md";
+import { Box } from "../Box";
 
 type Props = { data?: CarData; id?: string };
 
 //Selectタグ選択肢
 const fetchCarType = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype`
   );
   const data = await res.json();
   return data.cartype;
 };
 const fetchEmployee = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/employee`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/select/employee`
   );
   const data = await res.json();
   return data.employees;
@@ -40,21 +41,21 @@ const fetchEmployee = async () => {
 
 const fetchPlace = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/place`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/select/place`
   );
   const data = await res.json();
   return data.places;
 };
 const fetchCompany = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/company`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/select/company`
   );
   const data = await res.json();
   return data.leasingCompanyes;
 };
 const fetchRefueling = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/refueling`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/select/refueling`
   );
   const data = await res.json();
   return data.refueling_cards;
@@ -125,7 +126,7 @@ const CarDetail = ({ data, id }: Props) => {
   >(data?.insuarance_data_name || "選択してください");
 
   const handleInspectionFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     console.log(e.target.files);
     const file = e.target.files?.[0];
@@ -136,7 +137,7 @@ const CarDetail = ({ data, id }: Props) => {
     }
   };
   const handleInsuaranceFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     console.log(e.target.files);
     const file = e.target.files?.[0];
@@ -147,7 +148,7 @@ const CarDetail = ({ data, id }: Props) => {
   };
   const showFolder = (
     e: React.MouseEvent<HTMLButtonElement>,
-    ref: React.RefObject<HTMLInputElement>,
+    ref: React.RefObject<HTMLInputElement>
   ) => {
     e.preventDefault();
     ref.current?.click();
@@ -266,7 +267,7 @@ const CarDetail = ({ data, id }: Props) => {
       }
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/car/${id}`,
-        { method: "DELETE", headers: { "Content-Type": "application/json" } },
+        { method: "DELETE", headers: { "Content-Type": "application/json" } }
       );
       toast.success("車両情報が削除されました", { id: "1" });
       router.push("/");
@@ -324,7 +325,7 @@ const CarDetail = ({ data, id }: Props) => {
               watch("tire_change") == "" ? null : watch("tire_change"),
             notes: watch("notes") == "" ? null : watch("notes"),
           }),
-        },
+        }
       );
       if (!res.ok) throw new Error("Failed to update car data");
       toast.success("車両情報が編集されました", { id: "1" });
@@ -380,7 +381,7 @@ const CarDetail = ({ data, id }: Props) => {
 
   useEffect(() => {
     const selected = refuelingCard.find(
-      (r) => r.number === watch("refueling_cardNumber"),
+      (r) => r.number === watch("refueling_cardNumber")
     );
     if (selected) {
       setValue("refueling_cardPeriod", formatDate(selected.period));
@@ -400,11 +401,10 @@ const CarDetail = ({ data, id }: Props) => {
       <Toaster />
       <form onSubmit={handleSubmit(handleCreateCar, onError)}>
         <div className="grid grid-cols-2 gap-4 m-4 [&_input]:w-full [&_select]:w-full [&_input]:border-2 [&_input]:border-gray-200 [&_input]:p-2 [&_input]:mb-2 [&_select]:border-2 [&_select]:border-gray-200 [&_select]:p-2 [&_select]:mb-2 ">
-          <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8 flex items-center">
-              <FaCarSide size={20} className="text-primary-700 mr-2" />
-              車両情報
-            </h3>
+          <Box
+            title="車両情報"
+            icon={<FaCarSide size={20} className="text-primary-700 mr-2" />}
+          >
             <div className="grid grid-cols-2 gap-x-2">
               <div>
                 <label>
@@ -460,12 +460,12 @@ const CarDetail = ({ data, id }: Props) => {
                 ))}
               </select>
             </div>
-          </div>
-          <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8 flex items-center">
-              <FaUser size={20} className="text-primary-700 mr-2" />
-              管理者情報
-            </h3>
+          </Box>
+
+          <Box
+            title="管理者情報"
+            icon={<FaUser size={20} className="text-primary-700 mr-2" />}
+          >
             <div>
               <p>
                 管理者 <span className="text-red-500">*</span>
@@ -495,12 +495,11 @@ const CarDetail = ({ data, id }: Props) => {
                 className="bg-gray-200"
               />
             </div>
-          </div>
-          <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8 flex items-center">
-              <FaRegBuilding size={20} className="text-primary-700 mr-2" />
-              リース情報
-            </h3>
+          </Box>
+          <Box
+            title="リース情報"
+            icon={<FaRegBuilding size={20} className="text-primary-700 mr-2" />}
+          >
             <div className="grid grid-cols-2 gap-x-2">
               <div>
                 <p>
@@ -558,15 +557,16 @@ const CarDetail = ({ data, id }: Props) => {
                 />
               </div>
             </div>
-          </div>
-          <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8 flex items-center">
+          </Box>
+          <Box
+            title="点検情報"
+            icon={
               <MdHomeRepairService
                 size={20}
                 className="text-primary-700 mr-2"
               />
-              点検情報
-            </h3>
+            }
+          >
             <div>
               <p>
                 6カ月点検日 <span className="text-red-500">*</span>
@@ -607,13 +607,12 @@ const CarDetail = ({ data, id }: Props) => {
                 <option value="false">無し</option>
               </select>
             </div>
-          </div>
+          </Box>
 
-          <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8 flex items-center">
-              <CiCalendar size={20} className="text-primary-700 mr-2" />
-              車検情報
-            </h3>
+          <Box
+            title="車検情報"
+            icon={<CiCalendar size={20} className="text-primary-700 mr-2" />}
+          >
             <div className="grid grid-cols-2 gap-x-2">
               <div>
                 <p>
@@ -655,12 +654,13 @@ const CarDetail = ({ data, id }: Props) => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8 flex items-center">
+          </Box>
+          <Box
+            title="保険情報"
+            icon={
               <AiOutlineInsurance size={20} className="text-primary-700 mr-2" />
-              保険情報
-            </h3>
+            }
+          >
             <div className="grid grid-cols-2 gap-x-2">
               <div>
                 <p>
@@ -704,12 +704,13 @@ const CarDetail = ({ data, id }: Props) => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8 flex items-center">
+          </Box>
+          <Box
+            title="給油カード情報"
+            icon={
               <RiGasStationLine size={20} className="text-primary-700 mr-2" />
-              給油カード情報
-            </h3>
+            }
+          >
             <div>
               <p>給油カード番号</p>
               <select
@@ -735,12 +736,11 @@ const CarDetail = ({ data, id }: Props) => {
                 className="bg-gray-200"
               />
             </div>
-          </div>
-          <div className="bg-white p-4 border-2 border-gray-200">
-            <h3 className="text-2xl font-bold mb-8 flex items-center">
-              <CiCreditCard1 size={20} className="text-primary-700 mr-2" />
-              ETCカード情報
-            </h3>
+          </Box>
+          <Box
+            title="ETCカード情報"
+            icon={<CiCreditCard1 size={20} className="text-primary-700 mr-2" />}
+          >
             <div>
               <p>ETCカード名</p>
               <select
@@ -777,20 +777,23 @@ const CarDetail = ({ data, id }: Props) => {
                 />
               </div>
             </div>
-          </div>
+          </Box>
         </div>
-        <div className="bg-white p-4 border-2 border-gray-200 mx-4 mt-4 mb-16">
-          <h3 className="text-2xl font-bold mb-8 flex items-center">
+
+        <Box
+          title="備考欄"
+          icon={
             <MdOutlineStickyNote2 size={20} className="text-primary-700 mr-2" />
-            備考欄
-          </h3>
+          }
+          className="mx-4 mt-4 mb-16"
+        >
           <div>
             <textarea
               {...register("notes", {})}
               className="h-24 w-full border-2 border-gray-200 p-2"
             />
           </div>
-        </div>
+        </Box>
 
         {!data && (
           <div className="w-[calc(100vw-240px)] fixed bottom-0 py-2 bg-white shadow-inner">
