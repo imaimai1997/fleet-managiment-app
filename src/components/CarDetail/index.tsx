@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm, FieldErrors } from "react-hook-form";
 import { CarForm } from "@/type/CarForm";
-// import { Select } from "@/type/Select";
 import { deletePDF, uploadPDF } from "@/utils/supabase/uploadPDF";
 import { useAuthContext } from "@/context/authContext";
 import { Button } from "../Button";
@@ -31,52 +30,27 @@ import {
   RefuelingCard,
 } from "@/type/Car";
 
-type Props = { data?: CarData; id?: string };
-
-//Selectタグ選択肢
-const fetchCarTypes = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype`
-  );
-  const { cartype } = await res.json();
-  return cartype;
-};
-const fetchEmployee = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/employee`
-  );
-  const data = await res.json();
-  return data.employees;
+type Props = {
+  data?: CarData;
+  id?: string;
+  carTypes: CarType[];
+  places: Place[];
+  employees: Employee[];
+  leasingCompanies: LeasingCompany[];
+  refuelingCards: RefuelingCard[];
+  etcCards: EtcCard[];
 };
 
-const fetchPlace = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/place`
-  );
-  const data = await res.json();
-  return data.places;
-};
-const fetchCompany = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/company`
-  );
-  const data = await res.json();
-  return data.leasingCompanyes;
-};
-const fetchRefueling = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/select/refueling`
-  );
-  const data = await res.json();
-  return data.refueling_cards;
-};
-const fetchEtc = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/select/etc`);
-  const data = await res.json();
-  return data.etc_cards;
-};
-
-const CarDetail = ({ data, id }: Props) => {
+const CarDetail = ({
+  data,
+  id,
+  carTypes,
+  places,
+  employees,
+  leasingCompanies,
+  refuelingCards,
+  etcCards,
+}: Props) => {
   const formatDate = (cardate: Date | undefined) => {
     if (!cardate) return ""; // 初期値がない場合
     const date = new Date(cardate);
@@ -136,7 +110,7 @@ const CarDetail = ({ data, id }: Props) => {
   >(data?.insuarance_data_name || "選択してください");
 
   const handleInspectionFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     console.log(e.target.files);
     const file = e.target.files?.[0];
@@ -147,7 +121,7 @@ const CarDetail = ({ data, id }: Props) => {
     }
   };
   const handleInsuaranceFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     console.log(e.target.files);
     const file = e.target.files?.[0];
@@ -158,20 +132,11 @@ const CarDetail = ({ data, id }: Props) => {
   };
   const showFolder = (
     e: React.MouseEvent<HTMLButtonElement>,
-    ref: React.RefObject<HTMLInputElement>
+    ref: React.RefObject<HTMLInputElement>,
   ) => {
     e.preventDefault();
     ref.current?.click();
   };
-
-  const [carTypes, setCarTypes] = useState<CarType[]>([]);
-  const [employees, setEmployees] = useState<Employee[]>([]);
-  const [places, setPlaces] = useState<Place[]>([]);
-  const [leasingCompanies, setLeasingCompanies] = useState<LeasingCompany[]>(
-    []
-  );
-  const [refuelingCards, setRefuelingCards] = useState<RefuelingCard[]>([]);
-  const [etcCards, setEtcCards] = useState<EtcCard[]>([]);
 
   const handleCreateCar = async () => {
     console.log("作成中");
@@ -279,7 +244,7 @@ const CarDetail = ({ data, id }: Props) => {
       }
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/car/${id}`,
-        { method: "DELETE", headers: { "Content-Type": "application/json" } }
+        { method: "DELETE", headers: { "Content-Type": "application/json" } },
       );
       toast.success("車両情報が削除されました", { id: "1" });
       router.push("/");
@@ -337,7 +302,7 @@ const CarDetail = ({ data, id }: Props) => {
               watch("tire_change") == "" ? null : watch("tire_change"),
             notes: watch("notes") == "" ? null : watch("notes"),
           }),
-        }
+        },
       );
       if (!res.ok) throw new Error("Failed to update car data");
       toast.success("車両情報が編集されました", { id: "1" });
@@ -359,30 +324,6 @@ const CarDetail = ({ data, id }: Props) => {
     setInsuaranceFileName(data?.insuarance_data_name);
   }, [data]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const cartype = await fetchCarTypes();
-        const employee = await fetchEmployee();
-        const place = await fetchPlace();
-        const company = await fetchCompany();
-        const refueling = await fetchRefueling();
-        const etc = await fetchEtc();
-
-        setCarTypes(cartype);
-        setEmployees(employee);
-        setPlaces(place);
-        setLeasingCompanies(company);
-        setRefuelingCards(refueling);
-        setEtcCards(etc);
-      } catch (error) {
-        console.error("Error fetching car type:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   // 読み取り専用項目の自動表示
   useEffect(() => {
     const selected = employees.find((e) => e.name === watch("employeeName"));
@@ -393,7 +334,7 @@ const CarDetail = ({ data, id }: Props) => {
 
   useEffect(() => {
     const selected = refuelingCards.find(
-      (r) => r.number === watch("refueling_cardNumber")
+      (r) => r.number === watch("refueling_cardNumber"),
     );
     if (selected) {
       setValue("refueling_cardPeriod", formatDate(selected.period));
