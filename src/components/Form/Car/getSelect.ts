@@ -83,18 +83,40 @@ async function fetchEtcCards(): Promise<EtcCard[]> {
 }
 
 export async function getSelect() {
-  const carTypes = await fetchCarTypes();
-  const places = await fetchPlaces();
-  const employees = await fetchEmployees();
-  const leasingCompanies = await fetchLeasingCompanies();
-  const refuelingCards = await fetchRefuelingCards();
-  const etcCards = await fetchEtcCards();
-  return {
-    carTypes,
-    places,
-    employees,
-    leasingCompanies,
-    refuelingCards,
-    etcCards,
-  };
+  try {
+    const [
+      carTypes,
+      places,
+      employees,
+      leasingCompanies,
+      refuelingCards,
+      etcCards,
+    ] = await Promise.all([
+      fetchCarTypes(),
+      fetchPlaces(),
+      fetchEmployees(),
+      fetchLeasingCompanies(),
+      fetchRefuelingCards(),
+      fetchEtcCards(),
+    ]);
+
+    return {
+      carTypes,
+      places,
+      employees,
+      leasingCompanies,
+      refuelingCards,
+      etcCards,
+    };
+  } catch (err) {
+    console.error("getSelect error:", err);
+    return {
+      carTypes: [],
+      places: [],
+      employees: [],
+      leasingCompanies: [],
+      refuelingCards: [],
+      etcCards: [],
+    };
+  }
 }
