@@ -370,10 +370,12 @@ const CarDetail = ({
               <Select
                 label="車種"
                 required
-                options={carTypes.map((carType) => ({
-                  key: carType.id,
-                  value: carType.name,
-                }))}
+                options={
+                  carTypes?.map((carType) => ({
+                    key: carType.id,
+                    value: carType.name,
+                  })) || []
+                }
                 {...register("carTypeName", {
                   required: "車種を選択してください。",
                 })}
@@ -384,10 +386,12 @@ const CarDetail = ({
             <Select
               label="使用場所"
               required
-              options={places.map((place) => ({
-                key: place.id,
-                value: place.name,
-              }))}
+              options={
+                places?.map((place) => ({
+                  key: place.id,
+                  value: place.name,
+                })) || []
+              }
               {...register("placeName", {
                 required: "使用場所を選択してください。",
               })}
@@ -401,10 +405,12 @@ const CarDetail = ({
             <Select
               required
               label="管理者"
-              options={employees.map((employee) => ({
-                key: employee.id,
-                value: employee.name,
-              }))}
+              options={
+                employees?.map((employee) => ({
+                  key: employee.id,
+                  value: employee.name,
+                })) || []
+              }
               {...register("employeeName", {
                 required: "車種を選択してください。",
               })}
@@ -427,10 +433,12 @@ const CarDetail = ({
               <Select
                 label="リース会社"
                 required
-                options={leasingCompanies.map((leasingCompany) => ({
-                  key: leasingCompany.id,
-                  value: leasingCompany.name,
-                }))}
+                options={
+                  leasingCompanies?.map((leasingCompany) => ({
+                    key: leasingCompany.id,
+                    value: leasingCompany.name,
+                  })) || []
+                }
                 {...register("leasingName", {
                   required: "リース会社を選択してください。",
                 })}
@@ -604,10 +612,12 @@ const CarDetail = ({
           >
             <Select
               label="給油カード番号"
-              options={refuelingCards.map((refuelingCard) => ({
-                key: refuelingCard.id,
-                value: refuelingCard.number,
-              }))}
+              options={
+                refuelingCards?.map((refuelingCard) => ({
+                  key: refuelingCard.id,
+                  value: refuelingCard.number,
+                })) || []
+              }
               {...register("refueling_cardNumber")}
               value={watch("refueling_cardNumber")}
             />
@@ -626,10 +636,12 @@ const CarDetail = ({
           >
             <Select
               label="ETCカード名"
-              options={etcCards.map((etcCard) => ({
-                key: etcCard.id,
-                value: etcCard.name,
-              }))}
+              options={
+                etcCards?.map((etcCard) => ({
+                  key: etcCard.id,
+                  value: etcCard.name,
+                })) || []
+              }
               {...register("etc_cardName")}
               value={watch("etc_cardName")}
             />
