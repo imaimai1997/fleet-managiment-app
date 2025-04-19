@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm, FieldErrors } from "react-hook-form";
 import { CarForm } from "@/type/CarForm";
-import { Select } from "@/type/Select";
+// import { Select } from "@/type/Select";
 import { deletePDF, uploadPDF } from "@/utils/supabase/uploadPDF";
 import { useAuthContext } from "@/context/authContext";
 import { Button } from "../Button";
@@ -21,16 +21,25 @@ import { CiCreditCard1 } from "react-icons/ci";
 import { MdOutlineStickyNote2 } from "react-icons/md";
 import { Box } from "../Box";
 import { Input } from "../Input";
+import { Select } from "../Select";
+import {
+  CarType,
+  Employee,
+  EtcCard,
+  LeasingCompany,
+  Place,
+  RefuelingCard,
+} from "@/type/Car";
 
 type Props = { data?: CarData; id?: string };
 
 //Selectタグ選択肢
-const fetchCarType = async () => {
+const fetchCarTypes = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype`
   );
-  const data = await res.json();
-  return data.cartype;
+  const { cartype } = await res.json();
+  return cartype;
 };
 const fetchEmployee = async () => {
   const res = await fetch(
@@ -155,12 +164,14 @@ const CarDetail = ({ data, id }: Props) => {
     ref.current?.click();
   };
 
-  const [carType, setCarType] = useState<Select[]>([]);
-  const [employee, setEmployee] = useState<Select[]>([]);
-  const [place, setPlace] = useState<Select[]>([]);
-  const [company, setCompany] = useState<Select[]>([]);
-  const [refuelingCard, setRefuelingCard] = useState<Select[]>([]);
-  const [etcCard, setEtcCard] = useState<Select[]>([]);
+  const [carTypes, setCarTypes] = useState<CarType[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [leasingCompanies, setLeasingCompanies] = useState<LeasingCompany[]>(
+    []
+  );
+  const [refuelingCards, setRefuelingCards] = useState<RefuelingCard[]>([]);
+  const [etcCards, setEtcCards] = useState<EtcCard[]>([]);
 
   const handleCreateCar = async () => {
     console.log("作成中");
@@ -351,19 +362,19 @@ const CarDetail = ({ data, id }: Props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const cartype = await fetchCarType();
+        const cartype = await fetchCarTypes();
         const employee = await fetchEmployee();
         const place = await fetchPlace();
         const company = await fetchCompany();
         const refueling = await fetchRefueling();
         const etc = await fetchEtc();
 
-        setCarType(cartype);
-        setEmployee(employee);
-        setPlace(place);
-        setCompany(company);
-        setRefuelingCard(refueling);
-        setEtcCard(etc);
+        setCarTypes(cartype);
+        setEmployees(employee);
+        setPlaces(place);
+        setLeasingCompanies(company);
+        setRefuelingCards(refueling);
+        setEtcCards(etc);
       } catch (error) {
         console.error("Error fetching car type:", error);
       }
@@ -374,14 +385,14 @@ const CarDetail = ({ data, id }: Props) => {
 
   // 読み取り専用項目の自動表示
   useEffect(() => {
-    const selected = employee.find((e) => e.name === watch("employeeName"));
+    const selected = employees.find((e) => e.name === watch("employeeName"));
     if (selected) {
       setValue("employeeEmail", selected.email);
     }
   }, [watch("employeeName")]);
 
   useEffect(() => {
-    const selected = refuelingCard.find(
+    const selected = refuelingCards.find(
       (r) => r.number === watch("refueling_cardNumber")
     );
     if (selected) {
@@ -390,7 +401,7 @@ const CarDetail = ({ data, id }: Props) => {
   }, [watch("refueling_cardNumber")]);
 
   useEffect(() => {
-    const selected = etcCard.find((e) => e.name === watch("etc_cardName"));
+    const selected = etcCards.find((e) => e.name === watch("etc_cardName"));
     if (selected) {
       setValue("etc_cardPeriod", formatDate(selected.period));
       setValue("etc_cardNumber", selected.number);
@@ -407,152 +418,109 @@ const CarDetail = ({ data, id }: Props) => {
             icon={<FaCarSide size={20} className="text-primary-700 mr-2" />}
           >
             <div className="grid grid-cols-2 gap-x-2">
-              <div>
-                <Input
-                  label="車両番号"
-                  required
-                  {...register("label", {
-                    required: "車両番号を入力してください。",
-                  })}
-                  type="text"
-                />
-              </div>
-              <div>
-                <p>
-                  車種 <span className="text-red-500">*</span>
-                </p>
-                <select
-                  {...register("carTypeName", {
-                    required: "車種を選択してください。",
-                  })}
-                  value={watch("carTypeName")}
-                >
-                  <option value="" disabled>
-                    選択してください
-                  </option>
-                  {carType.map((item) => (
-                    <option key={item.id} value={item.name}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <p>
-                使用場所 <span className="text-red-500">*</span>
-              </p>
-              <select
-                {...register("placeName", {
-                  required: "使用場所を選択してください。",
+              <Input
+                label="車両番号"
+                required
+                {...register("label", {
+                  required: "車両番号を入力してください。",
                 })}
-                value={watch("placeName")}
-              >
-                <option value="" disabled>
-                  選択してください
-                </option>
-                {place.map((item) => (
-                  <option key={item.id} value={item.name}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
+                type="text"
+              />
+              <Select
+                label="車種"
+                required
+                options={carTypes.map((carType) => ({
+                  key: carType.id,
+                  value: carType.name,
+                }))}
+                {...register("carTypeName", {
+                  required: "車種を選択してください。",
+                })}
+                value={watch("carTypeName")}
+              />
             </div>
-          </Box>
 
+            <Select
+              label="使用場所"
+              required
+              options={places.map((place) => ({
+                key: place.id,
+                value: place.name,
+              }))}
+              {...register("placeName", {
+                required: "使用場所を選択してください。",
+              })}
+              value={watch("placeName")}
+            />
+          </Box>
           <Box
             title="管理者情報"
             icon={<FaUser size={20} className="text-primary-700 mr-2" />}
           >
-            <div>
-              <p>
-                管理者 <span className="text-red-500">*</span>
-              </p>
-              <select
-                {...register("employeeName", {
-                  required: "車種を選択してください。",
-                })}
-                value={watch("employeeName")}
-              >
-                <option value="" disabled>
-                  選択してください
-                </option>
-                {employee.map((item) => (
-                  <option key={item.id} value={item.name}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <Input
-                label="管理者アドレス"
-                required
-                {...register("employeeEmail")}
-                type="text"
-                disabled
-                className="bg-gray-200"
-              />
-            </div>
+            <Select
+              required
+              label="管理者"
+              options={employees.map((employee) => ({
+                key: employee.id,
+                value: employee.name,
+              }))}
+              {...register("employeeName", {
+                required: "車種を選択してください。",
+              })}
+              value={watch("employeeName")}
+            />
+            <Input
+              label="管理者アドレス"
+              required
+              {...register("employeeEmail")}
+              type="text"
+              disabled
+              className="bg-gray-200"
+            />
           </Box>
           <Box
             title="リース情報"
             icon={<FaRegBuilding size={20} className="text-primary-700 mr-2" />}
           >
             <div className="grid grid-cols-2 gap-x-2">
-              <div>
-                <p>
-                  リース会社 <span className="text-red-500">*</span>
-                </p>
-                <select
-                  {...register("leasingName", {
-                    required: "リース会社を選択してください。",
-                  })}
-                  value={watch("leasingName")}
-                >
-                  <option value="" disabled>
-                    選択してください
-                  </option>
-                  {company.map((item) => (
-                    <option key={item.id} value={item.name}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <Input
-                  label="初度登録"
-                  required
-                  {...register("first_registration_date", {
-                    required: "初度登録を入力してください。",
-                  })}
-                  type="date"
-                />
-              </div>
+              <Select
+                label="リース会社"
+                required
+                options={leasingCompanies.map((leasingCompany) => ({
+                  key: leasingCompany.id,
+                  value: leasingCompany.name,
+                }))}
+                {...register("leasingName", {
+                  required: "リース会社を選択してください。",
+                })}
+                value={watch("leasingName")}
+              />
+              <Input
+                label="初度登録"
+                required
+                {...register("first_registration_date", {
+                  required: "初度登録を入力してください。",
+                })}
+                type="date"
+              />
             </div>
             <div className="grid grid-cols-2 gap-x-2">
-              <div>
-                <Input
-                  label="リース開始日"
-                  required
-                  {...register("leasing_start_date", {
-                    required: "リース開始日を入力してください。",
-                  })}
-                  type="date"
-                />
-              </div>
-              <div>
-                <Input
-                  label="リース終了日"
-                  required
-                  {...register("leasing_finish_date", {
-                    required: "リース終了日を入力してください。",
-                  })}
-                  type="date"
-                />
-              </div>
+              <Input
+                label="リース開始日"
+                required
+                {...register("leasing_start_date", {
+                  required: "リース開始日を入力してください。",
+                })}
+                type="date"
+              />
+              <Input
+                label="リース終了日"
+                required
+                {...register("leasing_finish_date", {
+                  required: "リース終了日を入力してください。",
+                })}
+                type="date"
+              />
             </div>
           </Box>
           <Box
@@ -564,46 +532,37 @@ const CarDetail = ({ data, id }: Props) => {
               />
             }
           >
-            <div>
-              <p>
-                6カ月点検日 <span className="text-red-500">*</span>
-              </p>
-              <select
-                {...register("harf_year_inspection", {
-                  required: "6カ月点検日を選択してください。",
-                })}
-                value={watch("harf_year_inspection")}
-              >
-                <option value="" disabled>
-                  選択してください
-                </option>
-                <option value="1月・7月">1月・7月</option>
-                <option value="2月・8月">2月・8月</option>
-                <option value="3月・9月">3月・9月</option>
-                <option value="4月・10月">4月・10月</option>
-                <option value="5月・11月">5月・11月</option>
-                <option value="6月・12月">6月・12月</option>
-              </select>
-            </div>
-            <div>
-              <p>タイヤ交換有無</p>
-              <select
-                {...register("tire_change", {})}
-                value={
-                  watch("tire_change") === null
-                    ? ""
-                    : watch("tire_change") === "true"
-                      ? "true"
-                      : "false"
-                }
-              >
-                <option value="" disabled>
-                  選択してください
-                </option>
-                <option value="true">有り</option>
-                <option value="false">無し</option>
-              </select>
-            </div>
+            <Select
+              label="6カ月点検日"
+              required
+              options={[
+                { key: "1月・7月", value: "1月・7月" },
+                { key: "2月・8月", value: "2月・8月" },
+                { key: "3月・9月", value: "3月・9月" },
+                { key: "4月・10月", value: "4月・10月" },
+                { key: "5月・11月", value: "5月・11月" },
+                { key: "6月・12月", value: "6月・12月" },
+              ]}
+              {...register("harf_year_inspection", {
+                required: "6カ月点検日を選択してください。",
+              })}
+              value={watch("harf_year_inspection")}
+            />
+            <Select
+              label="タイヤ交換有無"
+              options={[
+                { key: 0, value: "有り" },
+                { key: 1, value: "無し" },
+              ]}
+              {...register("tire_change", {})}
+              value={
+                watch("tire_change") === null
+                  ? ""
+                  : watch("tire_change") === "true"
+                    ? "true"
+                    : "false"
+              }
+            />
           </Box>
 
           <Box
@@ -611,16 +570,14 @@ const CarDetail = ({ data, id }: Props) => {
             icon={<CiCalendar size={20} className="text-primary-700 mr-2" />}
           >
             <div className="grid grid-cols-2 gap-x-2">
-              <div>
-                <Input
-                  label="車検満了日"
-                  required
-                  {...register("inspection_expires_date", {
-                    required: "車検日を入力してください。",
-                  })}
-                  type="date"
-                />
-              </div>
+              <Input
+                label="車検満了日"
+                required
+                {...register("inspection_expires_date", {
+                  required: "車検日を入力してください。",
+                })}
+                type="date"
+              />
               <div>
                 <p>車検PDF</p>
                 <div className=" border-2 border-gray-200 p-2 flex justify-between items-center">
@@ -658,16 +615,14 @@ const CarDetail = ({ data, id }: Props) => {
             }
           >
             <div className="grid grid-cols-2 gap-x-2">
-              <div>
-                <Input
-                  label="保険満了日"
-                  required
-                  {...register("insuarance_expires_date", {
-                    required: "保険満了日を入力してください。",
-                  })}
-                  type="date"
-                />
-              </div>
+              <Input
+                label="保険満了日"
+                required
+                {...register("insuarance_expires_date", {
+                  required: "保険満了日を入力してください。",
+                })}
+                type="date"
+              />
               <div>
                 <p>保険PDF</p>
                 <div className="border-2 relative border-gray-200 p-2 flex justify-between items-center ">
@@ -706,75 +661,56 @@ const CarDetail = ({ data, id }: Props) => {
               <RiGasStationLine size={20} className="text-primary-700 mr-2" />
             }
           >
-            <div>
-              <p>給油カード番号</p>
-              <select
-                {...register("refueling_cardNumber")}
-                value={watch("refueling_cardNumber")}
-              >
-                <option value="" disabled>
-                  選択してください
-                </option>
-                {refuelingCard.map((item) => (
-                  <option key={item.id} value={item.number}>
-                    {item.number}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
+            <Select
+              label="給油カード番号"
+              options={refuelingCards.map((refuelingCard) => ({
+                key: refuelingCard.id,
+                value: refuelingCard.number,
+              }))}
+              {...register("refueling_cardNumber")}
+              value={watch("refueling_cardNumber")}
+            />
+
+            <Input
+              label="給油カード期限"
+              {...register("refueling_cardPeriod")}
+              type="date"
+              disabled
+              className="bg-gray-200"
+            />
+          </Box>
+          <Box
+            title="ETCカード情報"
+            icon={<CiCreditCard1 size={20} className="text-primary-700 mr-2" />}
+          >
+            <Select
+              label="ETCカード名"
+              options={etcCards.map((etcCard) => ({
+                key: etcCard.id,
+                value: etcCard.name,
+              }))}
+              {...register("etc_cardName")}
+              value={watch("etc_cardName")}
+            />
+
+            <div className="grid grid-cols-2 gap-x-2">
               <Input
-                label="給油カード期限"
-                {...register("refueling_cardPeriod")}
+                label="ETCカード番号"
+                {...register("etc_cardNumber")}
+                type="text"
+                disabled
+                className="bg-gray-200"
+              />
+              <Input
+                label="ETCカード期限"
+                {...register("etc_cardPeriod")}
                 type="date"
                 disabled
                 className="bg-gray-200"
               />
             </div>
           </Box>
-          <Box
-            title="ETCカード情報"
-            icon={<CiCreditCard1 size={20} className="text-primary-700 mr-2" />}
-          >
-            <div>
-              <p>ETCカード名</p>
-              <select
-                {...register("etc_cardName")}
-                value={watch("etc_cardName")}
-              >
-                <option value="" disabled>
-                  選択してください
-                </option>
-                {etcCard.map((item) => (
-                  <option key={item.id} value={item.name}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="grid grid-cols-2 gap-x-2">
-              <div>
-                <Input
-                  label="ETCカード番号"
-                  {...register("etc_cardNumber")}
-                  type="text"
-                  disabled
-                  className="bg-gray-200"
-                />
-              </div>
-              <div>
-                <Input
-                  label="ETCカード期限"
-                  {...register("etc_cardPeriod")}
-                  type="date"
-                  disabled
-                  className="bg-gray-200"
-                />
-              </div>
-            </div>
-          </Box>
         </div>
-
         <Box
           title="備考欄"
           icon={
