@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
   try {
     return await prismaExecute(async () => {
-      const refueling_cards = await prisma.refueling_card.findMany({});
+      const refuelingCards = await prisma.refueling_card.findMany({});
       return NextResponse.json(
-        { message: "Success", refueling_cards },
+        { message: "Success", refuelingCards },
         { status: 200 },
       );
     });

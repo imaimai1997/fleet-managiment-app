@@ -1,14 +1,24 @@
-import React from "react";
 import CarDetail from "@/components/CarDetail";
+import { getSelect } from "@/components/Form/Car/getSelect";
 
-const CreateCar = () => {
+export default async function CreateCarPage() {
+  const {
+    carTypes,
+    places,
+    employees,
+    leasingCompanies,
+    refuelingCards,
+    etcCards,
+  } = await getSelect();
+
   return (
-    <>
-      <div>
-        <CarDetail />
-      </div>
-    </>
+    <CarDetail
+      carTypes={carTypes}
+      places={places}
+      employees={employees}
+      leasingCompanies={leasingCompanies}
+      refuelingCards={refuelingCards}
+      etcCards={etcCards}
+    />
   );
-};
-
-export default CreateCar;
+}
