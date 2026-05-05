@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/client";
 import toast from "react-hot-toast";
 
-const supabase = await createClient();
+const supabase = createClient();
 const bucket = "test";
 
 export const uploadPDF = async (image: File) => {
