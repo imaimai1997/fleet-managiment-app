@@ -45,7 +45,7 @@ const FeeListSearch = ({ carData, parentData }: Props) => {
     label: "全車",
   };
 
-  const options = [allCarObject, ...carData];
+  const options = [allCarObject, ...(carData ?? [])];
   const [selectedValue, setSelectedValue] = useState<CarSelect | null>(
     options[0],
   );
