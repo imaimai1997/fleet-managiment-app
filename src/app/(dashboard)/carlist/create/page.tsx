@@ -1,6 +1,8 @@
 import CarDetail from "@/components/CarDetail";
 import { getSelect } from "@/components/Form/Car/getSelect";
 
+export const dynamic = "force-dynamic";
+
 export default async function CreateCarPage() {
   const {
     carTypes,

@@ -6,15 +6,20 @@ import UserModal from "@/components/Modal/UserModal";
 
 type Props = { searchParams?: Promise<{ query?: string; page?: string }> };
 
-const fetchFilteredUser = async (query: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`);
+export const dynamic = "force-dynamic";
 
-  const data = await res.json();
-  const users = await data.users;
-  const filteredUser = await users.filter((user: UserData) =>
-    user.name.toLowerCase().includes(query.toLowerCase()),
-  );
-  return filteredUser;
+const fetchFilteredUser = async (query: string) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    const users: UserData[] = data.users ?? [];
+    return users.filter((user) =>
+      user.name.toLowerCase().includes(query.toLowerCase()),
+    );
+  } catch {
+    return [];
+  }
 };
 
 const UserListPage = async ({ searchParams }: Props) => {
