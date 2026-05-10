@@ -15,16 +15,8 @@ const CarDetailPage = async ({
   params: Promise<{ id: string }>;
 }) => {
   const id = (await params).id;
-  const carData = await fetchCarById(id);
-
-  const {
-    carTypes,
-    places,
-    employees,
-    leasingCompanies,
-    refuelingCards,
-    etcCards,
-  } = await getSelect();
+  const [carData, { carTypes, places, employees, leasingCompanies, refuelingCards, etcCards }] =
+    await Promise.all([fetchCarById(id), getSelect()]);
 
   return (
     <>

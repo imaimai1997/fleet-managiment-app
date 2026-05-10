@@ -35,25 +35,27 @@ const fetchUserByNotice = async () => {
 
 export const GET = async () => {
   try {
-    const noticeUser = await fetchUserByNotice();
+    const [noticeUser, inspectionMailData, insuaranceMailData] =
+      await Promise.all([
+        fetchUserByNotice(),
+        fetchUserByInspection(),
+        fetchUserByInsuarance(),
+      ]);
 
-    // 車検期限1カ月前の車両管理者にメール送信
-
-    const inspectionMailData = await fetchUserByInspection();
-    for (const data of inspectionMailData) {
-      const inspectionEmail = data.employee.email;
-      const inspectionCarlabel = data.label;
-
-      await sendInspectionMail(inspectionEmail, noticeUser, inspectionCarlabel);
-    }
-    //保険期限1カ月前の車両管理者にメール送信
-    const insuaranceMailData = await fetchUserByInsuarance();
-    for (const data of insuaranceMailData) {
-      const insuaranceEmail = data.employee.email;
-      const insuaranceCarlabel = data.label;
-
-      await sendInsuaranceMail(insuaranceEmail, noticeUser, insuaranceCarlabel);
-    }
+    await Promise.all([
+      // 車検期限1カ月前の車両管理者にメール送信
+      Promise.all(
+        inspectionMailData.map((data: { employee: { email: string }; label: string }) =>
+          sendInspectionMail(data.employee.email, noticeUser, data.label),
+        ),
+      ),
+      // 保険期限1カ月前の車両管理者にメール送信
+      Promise.all(
+        insuaranceMailData.map((data: { employee: { email: string }; label: string }) =>
+          sendInsuaranceMail(data.employee.email, noticeUser, data.label),
+        ),
+      ),
+    ]);
 
     return NextResponse.json({ message: "Success" }, { status: 201 });
   } catch (err) {
