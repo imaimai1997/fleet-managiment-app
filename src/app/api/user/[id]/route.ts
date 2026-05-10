@@ -7,6 +7,7 @@ export const GET = async (req: Request) => {
   try {
     return await prismaExecute(async () => {
       const user = await prisma.user.findFirst({
+        omit: { password: true },
         where: { id: id },
         include: {
           role: true,
@@ -27,6 +28,7 @@ export const DELETE = async (req: Request) => {
   try {
     return await prismaExecute(async () => {
       const user = await prisma.user.delete({
+        omit: { password: true },
         where: { id: id },
       });
       await deleteUser(id);
@@ -46,6 +48,7 @@ export const PUT = async (req: Request) => {
   try {
     return await prismaExecute(async () => {
       const user = await prisma.user.update({
+        omit: { password: true },
         data: {
           roleName,
           name,

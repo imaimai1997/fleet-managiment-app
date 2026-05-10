@@ -8,6 +8,7 @@ export const GET = async () => {
   try {
     return await prismaExecute(async () => {
       const users = await prisma.user.findMany({
+        omit: { password: true },
         include: {
           role: true,
         },
@@ -28,6 +29,7 @@ export const POST = async (req: Request) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     return await prismaExecute(async () => {
       const user = await prisma.user.create({
+        omit: { password: true },
         data: {
           id,
           roleName,
