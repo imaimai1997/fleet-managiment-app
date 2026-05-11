@@ -45,14 +45,16 @@ export const GET = async () => {
     await Promise.all([
       // 車検期限1カ月前の車両管理者にメール送信
       Promise.all(
-        inspectionMailData.map((data: { employee: { email: string }; label: string }) =>
-          sendInspectionMail(data.employee.email, noticeUser, data.label),
+        inspectionMailData.map(
+          (data: { employee: { email: string }; label: string }) =>
+            sendInspectionMail(data.employee.email, noticeUser, data.label),
         ),
       ),
       // 保険期限1カ月前の車両管理者にメール送信
       Promise.all(
-        insuaranceMailData.map((data: { employee: { email: string }; label: string }) =>
-          sendInsuaranceMail(data.employee.email, noticeUser, data.label),
+        insuaranceMailData.map(
+          (data: { employee: { email: string }; label: string }) =>
+            sendInsuaranceMail(data.employee.email, noticeUser, data.label),
         ),
       ),
     ]);
