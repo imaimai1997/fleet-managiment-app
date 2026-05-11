@@ -324,30 +324,34 @@ const CarDetail = ({
     setInsuaranceFileName(data?.insuarance_data_name);
   }, [data]);
 
+  const watchedEmployeeName = watch("employeeName");
+  const watchedRefuelingCardNumber = watch("refueling_cardNumber");
+  const watchedEtcCardName = watch("etc_cardName");
+
   // 読み取り専用項目の自動表示
   useEffect(() => {
-    const selected = employees.find((e) => e.name === watch("employeeName"));
+    const selected = employees.find((e) => e.name === watchedEmployeeName);
     if (selected) {
       setValue("employeeEmail", selected.email);
     }
-  }, [watch("employeeName")]);
+  }, [watchedEmployeeName, employees, setValue]);
 
   useEffect(() => {
     const selected = refuelingCards.find(
-      (r) => r.number === watch("refueling_cardNumber"),
+      (r) => r.number === watchedRefuelingCardNumber,
     );
     if (selected) {
       setValue("refueling_cardPeriod", formatDate(selected.period));
     }
-  }, [watch("refueling_cardNumber")]);
+  }, [watchedRefuelingCardNumber, refuelingCards, setValue]);
 
   useEffect(() => {
-    const selected = etcCards.find((e) => e.name === watch("etc_cardName"));
+    const selected = etcCards.find((e) => e.name === watchedEtcCardName);
     if (selected) {
       setValue("etc_cardPeriod", formatDate(selected.period));
       setValue("etc_cardNumber", selected.number);
     }
-  }, [watch("etc_cardName")]);
+  }, [watchedEtcCardName, etcCards, setValue]);
 
   return (
     <>
