@@ -1,12 +1,27 @@
 import React from "react";
 import CarDetail from "@/components/CarDetail";
 import { getSelect } from "@/components/Form/Car/getSelect";
+import { prisma, prismaExecute } from "@/utils/prisma/prisma";
+import { CarData } from "@/type/CarData";
 
-const fetchCarById = async (id: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/car/${id}`);
-
-  const data = await res.json();
-  return data.car;
+const fetchCarById = async (id: number) => {
+  try {
+    return await prismaExecute(async () => {
+      return await prisma.car.findFirst({
+        where: { id },
+        include: {
+          carType: true,
+          employee: true,
+          leasing: true,
+          place: true,
+          etc_card: true,
+          refueling_card: true,
+        },
+      });
+    });
+  } catch {
+    return null;
+  }
 };
 
 const CarDetailPage = async ({
@@ -14,16 +29,19 @@ const CarDetailPage = async ({
 }: {
   params: Promise<{ id: string }>;
 }) => {
-  const id = (await params).id;
-  const [carData, { carTypes, places, employees, leasingCompanies, refuelingCards, etcCards }] =
-    await Promise.all([fetchCarById(id), getSelect()]);
+  const id = parseInt((await params).id);
+  const [
+    carData,
+    { carTypes, places, employees, leasingCompanies, refuelingCards, etcCards },
+  ] = await Promise.all([fetchCarById(id), getSelect()]);
+  const car = (carData ?? undefined) as CarData | undefined;
 
   return (
     <>
       <div>
         <CarDetail
-          data={carData}
-          id={id}
+          data={car}
+          id={id.toString()}
           carTypes={carTypes}
           places={places}
           employees={employees}
