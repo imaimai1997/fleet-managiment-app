@@ -1,22 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 
-export const prisma = new PrismaClient();
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
-async function connectDB() {
-  try {
-    await prisma.$connect();
-  } catch (err) {
-    console.error("DB接続エラー:", err);
-    return new Error("DB接続に失敗しました");
-  }
-}
+export const prisma = globalForPrisma.prisma ?? new PrismaClient();
 
-// 処理とDB切断を行うためのヘルパー関数
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+
 export async function prismaExecute<T>(callback: () => Promise<T>): Promise<T> {
-  try {
-    await connectDB();
-    return await callback();
-  } finally {
-    await prisma.$disconnect();
-  }
+  return callback();
 }
