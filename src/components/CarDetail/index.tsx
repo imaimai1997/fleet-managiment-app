@@ -137,7 +137,6 @@ const CarDetail = ({
   };
 
   const handleCreateCar = async () => {
-
     toast.loading("waiting...", { id: "1" });
     try {
       const inspectionFilePath = inspectionUploadFile
@@ -180,7 +179,10 @@ const CarDetail = ({
       });
       const body = await res.json();
       if (!res.ok) {
-        toast.error(body.message ?? "車両情報の登録がうまくいきませんでした。", { id: "1" });
+        toast.error(
+          body.message ?? "車両情報の登録がうまくいきませんでした。",
+          { id: "1" },
+        );
         return;
       }
       toast.success("車両情報が登録されました", { id: "1" });

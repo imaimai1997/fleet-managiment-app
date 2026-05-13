@@ -20,7 +20,10 @@ export const GET = async () => {
     });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ message: "エラーが発生しました" }, { status: 500 });
+    return NextResponse.json(
+      { message: "エラーが発生しました" },
+      { status: 500 },
+    );
   }
 };
 
@@ -80,13 +83,19 @@ export const POST = async (req: Request) => {
       return NextResponse.json({ message: "Success", car }, { status: 201 });
     });
   } catch (err) {
-    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2002"
+    ) {
       return NextResponse.json(
         { message: "この車両番号は既に登録されています" },
         { status: 409 },
       );
     }
     console.error(err);
-    return NextResponse.json({ message: "エラーが発生しました" }, { status: 500 });
+    return NextResponse.json(
+      { message: "エラーが発生しました" },
+      { status: 500 },
+    );
   }
 };

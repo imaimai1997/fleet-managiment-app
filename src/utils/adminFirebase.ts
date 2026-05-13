@@ -50,7 +50,6 @@ const updateUser = async (uid: string, updateEmail: string) => {
     await adminAuth.updateUser(uid, {
       email: updateEmail,
     });
-
   } catch (error) {
     if (error instanceof Error) {
       console.error("Error message:", error.message);

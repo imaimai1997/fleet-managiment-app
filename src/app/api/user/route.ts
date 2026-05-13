@@ -17,7 +17,10 @@ export const GET = async () => {
     });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ message: "エラーが発生しました" }, { status: 500 });
+    return NextResponse.json(
+      { message: "エラーが発生しました" },
+      { status: 500 },
+    );
   }
 };
 
@@ -42,6 +45,9 @@ export const POST = async (req: Request) => {
     });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ message: "エラーが発生しました" }, { status: 500 });
+    return NextResponse.json(
+      { message: "エラーが発生しました" },
+      { status: 500 },
+    );
   }
 };
