@@ -181,8 +181,11 @@ const CarDetail = ({
           notes: watch("notes") == "" ? null : watch("notes"),
         }),
       });
+      const body = await res.json();
       if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
+        console.log('データ結果',body.message);
+        toast.error(body.message ?? "車両情報の登録がうまくいきませんでした。", { id: "1" });
+        return;
       }
       toast.success("車両情報が登録されました", { id: "1" });
 
@@ -192,8 +195,7 @@ const CarDetail = ({
       return data;
     } catch (err) {
       console.error("Error:", err);
-
-      toast.error("車両情報が登録がうまくいきませんでした。", { id: "1" });
+      toast.error("車両情報の登録がうまくいきませんでした。", { id: "1" });
     }
   };
   const onError = (errors: FieldErrors<CarForm>) => {

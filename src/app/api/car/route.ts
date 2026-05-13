@@ -1,4 +1,5 @@
 import { prisma, prismaExecute } from "@/utils/prisma/prisma";
+import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 //車両一覧取得
@@ -79,7 +80,13 @@ export const POST = async (req: Request) => {
       return NextResponse.json({ message: "Success", car }, { status: 201 });
     });
   } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      return NextResponse.json(
+        { message: "この車両番号は既に登録されています" },
+        { status: 409 },
+      );
+    }
     console.log(err);
-    return NextResponse.json({ message: "Error", err }, { status: 500 });
+    return NextResponse.json({ message: "エラーが発生しました" }, { status: 500 });
   }
 };
