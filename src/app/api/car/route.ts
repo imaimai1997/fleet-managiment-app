@@ -19,7 +19,7 @@ export const GET = async () => {
       return NextResponse.json({ message: "Success", cars }, { status: 200 });
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   }
 };
@@ -86,7 +86,7 @@ export const POST = async (req: Request) => {
         { status: 409 },
       );
     }
-    console.log(err);
+    console.error(err);
     return NextResponse.json({ message: "エラーが発生しました" }, { status: 500 });
   }
 };

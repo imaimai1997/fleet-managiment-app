@@ -11,7 +11,7 @@ export const GET = async (req: Request) => {
       return NextResponse.json({ message: "Success", place }, { status: 200 });
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   }
 };
@@ -26,7 +26,7 @@ export const DELETE = async (req: Request) => {
       return NextResponse.json({ message: "Success", place }, { status: 200 });
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   }
 };
@@ -42,7 +42,7 @@ export const PUT = async (req: Request) => {
       return NextResponse.json({ message: "Success", place }, { status: 200 });
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   }
 };
