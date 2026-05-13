@@ -15,7 +15,7 @@ export const sendInsuaranceMail = async (
   noticeUser: string[],
   carlabel: string,
 ) => {
-  const info = await transporter.sendMail({
+  await transporter.sendMail({
     from: process.env.GMAILUSER,
     to: email,
     cc: noticeUser,
@@ -23,5 +23,4 @@ export const sendInsuaranceMail = async (
     text: `こちらのメールは${carlabel}の車両管理者に送信しております。
     ${carlabel}の車両保険の期限まで残り1カ月となりました`,
   });
-
 };

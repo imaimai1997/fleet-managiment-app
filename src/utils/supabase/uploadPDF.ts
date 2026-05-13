@@ -46,7 +46,7 @@ export const replacePDF = async (fileURL: string, newFile: File) => {
   );
   await supabase.storage.from(bucket).remove([filePath]);
   const newName = `${Date.now()}.pdf`;
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from(bucket)
     .upload(newName, newFile);
 

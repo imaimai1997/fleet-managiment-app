@@ -25,7 +25,6 @@ const SignInForm = () => {
         data.email,
         data.password,
       );
-      const user = userCredential.user;
 
       toast.success("ログインしました", { id: "1" });
       router.push("/");
