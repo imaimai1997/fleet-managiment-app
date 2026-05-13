@@ -21,7 +21,7 @@ export const GET = async (req: Request) => {
     });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ message: "Error", err }, { status: 500 });
+    return NextResponse.json({ message: "エラーが発生しました" }, { status: 500 });
   }
 };
 
@@ -36,7 +36,7 @@ export const DELETE = async (req: Request) => {
     });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ message: "Error", err }, { status: 500 });
+    return NextResponse.json({ message: "エラーが発生しました" }, { status: 500 });
   }
 };
 
@@ -95,6 +95,6 @@ export const PUT = async (req: Request) => {
     });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ message: "Error", err }, { status: 500 });
+    return NextResponse.json({ message: "エラーが発生しました" }, { status: 500 });
   }
 };
