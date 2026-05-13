@@ -72,7 +72,6 @@ export async function GET(req: Request) {
       const carNumber = searchParams.get("carNumber")
         ? decodeURIComponent(searchParams.get("carNumber")!)
         : null;
-      console.log(yearMonth, carNumber);
       if (!yearMonth) {
         return NextResponse.json(
           { success: false, message: "yearMonth パラメータが必要です" },
@@ -80,7 +79,6 @@ export async function GET(req: Request) {
         );
       }
       const res = await getGasMileageData(carNumber, yearMonth);
-      console.log(res);
       return NextResponse.json({ success: true, res }, { status: 200 });
     });
   } catch (err) {

@@ -112,7 +112,6 @@ const CarDetail = ({
   const handleInspectionFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    console.log(e.target.files);
     const file = e.target.files?.[0];
     setInspectionUploadFile(file);
 
@@ -123,7 +122,6 @@ const CarDetail = ({
   const handleInsuaranceFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    console.log(e.target.files);
     const file = e.target.files?.[0];
     setinsuaranceUploadFile(file);
     if (file) {
@@ -139,7 +137,6 @@ const CarDetail = ({
   };
 
   const handleCreateCar = async () => {
-    console.log("作成中");
 
     toast.loading("waiting...", { id: "1" });
     try {
@@ -183,7 +180,6 @@ const CarDetail = ({
       });
       const body = await res.json();
       if (!res.ok) {
-        console.log('データ結果',body.message);
         toast.error(body.message ?? "車両情報の登録がうまくいきませんでした。", { id: "1" });
         return;
       }
@@ -313,8 +309,6 @@ const CarDetail = ({
       return res.json();
     } catch (error) {
       console.error(error);
-      console.log(watch("etc_cardName"));
-      console.log(watch("refueling_cardNumber"));
       toast.error("車両情報が編集できませんでした", { id: "1" });
     }
   };

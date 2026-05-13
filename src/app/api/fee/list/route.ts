@@ -71,7 +71,6 @@ export async function GET(req: Request) {
       const carNumber = searchParams.get("carNumber")
         ? decodeURIComponent(searchParams.get("carNumber")!)
         : null;
-      console.log(yearMonth, carNumber);
       if (!yearMonth) {
         return NextResponse.json(
           { success: false, message: "yearMonth パラメータが必要です" },

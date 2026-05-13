@@ -26,7 +26,6 @@ export const deletePDF = async (fileURL: string) => {
     `https://${supabaseURL}/storage/v1/object/public/${bucket}/`,
     "",
   );
-  console.log(filePath);
   const { data, error } = await supabase.storage
     .from(bucket)
     .remove([filePath]);
@@ -36,7 +35,6 @@ export const deletePDF = async (fileURL: string) => {
     toast.error("ファイル削除に失敗しました", { id: "1" });
   }
 
-  console.log("ファイル削除成功:", data);
   return data;
 };
 
@@ -57,6 +55,5 @@ export const replacePDF = async (fileURL: string, newFile: File) => {
     toast.error("ファイル更新に失敗しました", { id: "1" });
   }
 
-  console.log("ファイル更新成功:", data);
   return supabase.storage.from(bucket).getPublicUrl(newName).data.publicUrl;
 };

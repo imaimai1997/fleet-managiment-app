@@ -102,7 +102,6 @@ const EtcCardImport = () => {
   };
   const handleEdit = async (id: number) => {
     const editEtcCard = etcCardData.find((item) => item.id == id);
-    console.log(editEtcCard?.period);
     try {
       if (
         editEtcCard?.name == "" ||

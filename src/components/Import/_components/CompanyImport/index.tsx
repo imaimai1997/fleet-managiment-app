@@ -66,7 +66,6 @@ const CompanyImport = () => {
   };
   const handleEdit = async (id: number) => {
     const editCompayName = companyData.find((item) => item.id == id);
-    console.log(id, editCompayName);
     try {
       toast.loading("wating...", { id: "1" });
       const res = await fetch(

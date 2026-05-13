@@ -24,5 +24,4 @@ export const sendInspectionMail = async (
     ${carlabel}の車検期限まで残り1カ月となりました`,
   });
 
-  console.log("Message sent: %s", info.messageId);
 };

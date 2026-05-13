@@ -36,7 +36,6 @@ const createUser = async (email: string, password: string) => {
 const deleteUser = async (uid: string) => {
   try {
     await adminAuth.deleteUser(uid);
-    console.log(`Successfully deleted user with UID: ${uid}`);
   } catch (error) {
     if (error instanceof Error) {
       console.error("Error message:", error.message);
@@ -52,7 +51,6 @@ const updateUser = async (uid: string, updateEmail: string) => {
       email: updateEmail,
     });
 
-    console.log(`Successfully updated user with UID: ${uid}`);
   } catch (error) {
     if (error instanceof Error) {
       console.error("Error message:", error.message);

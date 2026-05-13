@@ -42,7 +42,6 @@ const fileParser = (file: File): Promise<CsvRow[]> => {
             }
           });
           resolve(Object.values(sumData));
-          console.log(Object.values(sumData));
         } catch (error) {
           reject(error); // エラーを reject
         }

@@ -24,5 +24,4 @@ export const sendInsuaranceMail = async (
     ${carlabel}の車両保険の期限まで残り1カ月となりました`,
   });
 
-  console.log("Message sent: %s", info.messageId);
 };

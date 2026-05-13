@@ -28,7 +28,6 @@ const fetchFeeList = async (yearMonth: string, carNumber?: string) => {
   }
 
   const data = await res.json();
-  console.log(data.res);
   return data.res;
 };
 
