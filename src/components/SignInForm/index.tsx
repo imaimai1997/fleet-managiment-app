@@ -20,11 +20,7 @@ const SignInForm = () => {
   const handleSignin = async (data: LoginForm) => {
     toast.loading("waiting...", { id: "1" });
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password,
-      );
+      await signInWithEmailAndPassword(auth, data.email, data.password);
 
       toast.success("ログインしました", { id: "1" });
       router.push("/");
