@@ -1,13 +1,17 @@
 import FeeList from "@/components/FeeList";
+import { prisma, prismaExecute } from "@/utils/prisma/prisma";
+import { CarSelect } from "@/type/CarSelect";
 
 export const dynamic = "force-dynamic";
 
-const fetchCarList = async () => {
+const fetchCarList = async (): Promise<CarSelect[]> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/car`);
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.cars ?? [];
+    return await prismaExecute(async () => {
+      const cars = await prisma.car.findMany({
+        select: { id: true, label: true },
+      });
+      return cars.map((car) => ({ id: String(car.id), label: car.label }));
+    });
   } catch {
     return [];
   }

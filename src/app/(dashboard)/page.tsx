@@ -5,21 +5,39 @@ import Link from "next/link";
 import { CarListData } from "@/type/CarListData";
 import { Button } from "@/components/Button";
 import { FaPlus } from "react-icons/fa";
+import { prisma, prismaExecute } from "@/utils/prisma/prisma";
+
+export const dynamic = "force-dynamic";
 
 type Props = { searchParams?: Promise<{ query?: string; page?: string }> };
 
-const fetchFilteredCars = async (query: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/carlist`);
-
-  const data = await res.json();
-  const cars = await data.cars;
-  const filteredCar = await cars.filter(
-    (car: CarListData) =>
-      car.label.toLowerCase().includes(query.toLowerCase()) ||
-      car.employeeName.toLowerCase().includes(query.toLowerCase()),
-  );
-
-  return filteredCar;
+const fetchFilteredCars = async (query: string): Promise<CarListData[]> => {
+  try {
+    return await prismaExecute(async () => {
+      return await prisma.car.findMany({
+        select: {
+          id: true,
+          label: true,
+          employeeName: true,
+          leasingName: true,
+          leasing_finish_date: true,
+          harf_year_inspection: true,
+          inspection_expires_date: true,
+          insuarance_expires_date: true,
+        },
+        where: query
+          ? {
+              OR: [
+                { label: { contains: query, mode: "insensitive" } },
+                { employeeName: { contains: query, mode: "insensitive" } },
+              ],
+            }
+          : undefined,
+      });
+    });
+  } catch {
+    return [];
+  }
 };
 
 const CarListPage = async ({ searchParams }: Props) => {
