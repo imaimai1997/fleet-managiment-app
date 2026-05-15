@@ -81,7 +81,12 @@ const CarDetail = ({
       etc_cardName: data?.etc_card?.name || "",
       etc_cardNumber: data?.etc_card?.number || "",
       etc_cardPeriod: formatDate(data?.etc_card?.period) || "",
-      tire_change: data?.tire_change?.toString() || null,
+      tire_change:
+        data?.tire_change === true
+          ? "有り"
+          : data?.tire_change === false
+            ? "無し"
+            : null,
       notes: data?.notes || "",
     },
   });
@@ -173,7 +178,12 @@ const CarDetail = ({
               : watch("refueling_cardNumber"),
           etc_cardName:
             watch("etc_cardName") == "" ? null : watch("etc_cardName"),
-          tire_change: watch("tire_change") == "" ? null : watch("tire_change"),
+          tire_change:
+            watch("tire_change") === "有り"
+              ? true
+              : watch("tire_change") === "無し"
+                ? false
+                : null,
           notes: watch("notes") == "" ? null : watch("notes"),
         }),
       });
@@ -299,7 +309,11 @@ const CarDetail = ({
             etc_cardName:
               watch("etc_cardName") == "" ? null : watch("etc_cardName"),
             tire_change:
-              watch("tire_change") == "" ? null : watch("tire_change"),
+              watch("tire_change") === "有り"
+                ? true
+                : watch("tire_change") === "無し"
+                  ? false
+                  : null,
             notes: watch("notes") == "" ? null : watch("notes"),
           }),
         },
@@ -506,13 +520,7 @@ const CarDetail = ({
                 { key: 1, value: "無し" },
               ]}
               {...register("tire_change", {})}
-              value={
-                watch("tire_change") === null
-                  ? ""
-                  : watch("tire_change") === "true"
-                    ? "true"
-                    : "false"
-              }
+              value={watch("tire_change") ?? ""}
             />
           </Box>
 
