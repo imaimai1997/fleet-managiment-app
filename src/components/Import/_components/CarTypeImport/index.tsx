@@ -16,7 +16,7 @@ const CarTypeImport = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/api/select/cartype`,
       );
       const data = await res.json();
-      setCarTypeData(data.cartype);
+      setCarTypeData(data.carTypes ?? []);
     } catch (error) {
       console.error("Error fetching car types:", error);
       setCarTypeData([]);

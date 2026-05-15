@@ -23,7 +23,7 @@ const EtcCardImport = () => {
 
       const data = await res.json();
 
-      setEtcCardData(data.etc_cards);
+      setEtcCardData(data.etcCards ?? []);
     } catch (error) {
       console.error("Error fetching etcCard:", error);
       setEtcCardData([]);

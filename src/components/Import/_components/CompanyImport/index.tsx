@@ -18,7 +18,7 @@ const CompanyImport = () => {
 
       const data = await res.json();
 
-      setCompanyData(data.leasingCompanyes);
+      setCompanyData(data.leasingCompanies ?? []);
     } catch (error) {
       console.error("Error fetching company:", error);
       setCompanyData([]);

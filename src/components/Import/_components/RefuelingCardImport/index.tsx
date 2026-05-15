@@ -23,7 +23,7 @@ const RefuelingCardImport = () => {
 
       const data = await res.json();
 
-      setRefuelingCardData(data.refueling_cards);
+      setRefuelingCardData(data.refuelingCards ?? []);
     } catch (error) {
       console.error("Error fetching refuelingCard:", error);
       setRefuelingCardData([]);
