@@ -1,11 +1,11 @@
 import React from "react";
-import SearchBar from "@/components/SearchBar";
-import CarList from "@/components/CarList";
+import SearchBar from "@/components/ui/SearchBar";
+import CarList from "@/components/features/car/CarList";
 import Link from "next/link";
-import { CarListData } from "@/type/CarListData";
-import { Button } from "@/components/Button";
+import { CarListData } from "@/types/CarListData";
+import { Button } from "@/components/ui/Button";
 import { FaPlus } from "react-icons/fa";
-import { prisma, prismaExecute } from "@/utils/prisma/prisma";
+import { prisma, prismaExecute } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 

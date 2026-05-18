@@ -1,4 +1,4 @@
-import { prisma, prismaExecute } from "@/utils/prisma/prisma";
+import { prisma, prismaExecute } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 //給油カード取得

@@ -1,4 +1,4 @@
-import { prisma, prismaExecute } from "@/utils/prisma/prisma";
+import { prisma, prismaExecute } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 

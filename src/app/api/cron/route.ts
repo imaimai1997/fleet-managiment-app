@@ -1,5 +1,5 @@
-import { sendInspectionMail } from "@/utils/sendmail/sendInspectionMail";
-import { sendInsuaranceMail } from "@/utils/sendmail/sendInsuaranceMail";
+import { sendInspectionMail } from "@/lib/sendmail/sendInspectionMail";
+import { sendInsuaranceMail } from "@/lib/sendmail/sendInsuaranceMail";
 import { NextResponse } from "next/server";
 
 type noticeEmail = {

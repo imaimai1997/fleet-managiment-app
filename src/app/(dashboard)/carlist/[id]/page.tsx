@@ -1,8 +1,8 @@
 import React from "react";
-import CarDetail from "@/components/CarDetail";
-import { getSelect } from "@/components/Form/Car/getSelect";
-import { prisma, prismaExecute } from "@/utils/prisma/prisma";
-import { CarData } from "@/type/CarData";
+import CarDetail from "@/components/features/car/CarDetail";
+import { getSelect } from "@/components/features/car/Form/getSelect";
+import { prisma, prismaExecute } from "@/lib/prisma";
+import { CarData } from "@/types/CarData";
 
 const fetchCarById = async (id: number) => {
   try {

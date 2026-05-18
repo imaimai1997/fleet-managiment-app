@@ -1,6 +1,6 @@
-import GasMileageList from "@/components/GasMileageList";
-import { prisma, prismaExecute } from "@/utils/prisma/prisma";
-import { CarSelect } from "@/type/CarSelect";
+import GasMileageList from "@/components/features/gasmileage/GasMileageList";
+import { prisma, prismaExecute } from "@/lib/prisma";
+import { CarSelect } from "@/types/CarSelect";
 
 export const dynamic = "force-dynamic";
 

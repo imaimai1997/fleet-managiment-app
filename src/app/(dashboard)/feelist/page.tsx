@@ -1,6 +1,6 @@
-import FeeList from "@/components/FeeList";
-import { prisma, prismaExecute } from "@/utils/prisma/prisma";
-import { CarSelect } from "@/type/CarSelect";
+import FeeList from "@/components/features/fee/FeeList";
+import { prisma, prismaExecute } from "@/lib/prisma";
+import { CarSelect } from "@/types/CarSelect";
 
 export const dynamic = "force-dynamic";
 

@@ -6,9 +6,9 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { auth } from "@/utils/firebase";
+import { auth } from "@/lib/firebase";
 import { User } from "firebase/auth";
-import { UserData } from "@/type/UserData";
+import { UserData } from "@/types/UserData";
 import { useRouter } from "next/navigation";
 
 export type AuthContextType = {

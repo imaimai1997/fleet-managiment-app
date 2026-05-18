@@ -1,9 +1,9 @@
 import React from "react";
-import UserList from "@/components/UserList";
-import { UserData } from "@/type/UserData";
-import SearchBar from "@/components/SearchBar";
-import UserModal from "@/components/Modal/UserModal";
-import { prisma, prismaExecute } from "@/utils/prisma/prisma";
+import UserList from "@/components/features/user/UserList";
+import { UserData } from "@/types/UserData";
+import SearchBar from "@/components/ui/SearchBar";
+import UserModal from "@/components/features/user/UserModal";
+import { prisma, prismaExecute } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 

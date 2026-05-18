@@ -1,6 +1,6 @@
-import { prisma, prismaExecute } from "@/utils/prisma/prisma";
+import { prisma, prismaExecute } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { deleteUser, updateUser } from "@/utils/adminFirebase";
+import { deleteUser, updateUser } from "@/lib/adminFirebase";
 
 export const GET = async (req: Request) => {
   const id = req.url.split("/user/")[1];

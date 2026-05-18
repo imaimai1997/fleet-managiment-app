@@ -1,5 +1,5 @@
-import CarDetail from "@/components/CarDetail";
-import { getSelect } from "@/components/Form/Car/getSelect";
+import CarDetail from "@/components/features/car/CarDetail";
+import { getSelect } from "@/components/features/car/Form/getSelect";
 
 export const dynamic = "force-dynamic";
 

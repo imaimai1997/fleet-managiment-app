@@ -1,5 +1,5 @@
-import { createUser } from "@/utils/adminFirebase";
-import { prisma, prismaExecute } from "@/utils/prisma/prisma";
+import { createUser } from "@/lib/adminFirebase";
+import { prisma, prismaExecute } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
