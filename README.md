@@ -62,13 +62,89 @@ csv取込画面
 
 
 ## ディレクトリ構成
+
+```
 src/
-├── app/               ← ルーティング・ページのみ
+├── app/                              # ルーティング（Next.js App Router）
+│   ├── (dashboard)/                  # ログイン後の画面（レイアウトグループ）
+│   │   ├── page.tsx                  # 車両一覧
+│   │   ├── carlist/[id]/page.tsx     # 車両詳細
+│   │   ├── carlist/create/page.tsx   # 車両新規登録
+│   │   ├── feelist/page.tsx          # 料金一覧
+│   │   ├── gasmileage/page.tsx       # 燃費一覧
+│   │   ├── import/page.tsx           # CSV取込
+│   │   └── userlist/page.tsx         # ユーザー一覧
+│   ├── api/                          # API ルート
+│   │   ├── car/                      # 車両 CRUD
+│   │   ├── carlist/                  # 車両一覧（軽量）
+│   │   ├── fee/                      # 料金関連
+│   │   ├── select/                   # マスタ取得（車種・場所 etc.）
+│   │   ├── user/                     # ユーザー CRUD
+│   │   └── cron/                     # 定期バッチ（期限通知メール）
+│   └── signin/                       # ログイン画面
+│
 ├── components/
-│   ├── ui/            ← 汎用UI
-│   └── features/      ← 機能単位のコンポーネント
-│       ├── car/
-│       ├── user/
-│       └── fee/
-├── lib/               ← prisma.ts など共通ユーティリティ
-└── types/             ← 型定義
+│   ├── ui/                           # 汎用UIコンポーネント（ドメイン知識なし）
+│   │   ├── Box/                      # セクション囲みボックス
+│   │   ├── Button/                   # ボタン
+│   │   ├── Input/                    # テキスト入力
+│   │   ├── Modal/                    # モーダル基盤
+│   │   ├── SearchBar/                # 検索バー
+│   │   └── Select/                   # セレクトボックス
+│   │
+│   ├── features/                     # 機能・ドメイン別コンポーネント
+│   │   ├── auth/
+│   │   │   └── SignInForm/           # ログインフォーム
+│   │   ├── car/
+│   │   │   ├── CarDetail/            # 車両詳細・登録・編集フォーム
+│   │   │   ├── CarList/              # 車両一覧テーブル
+│   │   │   └── Form/                 # フォーム用データ取得（getSelect）
+│   │   ├── fee/
+│   │   │   ├── FeeList/              # 料金一覧
+│   │   │   └── FeeListSearch/        # 料金検索フォーム
+│   │   ├── gasmileage/
+│   │   │   ├── GasMileageList/       # 燃費一覧
+│   │   │   └── GasMileageSearch/     # 燃費検索フォーム
+│   │   ├── import/
+│   │   │   └── Import/               # CSV取込（車種・場所・ETC etc.）
+│   │   └── user/
+│   │       ├── UserDetail/           # ユーザー詳細・編集フォーム
+│   │       ├── UserList/             # ユーザー一覧テーブル
+│   │       ├── UserModal/            # ユーザー登録モーダル
+│   │       └── UserSetting/          # ユーザー設定
+│   │
+│   └── layout/                       # レイアウト用コンポーネント
+│       ├── Header/                   # ヘッダー
+│       └── Sidebar/                  # サイドバー
+│
+├── context/
+│   └── authContext.tsx               # Firebase 認証状態の管理
+│
+├── lib/                              # 外部サービス・共通ユーティリティ
+│   ├── prisma.ts                     # Prisma クライアント（シングルトン）
+│   ├── firebase.ts                   # Firebase クライアント初期化
+│   ├── adminFirebase.ts              # Firebase Admin SDK
+│   ├── sendmail/                     # メール送信（車検・保険期限通知）
+│   └── supabase/                     # Supabase（PDF ストレージ）
+│
+└── types/                            # 型定義
+    ├── Car.ts                        # 車両マスタ関連
+    ├── CarData.ts                    # 車両詳細データ
+    ├── CarForm.ts                    # 車両フォーム
+    ├── CarListData.ts                # 車両一覧データ
+    ├── CarSelect.ts                  # 車両セレクト用
+    ├── FeeData.ts                    # 料金データ
+    ├── GasMileageData.ts             # 燃費データ
+    ├── Select.ts                     # 汎用セレクト
+    └── UserData.ts                   # ユーザーデータ
+```
+
+### 設計方針
+
+| ディレクトリ | 役割 |
+|---|---|
+| `components/ui/` | ドメイン知識を持たない汎用 UI。どの画面でも再利用可能 |
+| `components/features/` | ビジネスロジックを含む機能単位のコンポーネント。ドメインごとに分類 |
+| `components/layout/` | ページ全体のレイアウトを構成するコンポーネント |
+| `lib/` | DB・外部サービスへのアクセス処理。コンポーネントから分離 |
+| `types/` | 型定義の一元管理 |
