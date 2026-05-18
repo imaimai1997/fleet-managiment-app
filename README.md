@@ -59,3 +59,16 @@ csv取込画面
 [テーブル定義書/ER図](https://www.figma.com/board/XJSt49AIGBnNwhWf84M3CT/%E8%BB%8A%E4%B8%A1%E7%AE%A1%E7%90%86%E3%82%A2%E3%83%97%E3%83%AA%E3%80%80%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E5%AE%9A%E7%BE%A9%E6%9B%B8%2FER%E5%9B%B3?t=ePAML8t0T9fLDlte-6)
 
 [画面遷移図](https://www.figma.com/design/xbBLP1ea5RGyNMGvEmY0xY/%E8%BB%8A%E4%B8%A1%E7%AE%A1%E7%90%86%E3%82%A2%E3%83%97%E3%83%AA%E3%80%80%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?m=auto&t=rvQZUkKqtGSIMmQ9-6)
+
+
+## ディレクトリ構成
+src/
+├── app/               ← ルーティング・ページのみ
+├── components/
+│   ├── ui/            ← 汎用UI
+│   └── features/      ← 機能単位のコンポーネント
+│       ├── car/
+│       ├── user/
+│       └── fee/
+├── lib/               ← prisma.ts など共通ユーティリティ
+└── types/             ← 型定義
